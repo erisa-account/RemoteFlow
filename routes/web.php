@@ -32,7 +32,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/forms', function () {
-    return view('forms');
+    return view('user.forms.forms');
 })->middleware(['auth', 'verified'])->name('forms'); 
 
 Route::get('/user', function () {
@@ -64,9 +64,15 @@ Route::middleware('auth')->group(function () {
  Route::middleware(['auth'])->group(function () {
     Route::resource('/product', ProductController::class);
 
+    
+
+
     Route::middleware(['is_admin'])->name('admin.')->prefix('admin')->group(function () {
         Route::get('/', [AdminController::class, 'index'])->name('index');
         Route::resource('/products', AdminProductController::class);
+        Route::get('/form', function () {
+            return view('admin.forms.index');
+        })->name('form');
     });
 
        

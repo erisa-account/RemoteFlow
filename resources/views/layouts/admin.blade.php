@@ -65,7 +65,7 @@
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="forms.html"
+                href="{{ route('admin.form') }}"
               >
                 <svg
                   class="w-5 h-5"
@@ -346,7 +346,8 @@
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="forms.html"
+            href="{{ route('admin.form') }}"
+
               >
                 <svg
                   class="w-5 h-5"
@@ -368,7 +369,8 @@
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="cards.html"
+        href="{{ route('admin.form') }}"
+
               >
                 <svg
                   class="w-5 h-5"
@@ -822,6 +824,9 @@
           </div>
         </header>
         <main class="h-full overflow-y-auto">
+           @hasSection('content')
+          @yield('content') 
+          @else 
           <div class="container px-6 mx-auto grid">
             <h2
               class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200"
@@ -1510,6 +1515,7 @@
               </div>
             </div>
           </div>
+          @endif 
         </main>
       </div>
     </div>
