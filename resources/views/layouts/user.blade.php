@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html :class="{ 'theme-dark': dark }" x-data="data()" lang="en">
+ <html :class="{ 'theme-dark': dark }" x-data="data()" lang="en">
+
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Windmill Dashboard</title>
   
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script src="{{ asset('js/init-alpine.js') }}" defer></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js','resources/js/init-alpine.js'])
+    <!-- <script src="{{ asset('js/init-alpine.js') }}" defer></script> -->
     <script
       src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
       defer
     ></script>
+   
   
 
   </head>
@@ -84,7 +86,7 @@
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="cards.html"
+                href="{{ route('index') }}"
               >
                 <svg
                   class="w-5 h-5"
@@ -106,7 +108,7 @@
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="charts.html"
+                href="{{ route('test') }}"
               >
                 <svg
                   class="w-5 h-5"
@@ -1432,6 +1434,6 @@
           @endif
         </main>
       </div>
-    </div>
+    </div>  
   </body>
 </html>

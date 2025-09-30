@@ -49,7 +49,7 @@
 
 
   <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
-  <select class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-1 text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+  <select class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
       <option>All</option>
       <option>Remote</option>
       <option>On-site</option>
@@ -59,7 +59,7 @@
     
 
   <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
-  <select class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-1 text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+  <select class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3  text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
       <option>User</option>
       <option>Remote</option>
       <option>On-site</option>
