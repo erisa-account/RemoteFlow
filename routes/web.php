@@ -1,14 +1,20 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\AdminProductController; 
+use App\Http\Controllers\Admin\AdminProductController; 
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\User\CheckinController;
 // use App\Http\Controllers\TestController;
 use App\Http\Controllers\Admin\TestController;
+use App\Http\Controllers\Admin\UsersNameController;
+use App\Http\Controllers\Admin\RemotiveTableController;
+
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -93,8 +99,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/form', function () {
             return view('admin.forms.index');
         })->name('form');
+
         Route::put('/admin/test/{id}', [TestController::class, 'update'])->name('admin.test.update');
-    
+        
     });
 
 
@@ -106,12 +113,14 @@ Route::middleware('auth')->group(function () {
     });
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [AdminController::class, 'index'])->name('index');
+       
     });
 
      //Route::put('/admin/test/{id}', [TestController::class, 'update'])->name('admin.test.update');
         //Route::post('admin/test/store', [TestController::class, 'store'])->name('admin.test.store'); 
     Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
     Route::post('/checkin/store', [CheckinController::class, 'store'])->name('checkin.store');
+    Route::post('/checkin/update/{id}', [CheckinController::class, 'update'])->name('checkin.update');
 });
     
     Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {

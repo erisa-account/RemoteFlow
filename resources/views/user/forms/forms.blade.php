@@ -3,7 +3,7 @@
 
 @extends ('layouts.user')
 @section('content')
-import './status.js'; 
+
     
     <head>
          @vite(['resources/css/app.css', 'resources/js/status.js', 'resources/js/alerts.js'])
@@ -11,7 +11,7 @@ import './status.js';
 
      
     <div class="mx-auto w-full max-w-[550px] bg-white">
-    <form action="{{ route('user.checkin.store') }}" method="POST" class="py-4 px-9 pt-10" id="checkin-form">
+    <form action="{{ route('user.checkin.store') }}" class="py-4 px-9 pt-10" id="checkin-form">
     @csrf
 
            
@@ -22,6 +22,8 @@ import './status.js';
             <option value=""></option>
 
             </select>
+            <span id="status-error" class="text-red-500 text-sm mt-1"></span>
+
             <div class="mb-6 pt-4">
                 <!--<label class="mb-5 block text-xl font-semibold text-[#07074D]">
                     Upload File
@@ -132,6 +134,8 @@ import './status.js';
         </div>
     </div>
 </div> 
+         <span id="date-error" class="text-red-500 text-sm mt-1 "></span>
+
             <div>
                 <button 
                     type="submit" class="hover:shadow-form w-full rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">

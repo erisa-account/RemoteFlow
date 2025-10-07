@@ -17,6 +17,7 @@ return new class extends Migration
         $table->unsignedBigInteger('status_id');
         $table->date('date');
         $table->timestamp('created_at')->useCurrent();
+        $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
 
         // Foreign keys
         $table->foreign('user_id')->references('id')->on('users');

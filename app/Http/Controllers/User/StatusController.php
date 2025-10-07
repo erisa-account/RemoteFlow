@@ -4,7 +4,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Service\StatusService;
 
-class StatusController extends Controller
+class StatusController extends Controller 
 {
     protected $statusService;
 

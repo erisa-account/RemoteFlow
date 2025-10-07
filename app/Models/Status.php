@@ -13,6 +13,11 @@ class Status extends Model
 
     protected $fillable = [
         'status',
-    ];
+    ]; 
+
+    public function remotive()
+    {
+        return $this->hasMany(Remotive::class);
+    }
 }
 

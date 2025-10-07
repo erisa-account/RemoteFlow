@@ -17,7 +17,7 @@ class StoreCheckinRequest extends FormRequest
             'status_id' => 'required|exists:status,id',
             'date' => 'required|date|after_or_equal:today',
         ];
-    }
+    } 
     protected function prepareForValidation()
     {
         if (!empty($this->date)) {

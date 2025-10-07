@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             data.forEach(status => {
                 const option = document.createElement('option');
-                option.value = status.id;
+                option.value = status.id; 
                 option.textContent = status.status; // emri i statusit
                 select.appendChild(option);
             });
@@ -74,7 +74,7 @@ function datePickerComponent() {
       for (let i = 1; i <= dayOfWeek; i++) blankdaysArray.push(i);
       let daysArray = [];
       for (let i = 1; i <= daysInMonth; i++) daysArray.push(i);
-      this.datePickerBlankDaysInMonth = blankdaysArray;
+      this.datePickerBlankDaysInMonth = blankdaysArray; 
       this.datePickerDaysInMonth = daysArray;
     },
     datePickerFormatDate(date) {

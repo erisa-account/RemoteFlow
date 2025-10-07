@@ -5,6 +5,10 @@
 
 @extends('layouts.admin')
 @section('content')
+
+<head>
+    @vite(['resources/css/app.css', 'resources/js/status.js', 'resources/js/adminform.js'])
+</head>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
@@ -32,7 +36,7 @@
     </select>
   </div>
 
-  <!-- Date inputs -->
+  <!-- Date inputs --> 
   <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 mb-4">
     <div class="flex flex-col w-full sm:w-1/2">
       <label for="start_date" class="text-sm text-gray-600 dark:text-gray-300 mb-1">Start date</label>
@@ -49,21 +53,17 @@
 
 
   <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
-  <select class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-      <option>All</option>
-      <option>Remote</option>
-      <option>On-site</option>
-      <option>Me leje</option>
+  <select id="status" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <option selected="" value="">Select a status</option>
+      <option value=""></option>
     </select>
   </div>
     
 
   <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
-  <select class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3  text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-      <option>User</option>
-      <option>Remote</option>
-      <option>On-site</option>
-      <option>Me leje</option>
+  <select id="users" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3  text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <option selected="" value="">Zgjidhni perdoruesin</option>
+      <option value=""></option>
     </select>
   </div>
     
@@ -79,74 +79,25 @@
   </div>
 </div>
 
-<script>
-  // Disable compare select if checkbox is not checked
-  /*const compareCheckbox = document.getElementById('compare');
-  const compareSelect = document.getElementById('compare_select');
 
-  compareSelect.disabled = !compareCheckbox.checked;
 
-  compareCheckbox.addEventListener('change', () => {
-    compareSelect.disabled = !compareCheckbox.checked;
-  });*/
-
-  
-  const startPicker = flatpickr("#start_date", { dateFormat: "d/m/Y" });
-  const endPicker = flatpickr("#end_date", { dateFormat: "d/m/Y" });
-
-  const preset = document.getElementById('preset');
-
-  function formatDateToFlatpickr(date) {
-    // Flatpickr can parse Date object directly
-    return date;
-  }
-
-  function setDates(option) {
-    const today = new Date();
-    let start = today;
-    let end = today;
-
-    switch(option) {
-      case 'yesterday':
-        start = new Date(today); start.setDate(today.getDate() - 1);
-        end = new Date(today); end.setDate(today.getDate() - 1);
-        break;
-      case '7':
-        start = new Date(today); start.setDate(today.getDate() - 6);
-        break;
-      case '30':
-        start = new Date(today); start.setDate(today.getDate() - 29);
-        break;
-      case 'last_week':
-        const dayOfWeek = today.getDay();
-        start = new Date(today); start.setDate(today.getDate() - dayOfWeek - 6);
-        end = new Date(today); end.setDate(today.getDate() - dayOfWeek);
-        break;
-      case 'last_month':
-        start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-        end = new Date(today.getFullYear(), today.getMonth(), 0);
-        break;
-      case 'last_year':
-        start = new Date(today.getFullYear() - 1, 0, 1);
-        end = new Date(today.getFullYear() - 1, 11, 31);
-        break;
-      case 'custom':
-        start = null; end = null;
-        break;
-    }
-
-    if(start) startPicker.setDate(start, true, "d/m/Y");
-    if(end) endPicker.setDate(end, true, "d/m/Y");
-  }
-
-  // Initialize with Last 7 days
-  setDates('7');
-
-  // Change dates on preset change
-  preset.addEventListener('change', (e) => {
-    setDates(e.target.value);
-  });
-
-</script>
+<div class="w-full overflow-hidden rounded-lg shadow-xs max-w-7xl mx-auto my-6 px-6">
+      <div class="w-full overflow-x-auto">
+      <table id="remotiveTable" class="w-full whitespace-no-wrap">
+    <thead>
+      <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+            <th class="px-4 py-3">ID</th>
+            <th class="px-4 py-3">User ID</th>
+            <th class="px-4 py-3">Status ID</th>
+            <th class="px-4 py-3">Date</th>
+            <th class="px-4 py-3">Created At</th>
+            <th class="px-4 py-3">Updated At</th>
+        </tr>
+    </thead>
+    <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+    </tbody>
+</table>
+</div>
+</div>
 
 @endsection

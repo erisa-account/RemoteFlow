@@ -4,7 +4,10 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\StoreCheckinRequest;
 use App\Service\CheckinService;
+use App\Resources\CheckinResource; 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+
 
 class CheckinController extends Controller
 {
@@ -16,10 +19,14 @@ class CheckinController extends Controller
     }
 
     public function store(StoreCheckinRequest $request)
+    {   
+        $remotive = $this->checkinService->storeData($request);
+        return new CheckinResource($remotive);
+    }
+     public function update($id, Request $request)
     {
-        
-        $this->checkinService->storeData($request);
-
-        //return redirect()->back()->with('success', 'Check-in u ruajt me sukses!');
+        $newStatusId = $request->input('status_id');
+        $checkin = $this->checkinService->updateStatus($id, $newStatusId);
+        return new CheckinResource($checkin);
     }
 }
