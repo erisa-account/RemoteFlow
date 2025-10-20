@@ -1,4 +1,5 @@
 import Swal from 'sweetalert2';
+
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('checkin-form');
     const statusInput = document.getElementById('status');
@@ -128,4 +129,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
-            
+
+
+  
+
+  

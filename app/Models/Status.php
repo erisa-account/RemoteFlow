@@ -16,7 +16,7 @@ class Status extends Model
     ]; 
 
     public function remotive()
-    {
+    { 
         return $this->hasMany(Remotive::class);
     }
 }

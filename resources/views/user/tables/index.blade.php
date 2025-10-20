@@ -3,16 +3,39 @@
 
 @extends ('layouts.user')
 @section ('content')
+
+<head>
+    @vite(['resources/css/app.css', 'resources/js/uploademail.js'])
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
 <div class="flex items-center justify-center">
     <!-- Author: FormBold Team -->
     <div class="mx-auto w-full max-w-[550px] bg-white">
-        <form class="py-4 px-9">
+        <form id="uploadform" method="POST" class="py-4 px-9">
             <div class="mb-5">
                 <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">
-                    Send files to this email:
+                    Send files to this email: 
                 </label>
                 <input type="email" name="email" id="email" placeholder="example@domain.com"
                     class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
+            </div>
+
+            <div class="mb-5">
+                <label for="subject" class="mb-3 block text-base font-medium text-[#07074D]">
+                    The subject of email: 
+                </label>
+                <input type="text" name="subject" id="subject" placeholder="Remote schedule"
+                    class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
+            </div>
+             <div class="mb-5">
+                <label for="description" class="mb-3 block text-base font-medium text-[#07074D]">
+                    Description:
+                </label>
+                <textarea name="description" id="description" rows="4" cols="50"
+                    placeholder="Write the text body of email"
+                    class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 
+                           text-base font-medium text-[#6B7280] outline-none 
+                           focus:border-[#6A64F1] focus:shadow-md resize-none"></textarea>
             </div>
 
             <div class="mb-6 pt-4">
@@ -21,7 +44,7 @@
                 </label>
 
                 <div class="mb-8">
-                    <input type="file" name="file" id="file" class="sr-only" />
+                    <input type="file" name="file[]" id="file" multiple  class="sr-only" />
                     <label for="file"
                         class="relative flex min-h-[200px] items-center justify-center rounded-md border border-dashed border-[#e0e0e0] p-12 text-center">
                         <div>
@@ -39,6 +62,7 @@
                     </label>
                 </div>
 
+                <!--
                 <div class="mb-5 rounded-md bg-[#F5F7FB] py-4 px-8">
                     <div class="flex items-center justify-between">
                         <span class="truncate pr-3 text-base font-medium text-[#07074D]">
@@ -78,13 +102,18 @@
                     <div class="relative mt-5 h-[6px] w-full rounded-lg bg-[#E2E5EF]">
                         <div class="absolute left-0 right-0 h-full w-[75%] rounded-lg bg-[#6A64F1]"></div>
                     </div>
-                </div>
+                </div>--> 
+
+
+
+              <div id="fileListContainer" class="space-y-3"></div>
+            
             </div>
 
             <div>
-                <button
+                <button id="sendemail"
                     class="hover:shadow-form w-full rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">
-                    Send File
+                    Send email
                 </button>
             </div>
         </form>

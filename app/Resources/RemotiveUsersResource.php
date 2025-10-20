@@ -11,5 +11,6 @@ class RemotiveUsersResource extends JsonResource
             'id'   => $this->id,
             'name' => $this->name,
         ];
+
     }
 }

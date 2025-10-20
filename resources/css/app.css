@@ -6,3 +6,33 @@
 @source "../node_modules/flowbite";
 
 
+.fc-theme-standard td,
+  .fc-theme-standard th,
+  .fc-scrollgrid,
+  .fc-scrollgrid-section > *,
+  .fc-col-header-cell,
+  .fc-daygrid-day,
+  .fc-daygrid-day-frame,
+  .fc-timegrid-slot,
+  .fc-timegrid-axis {
+    border-color: #6b7280 !important; /* Tailwind gray-500 */
+    border-width: 1px !important;
+    border-style: solid !important;
+  }
+
+  /* 🩶 Optional: lighter borders in light mode */
+  html:not(.dark) .fc-theme-standard td,
+  html:not(.dark) .fc-theme-standard th {
+    border-color: #1f2937  !important; /* Tailwind gray-300 */
+  }
+
+  /* 🩶 Optional: cleaner rounded look for entire grid */
+  .fc-scrollgrid {
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  .fc-theme-standard .fc-col-header-cell,
+  .fc-theme-standard .fc-scrollgrid-section-header {
+    background-color: #1f2937 !important; /* Tailwind gray-800 */
+    color: #bfc8d5 !important; /* Tailwind gray-200 for text */
+  }

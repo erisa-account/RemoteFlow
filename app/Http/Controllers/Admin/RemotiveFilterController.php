@@ -5,10 +5,11 @@ use App\Http\Controllers\Controller;
 use App\Service\RemotiveFilterService;
 use App\Resources\RemotiveUsersResource;
 use App\Resources\RemotiveFilterResource; 
+use App\Http\Requests\Admin\GetRemotiveFilterTableRequest;
 
 
 class RemotiveFilterController extends Controller 
-{
+{ 
     protected $remotiveFilterService; 
 
     public function __construct(RemotiveFilterService $remotiveFilterService)
@@ -25,6 +26,22 @@ class RemotiveFilterController extends Controller
     public function getRemotiveTable()
     { 
         $remotives = $this->remotiveFilterService->getRemotiveTable(); 
-        return RemotiveFilterResource::collection($remotives);
+        return RemotiveFilterResource::collection($remotives); 
     } 
+
+    public function getRemotiveFilteredTable(GetRemotiveFilterTableRequest $request)
+    {
+    $data = $request->validated();
+
+    $remotives = $this->remotiveFilterService->getFilteredRemotiveTable(
+        $data['user_id'] ?? null,
+        $data['status_id'] ?? null,
+        $data['preset'] ?? null,
+        $data['start_date'] ?? null,
+        $data['end_date'] ?? null
+    );
+
+    return RemotiveFilterResource::collection($remotives);
+    }
+
 }   

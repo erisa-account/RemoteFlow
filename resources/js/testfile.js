@@ -7,7 +7,7 @@ import { DataTable } from "simple-datatables";
 const table = document.getElementById("default-table");
 if (table) {
     new DataTable(table, {
-        searchable: false,
+        searchable: false, 
         perPageSelect: false,
     });
 }
@@ -108,7 +108,7 @@ if (document.getElementById("export-table") && typeof simpleDatatables.DataTable
                 "</li>" +
             "</ul>" +
         "</div>" + "</div>" +
-            (options.searchable ?
+            (options.searchable ? 
                 "<div class='" + options.classes.search + "'>" +
                     "<input class='" + options.classes.input + "' placeholder='" + options.labels.placeholder + "' type='search' title='" + options.labels.searchTitle + "'" + (dom.id ? " aria-controls='" + dom.id + "'" : "") + ">" +
                 "</div>" : ""

@@ -6,7 +6,7 @@ use App\Http\Requests\User\StoreCheckinRequest;
 use Illuminate\Support\Facades\Auth;
 
 
-class CheckinService
+class CheckinService 
 {
 
    public function storeData(StoreCheckinRequest $request) :Remotive 

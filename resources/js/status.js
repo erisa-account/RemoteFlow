@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error('Gabim gjatë marrjes së statuseve:', error);
         });
 });
-
+ 
 
 // resources/js/status.js
 

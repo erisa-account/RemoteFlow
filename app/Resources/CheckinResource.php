@@ -23,7 +23,7 @@ class CheckinResource extends JsonResource
 
         $response->setData([
         'success' => true,
-        'existing' => $isExisting, // ✅ this flag tells JS if it's old or new
+        'existing' => $isExisting, 
         'message' => $isExisting
             ? 'Keni bërë tashmë check-in për këtë datë.'
             : 'Check-in u ruajt me sukses!',

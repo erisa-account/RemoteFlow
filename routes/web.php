@@ -11,6 +11,7 @@ use App\Http\Controllers\User\CheckinController;
 use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\Admin\UsersNameController;
 use App\Http\Controllers\Admin\RemotiveTableController;
+use App\Http\Controllers\Admin\RemotiveFilterController;
 
 
 
@@ -50,9 +51,13 @@ Route::get('/index', function () {
 
 Route::get('/test', function () { 
     return view('test.test'); 
-})->middleware(['auth', 'verified'])->name('test'); 
+})->middleware(['auth', 'verified'])->name('test');
 
+Route::get('/remotivecalendar', function () { 
+    return view('user.schedule.index'); 
+})->middleware(['auth', 'verified'])->name('remotivecalendar'); 
 
+ 
 
 Route::get('/user', function () {
     return view('user');

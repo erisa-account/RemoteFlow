@@ -6,7 +6,7 @@
 
     
     <head>
-         @vite(['resources/css/app.css', 'resources/js/status.js', 'resources/js/alerts.js'])
+         @vite(['resources/css/app.css', 'resources/js/status.js', 'resources/js/alerts.js']) 
 </head>
 
      
@@ -20,7 +20,7 @@
             <select id="status" name="status_id" class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-400 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
             <option selected="" value="">Select a status</option>
             <option value=""></option>
-
+ 
             </select>
             <span id="status-error" class="text-red-500 text-sm mt-1"></span>
 
@@ -153,6 +153,11 @@
 
 
 
+
+
+<!--<div class="max-w-5xl mx-auto mt-10 p-4 bg-white rounded-xl shadow">
+  <div id="calendar"></div>
+</div>-->
 
 
 

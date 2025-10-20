@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\StatusController;
 use App\Http\Controllers\Admin\RemotiveFilterController;
+use App\Http\Controllers\User\SendEmailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/statuses', [StatusController::class, 'index']);
 Route::get('/users', [RemotiveFilterController::class, 'getUserName']);
 Route::get('/remotive-table', [RemotiveFilterController::class, 'getRemotiveTable']);
-
-
-// Route::middleware(['auth:sanctum', 'admin'])->get('/users', [RemotiveFilterController::class, 'getUser']);
+Route::get('/remotive-table/filter', [RemotiveFilterController::class, 'getRemotiveFilteredTable']);
+Route::post('/send-email', [SendEmailController::class, 'sendEmail']);
+Route::get('/remotive-events', [RemotiveFilterController::class, 'events']); 
+Route::get('/statusesnotonsite', [StatusController::class, 'getStatusesNotOnSite']); 
+ 

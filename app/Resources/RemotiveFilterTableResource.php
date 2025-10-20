@@ -5,7 +5,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class RemotiveFilterResource extends JsonResource
 {
-     public function toArray($request)
+    public function toArray($request)
     {
         return [
             'id'         => $this->id,
