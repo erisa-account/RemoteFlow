@@ -4,6 +4,8 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 
 document.addEventListener('DOMContentLoaded', function () {
+
+  
   const calendarEl = document.getElementById('calendar');
 
   const calendar = new Calendar(calendarEl, {
@@ -78,9 +80,16 @@ document.addEventListener('DOMContentLoaded', function () {
       document.querySelectorAll('.fc-scrollgrid').forEach(grid => {
       grid.classList.add('rounded-lg','overflow-hidden');
       });
+       const thead = document.querySelector("thead[role='rowgroup']");
+      if (thead) {
+        thead.classList.add("custom-thead-bg");
+      }
+      
     }
   });
 
   calendar.render();
 });
+
+
 

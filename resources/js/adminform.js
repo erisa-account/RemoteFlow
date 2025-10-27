@@ -1,5 +1,7 @@
 import Swal from 'sweetalert2'; 
-import { DataTable } from "simple-datatables";
+
+
+
 
 document.addEventListener("DOMContentLoaded", function () {
   fetch('/api/users')
@@ -31,37 +33,70 @@ function formatDate(dateString) {
 function pad(n) {
     return n.toString().padStart(2, '0');
 }
+
+
 document.addEventListener("DOMContentLoaded", function () {
-  fetch('/api/remotive-table')
+ 
+    fetch('/api/remotive-table')
         .then(response => response.json())
         .then(data => {
             const tableBody = document.querySelector('#remotiveTable tbody');
+            if ($.fn.DataTable.isDataTable('#remotiveTable')) {
+                      $('#remotiveTable').DataTable().clear().destroy();
+                  } 
+            tableBody.innerHTML = '';
+            
             data.data.forEach(item => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <tr class="text-gray-700 dark:text-gray-400"><td class="px-4 py-3"><p class="text-xs text-gray-600 dark:text-gray-400">${item.id}</p></td></tr>
-                    <tr class="text-gray-700 dark:text-gray-400"><td class="px-4 py-3"><p class="text-xs text-gray-600 dark:text-gray-400">${item.user_id}</p></td></tr>
-                    <tr class="text-gray-700 dark:text-gray-400"><td class="px-4 py-3"><p class="text-xs text-gray-600 dark:text-gray-400">${item.status_id}</p></td></tr>
-                    <tr class="text-gray-700 dark:text-gray-400"><td class="px-4 py-3"><p class="text-xs text-gray-600 dark:text-gray-400">${formatDate(item.date)}<p></td></tr>
-                    <tr class="text-gray-700 dark:text-gray-400"><td class="px-4 py-3"><p class="text-xs text-gray-600 dark:text-gray-400">${formatDate(item.created_at)}</p></td></tr>
-                    <tr class="text-gray-700 dark:text-gray-400"><td class="px-4 py-3"><p class="text-xs text-gray-600 dark:text-gray-400">${formatDate(item.updated_at)}</p></td></tr>
+                    <td class="px-4 py-3 text-xs text-gray-600 dark:text-gray-400">${item.id}</td>
+                    <td class="px-4 py-3 text-xs text-gray-600 dark:text-gray-400">${item.user_name}</td>
+                    <td class="px-4 py-3 text-xs text-gray-600 dark:text-gray-400">${item.status_name}</td>
+                    <td class="px-4 py-3 text-xs text-gray-600 dark:text-gray-400">${item.date}</td>
+                    <td class="px-4 py-3 text-xs text-gray-600 dark:text-gray-400">${item.created_at}</td>
+                    <td class="px-4 py-3 text-xs text-gray-600 dark:text-gray-400">${item.updated_at}</td>
                 `;
                 tableBody.appendChild(row);
             });
-        })
+            
+             $('#remotiveTable').DataTable({
+                responsive: true,
+                pageLength: 10,
+                lengthMenu: [5, 10, 25, 50, 100],
+                language: {
+                search: "",
+                searchPlaceholder: "Search...",
+                paginate: {
+                  previous: "‹",
+                  next: "›"
+                }
+              },
+              });
+             
+           })
         .catch(error => {
-            console.error('Error fetching remotive data:', error);
-    });
-  }); 
- 
+         console.error('Error fetching remotive data:', error);
+    });  
+});
+
+
+
+
+
   const table = document.querySelector('#remotiveTable');
   const tableBody = table.querySelector('tbody');
 
+
+
+
   // 🔹 Hide table initially
-  table.style.display = 'none';
+  table.style.display = 'none';    
+
+
 
 document.getElementById('apply').addEventListener('click', async function () {
-  // Get values from dropdowns
+    
+
   const userSelect = document.getElementById('users');
   const statusSelect = document.getElementById('status');
   const presetSelect = document.getElementById('preset');
@@ -69,9 +104,9 @@ document.getElementById('apply').addEventListener('click', async function () {
   const startDateInput = document.getElementById('start_date');
   const endDateInput = document.getElementById('end_date');
 
-  const user_id = userSelect.value;
+  const user_id = userSelect.value; 
   const status_id = statusSelect.value;
-  const preset = presetSelect.value;
+  const preset = presetSelect.value; 
 
   // Also get the readable text (not just IDs)
   const user_name = userSelect.options[userSelect.selectedIndex]?.text || '';
@@ -83,7 +118,7 @@ document.getElementById('apply').addEventListener('click', async function () {
     '30': '30 ditët e fundit',
     'last_week': 'Java e kaluar',
     'last_month': 'Muaji i kaluar',
-    'last_year': 'Viti i kaluar'
+    'last_year': 'Viti i kaluar'                          
   };
 
   //  Handle preset name dynamically
@@ -133,7 +168,6 @@ document.getElementById('apply').addEventListener('click', async function () {
     const response = await fetch('/api/remotive-table/filter?' + params.toString());
     const data = await response.json();
 
-
     //const table = document.querySelector('#remotiveTable');
     //const tableBody = table.querySelector('tbody');
     //const tableHeader = table.querySelector('thead');
@@ -141,13 +175,13 @@ document.getElementById('apply').addEventListener('click', async function () {
     tableBody.innerHTML = ''; // clear old rows
 
       if (!data.data || data.data.length === 0) {
-      tableBody.innerHTML = '';
+        tableBody.innerHTML = '';
       
       let message = 'Nuk ka të dhëna për filtrimin që keni bërë.';
 
       // 👇 Build a smarter message based on selected filters
       if (preset && status_name && user_name) {
-        message = `Nuk ka përdorues me statusin "${status_name}" në datën "${preset_name}".`;
+        message = `Nuk ka përdorues me emrin "${user_name}" me statusin "${status_name}" në datën "${preset_name}".`;
       } else if (preset && status_name) {
         message = `Nuk ka status "${status_name}" në datën "${preset_name}".`;
       } else if (preset && user_name) {
@@ -163,7 +197,8 @@ document.getElementById('apply').addEventListener('click', async function () {
       }
       
       table.style.display = 'none';
-
+        
+  
       await Swal.fire({
         title: 'Pa të dhëna!',
         text: message,
@@ -174,20 +209,28 @@ document.getElementById('apply').addEventListener('click', async function () {
     }
 
     table.style.display = 'table';
+
+    if ($.fn.DataTable.isDataTable('#remotiveTable')) {
+        $('#remotiveTable').DataTable().destroy(); // destroy old instance
+    }
     
-      // Loop through returned data
-      data.data.forEach(item => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <tr class="text-gray-700 dark:text-gray-400"><td class="px-4 py-3"><p class="text-xs text-gray-600 dark:text-gray-400">${item.id}</p></td></tr>
-          <tr class="text-gray-700 dark:text-gray-400"><td class="px-4 py-3"><p class="text-xs text-gray-600 dark:text-gray-400">${item.user_name}</p></td></tr>
-          <tr class="text-gray-700 dark:text-gray-400"><td class="px-4 py-3"><p class="text-xs text-gray-600 dark:text-gray-400">${item.status_name}</p></td></tr>
-          <tr class="text-gray-700 dark:text-gray-400"><td class="px-4 py-3"><p class="text-xs text-gray-600 dark:text-gray-400">${item.date}</p></td></tr>
-          <tr class="text-gray-700 dark:text-gray-400"><td class="px-4 py-3"><p class="text-xs text-gray-600 dark:text-gray-400">${item.created_at}</p></td></tr>
-          <tr class="text-gray-700 dark:text-gray-400"><td class="px-4 py-3"><p class="text-xs text-gray-600 dark:text-gray-400">${item.updated_at}</p></td></tr>
-        `;
-        tableBody.appendChild(row);
-      });
+     data.data.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="px-4 py-3 text-xs text-gray-600 dark:text-gray-400">${item.id}</td>
+                <td class="px-4 py-3 text-xs text-gray-600 dark:text-gray-400">${item.user_name}</td>
+                <td class="px-4 py-3 text-xs text-gray-600 dark:text-gray-400">${item.status_name}</td>
+                <td class="px-4 py-3 text-xs text-gray-600 dark:text-gray-400">${item.date}</td>
+                <td class="px-4 py-3 text-xs text-gray-600 dark:text-gray-400">${item.created_at}</td>
+                <td class="px-4 py-3 text-xs text-gray-600 dark:text-gray-400">${item.updated_at}</td>
+            `;
+             tableBody.appendChild(row);
+        });
+        $('#remotiveTable').DataTable({
+        responsive: true,
+        pageLength: 10,
+        lengthMenu: [5, 10, 25, 50, 100],
+    });
     }
     catch(error) {console.error('Error fetching data:', error);
       await Swal.fire({
@@ -198,6 +241,8 @@ document.getElementById('apply').addEventListener('click', async function () {
     });
   }
 }); 
+
+
 
 
 
@@ -348,10 +393,6 @@ window.exportTableToTXT = exportTableToTXT;
  
 
 
-
-
-//pagination
-  
  const startPicker = flatpickr("#start_date", { dateFormat: "d/m/Y" });
   const endPicker = flatpickr("#end_date", { dateFormat: "d/m/Y" });
 
@@ -408,4 +449,3 @@ window.exportTableToTXT = exportTableToTXT;
     setDates(e.target.value);
   });
 
-  

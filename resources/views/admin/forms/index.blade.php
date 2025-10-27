@@ -10,9 +10,15 @@
     @vite(['resources/css/app.css', 'resources/js/status.js', 'resources/js/adminform.js'])
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.3/dist/tailwind.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.tailwind.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://unpkg.com/flowbite@latest/dist/flowbite.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" defer></script>
+
 </head> 
 
 <div class="w-full max-w-md mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-xl p-4 mt-6">
@@ -68,7 +74,7 @@
       <option selected="" value="">Zgjidh një përdorues</option>
       <option value=""></option>
     </select>
-  </div>
+  </div> 
     
 
 
@@ -121,99 +127,38 @@
     </ul>
   </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-
-
-
-
-<div class="flex items-center justify-between bg-white px-4 py-3 border-b border-gray-200 rounded-t-lg shadow-sm dark:bg-gray-800"> 
-    <!-- Entries per page selector -->
-    <div class="flex items-center space-x-2">
-      <label for="entries" class="font-semibold text-gray-600 dark:text-gray-400">Show</label>
-      <select id="entries"
-        class="block w-20 rounded-md text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm dark:bg-gray-800">
-        <option value="5" class="font-semibold text-gray-600 dark:text-gray-400">5</option>
-        <option value="10" selected class="font-semibold text-gray-600 dark:text-gray-400">10</option>
-        <option value="15" class="font-semibold text-gray-600 dark:text-gray-400">15</option>
-        <option value="20" class="font-semibold text-gray-600 dark:text-gray-400">20</option>
-        <option value="25" class="font-semibold text-gray-600 dark:text-gray-400">25</option>
-      </select>
-      <span class="font-semibold text-gray-600 dark:text-gray-400">entries per page</span> 
-    </div>
-
-    <!-- Optional search box -->
-    <div class="relative dark:bg-gray-800">
-      <input type="text" placeholder="Search..."
-        class="block w-48 rounded-md text-sm pl-8 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm dark:bg-gray-800">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-           stroke-width="1.5" stroke="currentColor"
-           class="w-4 h-4 text-gray-400 absolute left-2.5 top-2.5">
-        <path stroke-linecap="round" stroke-linejoin="round"
-              d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
-      </svg>
-    </div>
-</div>
-
-  <!--tabela--> 
-      <table id="remotiveTable" class="w-full whitespace-no-wrap">
-    <thead>
-      <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-            <th class="px-4 py-3">ID</th>
-            <th class="px-4 py-3">User ID</th>
-            <th class="px-4 py-3">Status ID</th>
-            <th class="px-4 py-3">Date</th>
-            <th class="px-4 py-3">Created At</th>
-            <th class="px-4 py-3">Updated At</th>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>-->
+<table id="remotiveTable" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden">
+    <thead class="bg-gray-50 dark:bg-gray-700">
+        <tr>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">ID</th>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">User</th>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Status</th>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Date</th>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Created At</th>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Updated At</th>
         </tr>
     </thead>
-    <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+        <!-- Rows will be injected here -->
     </tbody>
 </table>
 
 
-<!--pagination--> 
-<div class="flex flex-col sm:flex-row items-center justify-between bg-white px-4 py-3 border-t border-gray-200 rounded-b-lg shadow-sm dark:bg-gray-800">
-  <!-- Info text -->
-  <div class="font-semibold text-gray-600 dark:text-gray-400">
-    Showing <span class="font-semibold text-gray-600 dark:text-gray-400">1</span> to <span class="font-semibold text-gray-600 dark:text-gray-400">10</span> of <span class="font-semibold text-gray-600 dark:text-gray-400">21</span> entries
-  </div>
 
-
-  <!--pagination-->
-<nav class="datatable-pagination">
-      <ul class="datatable-pagination-list flex space-x-2">
-        <li class="datatable-pagination-list-item datatable-hidden datatable-disabled">
-            <button data-page="1" class="datatable-pagination-list-item-link font-semibold text-gray-600 dark:text-gray-400" aria-label="Page 1"><</button>
-        </li>
-        <li class="datatable-pagination-list-item datatable-active">
-            <button data-page="1" class="datatable-pagination-list-item-link font-semibold text-gray-600 dark:text-gray-400" aria-label="Page 1">1</button>
-        </li>
-        <li class="datatable-pagination-list-item">
-            <button data-page="2" class="datatable-pagination-list-item-link font-semibold text-gray-600 dark:text-gray-400" aria-label="Page 2">2</button>
-        </li>
-        <li class="datatable-pagination-list-item">
-        <button data-page="3" class="datatable-pagination-list-item-link font-semibold text-gray-600 dark:text-gray-400" aria-label="Page 3">3</button>
-        </li>
-        <li class="datatable-pagination-list-item">
-        <button data-page="2" class="datatable-pagination-list-item-link font-semibold text-gray-600 dark:text-gray-400" aria-label="Page 2">></button>
-       </li>
-     </ul>
-</nav>
-
-
-
-
+</div>
 
 </div>
 
 
 
-</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.tailwind.min.js"></script>
 
 
 
 
 
-
-@endsection
+@endsection 

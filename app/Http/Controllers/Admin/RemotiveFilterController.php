@@ -23,7 +23,7 @@ class RemotiveFilterController extends Controller
         return RemotiveUsersResource::collection($users);
     }
 
-    public function getRemotiveTable()
+    public function getRemotiveTable() 
     { 
         $remotives = $this->remotiveFilterService->getRemotiveTable(); 
         return RemotiveFilterResource::collection($remotives); 
@@ -43,5 +43,5 @@ class RemotiveFilterController extends Controller
 
     return RemotiveFilterResource::collection($remotives);
     }
-
-}   
+ 
+}

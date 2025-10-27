@@ -17,7 +17,7 @@ class GetRemotiveFilterTableRequest extends FormRequest
             'status_id' => 'nullable|integer|exists:status,id',
             'preset' => 'nullable|string|in:yesterday,7,30,last_week,last_month,last_year,custom',
             'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'end_date' => 'nullable|date|after_or_equal:start_date', 
         ];
     }
 }

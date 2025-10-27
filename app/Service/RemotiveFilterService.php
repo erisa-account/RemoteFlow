@@ -17,9 +17,9 @@ class RemotiveFilterService
      return Remotive::with(['user', 'status'])
             ->select('id', 'user_id', 'status_id', 'date', 'created_at', 'updated_at')
             ->get();
-    }
+    } 
     
-    public function getFilteredRemotiveTable($userId, $statusId, $preset, $startDate = null, $endDate = null)
+   public function getFilteredRemotiveTable($userId, $statusId, $preset, $startDate = null, $endDate = null)
     {
         $query = Remotive::query(); 
 

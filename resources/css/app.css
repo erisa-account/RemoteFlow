@@ -6,33 +6,40 @@
 @source "../node_modules/flowbite";
 
 
+
+.custom-thead-bg th,
+.custom-thead-bg {
+  background-color: #f3f4f6 !important; /* light gray */
+  color: #1f2937 !important;           /* dark text */
+}
+
+/* Dark mode */
+.theme-dark .custom-thead-bg th,
+.theme-dark .custom-thead-bg {
+  background-color: #4a586b !important; /* dark gray */
+  color: #c4cddc !important;           /* light text */
+}
+
+
+
+
+/* Light mode */
+.fc-scrollgrid,
+.fc-scrollgrid-sync-table,
 .fc-theme-standard td,
-  .fc-theme-standard th,
-  .fc-scrollgrid,
-  .fc-scrollgrid-section > *,
-  .fc-col-header-cell,
-  .fc-daygrid-day,
-  .fc-daygrid-day-frame,
-  .fc-timegrid-slot,
-  .fc-timegrid-axis {
-    border-color: #6b7280 !important; /* Tailwind gray-500 */
-    border-width: 1px !important;
-    border-style: solid !important;
-  }
+.fc-theme-standard th,
+.fc-daygrid-day,
+.fc-col-header-cell {
+  border: 1px solid #d1d5db !important; /* thin gray */
+  border-collapse: collapse !important;
+}
 
-  /* 🩶 Optional: lighter borders in light mode */
-  html:not(.dark) .fc-theme-standard td,
-  html:not(.dark) .fc-theme-standard th {
-    border-color: #1f2937  !important; /* Tailwind gray-300 */
-  }
-
-  /* 🩶 Optional: cleaner rounded look for entire grid */
-  .fc-scrollgrid {
-    border-radius: 0.5rem;
-    overflow: hidden;
-  }
-  .fc-theme-standard .fc-col-header-cell,
-  .fc-theme-standard .fc-scrollgrid-section-header {
-    background-color: #1f2937 !important; /* Tailwind gray-800 */
-    color: #bfc8d5 !important; /* Tailwind gray-200 for text */
-  }
+/* Dark mode */
+.theme-dark .fc-scrollgrid,
+.theme-dark .fc-scrollgrid-sync-table,
+.theme-dark .fc-theme-standard td,
+.theme-dark .fc-theme-standard th,
+.theme-dark .fc-daygrid-day,
+.theme-dark .fc-col-header-cell {
+  border: 1px solid #4b5563 !important; /* dark gray */
+} 
