@@ -1,5 +1,5 @@
 import Swal from 'sweetalert2'; 
-
+let remotiveTable;
 
 
 
@@ -36,16 +36,16 @@ function pad(n) {
 
 
 document.addEventListener("DOMContentLoaded", function () {
- 
+   
     fetch('/api/remotive-table')
         .then(response => response.json())
         .then(data => {
             const tableBody = document.querySelector('#remotiveTable tbody');
             if ($.fn.DataTable.isDataTable('#remotiveTable')) {
-                      $('#remotiveTable').DataTable().clear().destroy();
+                      remotiveTable.clear().destroy();
                   } 
             tableBody.innerHTML = '';
-            
+      
             data.data.forEach(item => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 tableBody.appendChild(row);
             });
             
-             $('#remotiveTable').DataTable({
+             remotiveTable = $('#remotiveTable').DataTable({
                 responsive: true,
                 pageLength: 10,
                 lengthMenu: [5, 10, 25, 50, 100],
@@ -72,11 +72,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
               },
               });
-             
-           })
+
+            })  
         .catch(error => {
          console.error('Error fetching remotive data:', error);
     });  
+    document.getElementById('tablewrap').classList.add('hidden');
+
 });
 
 
@@ -95,7 +97,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 document.getElementById('apply').addEventListener('click', async function () {
-    
+  document.getElementById('tablewrap').classList.remove('hidden');
+  document.getElementById('exportButton').classList.remove('hidden');
+      document.getElementById('remotiveTable_length').classList.remove('hidden');
+      document.getElementById('remotiveTable_filter').classList.remove('hidden');
+      document.getElementById('remotiveTable_info').classList.remove('hidden');
+      document.getElementById('remotiveTable_paginate').classList.remove('hidden');
+
+
 
   const userSelect = document.getElementById('users');
   const statusSelect = document.getElementById('status');
@@ -198,7 +207,12 @@ document.getElementById('apply').addEventListener('click', async function () {
       
       table.style.display = 'none';
         
-  
+      document.getElementById('exportButton').classList.add('hidden');
+      document.getElementById('remotiveTable_length').classList.add('hidden');
+      document.getElementById('remotiveTable_filter').classList.add('hidden');
+      document.getElementById('remotiveTable_info').classList.add('hidden');
+      document.getElementById('remotiveTable_paginate').classList.add('hidden');
+
       await Swal.fire({
         title: 'Pa të dhëna!',
         text: message,
@@ -211,9 +225,9 @@ document.getElementById('apply').addEventListener('click', async function () {
     table.style.display = 'table';
 
     if ($.fn.DataTable.isDataTable('#remotiveTable')) {
-        $('#remotiveTable').DataTable().destroy(); // destroy old instance
+        remotiveTable.clear().destroy();
     }
-    
+    tableBody.innerHTML = "";
      data.data.forEach(item => {
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -226,12 +240,12 @@ document.getElementById('apply').addEventListener('click', async function () {
             `;
              tableBody.appendChild(row);
         });
-        $('#remotiveTable').DataTable({
+        remotiveTable = $('#remotiveTable').DataTable({
         responsive: true,
         pageLength: 10,
         lengthMenu: [5, 10, 25, 50, 100],
-    });
-    }
+      });
+          }
     catch(error) {console.error('Error fetching data:', error);
       await Swal.fire({
       title: 'Gabim!',
@@ -259,131 +273,115 @@ const exportBtn = document.getElementById('exportDropdownButton');
     }
   });
 
+$('#exportDropdownMenu a').on('click', async function(e) {
+    e.preventDefault(); // prevent # navigation
+    const format = $(this).data('export');
 
-  // ---- EXPORT FUNCTIONS ----
+    if (!remotiveTable || remotiveTable.rows().count() === 0) {
+        await Swal.fire({
+            title: 'Pa të dhëna për eksport',
+            text: 'Nuk ka të dhëna për t\'u eksportuar me filtrat aktualë.',
+            icon: 'info',
+            confirmButtonText: 'OK'
+        });
+        exportMenu.classList.add('hidden'); // close dropdown anyway
+        return;
+    }
 
-  // CSV
-  function exportTableToCSV(filename) {
-    const table = document.getElementById("remotiveTable");
-    let csv = [];
-    const rows = table.querySelectorAll("tr");
 
-    rows.forEach(row => {
-      const cols = row.querySelectorAll("td, th");
-      const rowData = Array.from(cols).map(col => col.textContent.trim());
-      csv.push(rowData.join(","));
+    switch(format) {
+        case 'csv': exportTableToCSV('remotive_data.csv'); break;
+        case 'excel': exportTableToExcel('remotive_data.xls'); break;
+        case 'pdf': exportTableToPDF(); break;
+        case 'txt': exportTableToTXT('remotive_data.txt'); break;
+        case 'json': exportTableToJSON('remotive_data.json'); break;
+        case 'sql': exportTableToSQL('remotive_data.sql'); break;
+    }
+
+    exportMenu.classList.add('hidden'); // close dropdown after click
+});
+  
+// --- Export functions (using jQuery DataTable instance) ---
+function downloadBlob(content, filename, type) {
+    const blob = new Blob([content], { type });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(a.href);
+}
+
+function exportTableToCSV(filename) {
+    const rows = remotiveTable.rows({ search: 'applied' }).nodes();
+    const csv = [];
+    $(rows).each(function() {
+        const rowData = [];
+        $(this).find('td').each(function() {
+            rowData.push($(this).text().trim());
+        });
+        csv.push(rowData.join(','));
     });
+    downloadBlob(csv.join('\n'), filename, 'text/csv');
+}
 
-    const blob = new Blob([csv.join("\n")], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    a.click();
-    URL.revokeObjectURL(url);
-  }
+function exportTableToTXT(filename) {
+    const rows = remotiveTable.rows({ search: 'applied' }).nodes();
+    const txt = [];
+    $(rows).each(function() {
+        const rowData = [];
+        $(this).find('td').each(function() {
+            rowData.push($(this).text().trim());
+        });
+        txt.push(rowData.join(' | '));
+    });
+    downloadBlob(txt.join('\n'), filename, 'text/plain');
+}
 
-  // Excel
-  function exportTableToExcel(filename) {
-    const table = document.getElementById("remotiveTable").outerHTML;
-    const blob = new Blob([table], { type: "application/vnd.ms-excel" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    a.click();
-    URL.revokeObjectURL(url);
-  }
+function exportTableToJSON(filename) {
+    const rows = remotiveTable.rows({ search: 'applied' }).nodes();
+    const headers = $('#remotiveTable thead th').map(function(){ return $(this).text().trim(); }).get();
+    const data = [];
+    $(rows).each(function() {
+        const obj = {};
+        $(this).find('td').each(function(i) { obj[headers[i]] = $(this).text().trim(); });
+        data.push(obj);
+    });
+    downloadBlob(JSON.stringify(data, null, 2), filename, 'application/json');
+}
 
-  // PDF
-  function exportTableToPDF() {
+function exportTableToExcel(filename) {
+    const tableHtml = remotiveTable.table().node().outerHTML;
+    downloadBlob(tableHtml, filename, 'application/vnd.ms-excel');
+}
+
+function exportTableToSQL(filename) {
+    const rows = remotiveTable.rows({ search: 'applied' }).nodes();
+    const columns = $('#remotiveTable thead th').map(function(){ return $(this).text().trim(); }).get();
+    let sql = `CREATE TABLE remotive (${columns.join(", ")});\n`;
+    $(rows).each(function() {
+        const values = $(this).find('td').map(function(){ return `'${$(this).text().trim().replace(/'/g,"''")}'`; }).get();
+        sql += `INSERT INTO remotive (${columns.join(", ")}) VALUES (${values.join(", ")});\n`;
+    });
+    downloadBlob(sql, filename, 'text/sql');
+}
+
+// PDF export requires jsPDF and AutoTable
+function exportTableToPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    doc.text("Remotive Data", 10, 10);
-
-    const rows = [];
-    document.querySelectorAll("#remotiveTable tbody tr").forEach(tr => {
-      const cols = tr.querySelectorAll("td");
-      rows.push(Array.from(cols).map(td => td.innerText));
+    const rows = remotiveTable.rows({ search: 'applied' }).nodes();
+    const data = [];
+    $(rows).each(function() {
+        data.push($(this).find('td').map(function(){ return $(this).text().trim(); }).get());
     });
-
-    let y = 20;
-    rows.forEach(row => {
-      doc.text(row.join(" | "), 10, y);
-      y += 10;
-    });
-
-    doc.save("remotive_data.pdf");
-  }
-
-  // SQL
-  function exportTableToSQL(filename) {
-    const table = document.getElementById("remotiveTable");
-    const rows = table.querySelectorAll("tbody tr");
-    const columns = Array.from(table.querySelectorAll("thead th")).map(th => th.textContent.trim());
-    
-    let sql = `CREATE TABLE remotive (${columns.join(", ")});\n`;
-    rows.forEach(row => {
-      const values = Array.from(row.querySelectorAll("td"))
-        .map(td => `'${td.textContent.trim()}'`);
-      sql += `INSERT INTO remotive (${columns.join(", ")}) VALUES (${values.join(", ")});\n`;
-    });
-
-    const blob = new Blob([sql], { type: "text/sql" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-
-   //JSON
-  function exportTableToJSON(filename) {
-  const table = document.getElementById("remotiveTable");
-  const rows = table.querySelectorAll("tbody tr");
-  const headers = Array.from(table.querySelectorAll("thead th")).map(th => th.textContent.trim());
-
-  const jsonData = [];
-  rows.forEach(row => {
-    const cells = row.querySelectorAll("td");
-    const obj = {};
-    cells.forEach((cell, i) => {
-      obj[headers[i]] = cell.textContent.trim();
-    });
-    jsonData.push(obj);
-  });
-
-  const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  a.click();
-  URL.revokeObjectURL(url);
+    const columns = $('#remotiveTable thead th').map(function(){ return $(this).text().trim(); }).get();
+    doc.autoTable({ head: [columns], body: data });
+    doc.save('remotive_data.pdf');
 }
 
 
-  //TXT
-function exportTableToTXT(filename) {
-  const table = document.getElementById("remotiveTable");
-  const rows = table.querySelectorAll("tr");
-  let txtContent = "";
 
-  rows.forEach(row => {
-    const cols = row.querySelectorAll("td, th");
-    const rowData = Array.from(cols).map(col => col.textContent.trim());
-    txtContent += rowData.join(" | ") + "\n";
-  });
 
-  const blob = new Blob([txtContent], { type: "text/plain" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  a.click();
-  URL.revokeObjectURL(url);
-}
 window.exportTableToCSV = exportTableToCSV;
 window.exportTableToExcel = exportTableToExcel;
 window.exportTableToPDF = exportTableToPDF;

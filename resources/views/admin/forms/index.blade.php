@@ -16,6 +16,7 @@
 
 
 
+
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://unpkg.com/flowbite@latest/dist/flowbite.js"></script>
 
@@ -89,8 +90,9 @@
 </div>
 
 
+<div id="tablewrap"> 
 
-<div class="relative inline-block text-left z-50 overflow-visible">
+<div id="exportButton" class="relative inline-block text-left z-50 overflow-visible">
   <!-- Export Button -->
   <button id="exportDropdownButton" type="button"
     class=" flex items-center justify-center rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-indigo-700 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">
@@ -102,33 +104,41 @@
     </svg>
   </button>
 
-  <!-- Dropdown Menu -->
+  <!-- Dropdown Menu --> 
   <div id="exportDropdownMenu"
     class="hidden  right-0 mt-2 w-40 origin-top-right rounded-lg border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800">
     <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
       <li>
-        <a href="#" onclick="exportTableToCSV('remotive_data.csv')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Export CSV</a>
+        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" data-export="csv">Export CSV</a>
       </li>
       <li>
-        <a href="#"  onclick="exportTableToPDF()" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Export PDF</a>
+        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" data-export = "pdf" >Export PDF</a>
       </li>
       <li>
-        <a href="#" onclick="exportTableToExcel('remotive_data.xls')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Export Excel</a>
+        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" data-export="excel">Export Excel</a>
       </li>
       <li>
-        <a href="#" onclick="exportTableToTXT('remotive_data.txt')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Export TXT</a>
+        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" data-export="txt">Export TXT</a>
       </li>
       <li>
-        <a href="#" onclick="exportTableToJSON('remotive_data.json')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Export JSON</a>
+        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" data-export="json">Export JSON</a>
       </li>
       <li>
-        <a href="#" onclick="exportTableToSQL('remotive_data.sql')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Export SQL</a>
+        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" data-export="sql">Export SQL</a>
+      </li>
+      <li>
+        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" id="exportCustomExcel">Export Excel customised</a>
       </li>
     </ul>
   </div>
 </div>
 
+
+
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
 <table id="remotiveTable" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden">
     <thead class="bg-gray-50 dark:bg-gray-700">
         <tr>
@@ -144,10 +154,6 @@
         <!-- Rows will be injected here -->
     </tbody>
 </table>
-
-
-
-</div>
 
 </div>
 

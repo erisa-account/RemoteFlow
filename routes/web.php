@@ -107,6 +107,11 @@ Route::middleware('auth')->group(function () {
 
         Route::put('/admin/test/{id}', [TestController::class, 'update'])->name('admin.test.update');
         
+        Route::get('/export-status-calendar', [RemotiveFilterController::class, 'exportStatusCalendar'])
+        ->name('admin.remotive.exportStatusCalendar');
+
+
+        
     });
 
 
