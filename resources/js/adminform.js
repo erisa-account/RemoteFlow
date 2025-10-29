@@ -2,7 +2,6 @@ import Swal from 'sweetalert2';
 let remotiveTable;
 
 
-
 document.addEventListener("DOMContentLoaded", function () {
   fetch('/api/users')
     .then(response => response.json())
@@ -274,6 +273,7 @@ const exportBtn = document.getElementById('exportDropdownButton');
   });
 
 $('#exportDropdownMenu a').on('click', async function(e) {
+   if ($(this).hasClass('backend-export')) return; 
     e.preventDefault(); // prevent # navigation
     const format = $(this).data('export');
 

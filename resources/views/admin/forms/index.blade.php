@@ -127,7 +127,7 @@
         <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" data-export="sql">Export SQL</a>
       </li>
       <li>
-        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" id="exportCustomExcel">Export Excel customised</a>
+        <a  href="{{ route('admin.admin.remotive.exportStatusCalendar') }}"  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 backend-export" id="exportCustomExcel">Export Excel customised</a>
       </li>
     </ul>
   </div>
