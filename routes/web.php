@@ -53,6 +53,12 @@ Route::get('/test', function () {
     return view('test.test'); 
 })->middleware(['auth', 'verified'])->name('test');
 
+
+Route::get('/vacanciesemployee', function () {
+    return view('user.vacanciesemployee.index');
+})->middleware(['auth', 'verified'])->name('vacanciesemployee');
+
+
 Route::get('/remotivecalendar', function () { 
     return view('user.schedule.index'); 
 })->middleware(['auth', 'verified'])->name('remotivecalendar'); 
@@ -104,7 +110,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/form', function () {
             return view('admin.forms.index');
         })->name('form');
-
+        
+        Route::get('/vacanciesadmin', function () {
+            return view('admin.cards.index');
+        })->name('vacanciesadmin');
+        
         Route::put('/admin/test/{id}', [TestController::class, 'update'])->name('admin.test.update');
         
         Route::get('/export-status-calendar', [RemotiveFilterController::class, 'exportStatusCalendar'])

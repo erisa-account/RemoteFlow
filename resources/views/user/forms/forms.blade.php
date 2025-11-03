@@ -10,44 +10,42 @@
 </head>
 
      
-    <div class="mx-auto w-full max-w-[550px] bg-white">
+    <div class="mx-auto w-full max-w-[550px] mt-12">
+
+
+     <div
+    class="relative rounded-3xl border border-slate-200/70 bg-white/80 p-6 shadow-xl backdrop-blur-sm dark:border-slate-700/60 dark:bg-[#7a7ea830] bg-gradient-to-b from-indigo-200/30 to-transparent dark:from-indigo-500/10 ">
+    
+
+     
+
+    
+    
     <form action="{{ route('user.checkin.store') }}" class="py-4 px-9 pt-10" id="checkin-form">
     @csrf
 
            
+            
+            <label for="status" class="block mb-1 text-sm font-medium text-slate-700 dark:text-slate-300">Select status</label>
 
-            <label for="status" class="block mb-1 text-sm font-medium text-neutral-500">Select status</label>
-            <select id="status" name="status_id" class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-400 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+           <div class="relative">
+  <!-- 👇 The icon -->
+  <svg class="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-500 dark:text-slate-500"
+       viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 14a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm0 2c-4.43 0-8 1.79-8 4v1h16v-1c0-2.21-3.57-4-8-4Z" />
+  </svg>
+
+            <select id="status" name="status_id" class=" ps-10 py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-400 dark:text-neutral-400 dark:placeholder-neutral-500 dark:bg-[#e5e6ef30] dark:focus:ring-neutral-600">
             <option selected="" value="">Select a status</option>
             <option value=""></option>
  
             </select>
+</div>
+
             <span id="status-error" class="text-red-500 text-sm mt-1"></span>
 
             <div class="mb-6 pt-4">
-                <!--<label class="mb-5 block text-xl font-semibold text-[#07074D]">
-                    Upload File
-                </label>
-
-                <div class="mb-8">
-                    <input type="file" name="file" id="file" class="sr-only" />
-                    <label for="file"
-                        class="relative flex min-h-[200px] items-center justify-center rounded-md border border-dashed border-[#e0e0e0] p-12 text-center">
-                        <div>
-                            <span class="mb-2 block text-xl font-semibold text-[#07074D]">
-                                Drop files here
-                            </span>
-                            <span class="mb-2 block text-base font-medium text-[#6B7280]">
-                                Or
-                            </span>
-                            <span
-                                class="inline-flex rounded border border-[#e0e0e0] py-2 px-7 text-base font-medium text-[#07074D]">
-                                Browse
-                            </span>
-                        </div>
-                    </label>
-                </div>-->
-
+                
                 
 <div 
   x-data="datePickerComponent()" 
@@ -71,9 +69,9 @@
 >
     <div class="container  mx-auto md:py-2">
         <div class="mb-5">
-            <label for="datepicker" class="block mb-1 text-sm font-medium text-neutral-500">Select Date</label>
+            <label for="datepicker" class="block mb-1 text-sm font-medium text-slate-700 dark:text-slate-300">Select Date</label>
             <div class="relative w-full">  
-                <input x-ref="datePickerInput" type="text" id="datepicker" name="date"  @click="datePickerOpen=!datePickerOpen" x-model="datePickerValue" x-on:keydown.escape="datePickerOpen=false" class="flex px-3 py-2 w-full h-10 text-sm bg-white rounded-md border text-neutral-600 border-neutral-300 ring-offset-background placeholder:text-neutral-400 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-400 disabled:cursor-not-allowed disabled:opacity-50" placeholder="Select date" readonly />
+                <input x-ref="datePickerInput" type="text" id="datepicker" name="date"  @click="datePickerOpen=!datePickerOpen" x-model="datePickerValue" x-on:keydown.escape="datePickerOpen=false" class="flex px-3 py-2 w-full h-10 text-sm bg-white rounded-md border border-neutral-300 ring-offset-background dark:bg-[#e5e6ef30] dark:text-neutral-400 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:opacity-50" placeholder="Select date" readonly />
                 <div @click="datePickerOpen=!datePickerOpen; if(datePickerOpen){ $refs.datePickerInput.focus() }" class="absolute top-0 right-0 px-3 py-2 cursor-pointer text-neutral-400 hover:text-neutral-500">
                     <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                 </div>
@@ -124,7 +122,9 @@
                                         'text-gray-600 hover:bg-neutral-200': datePickerIsToday(day) == false && datePickerIsSelectedDate(day) == false,
                                         'bg-neutral-800 text-white hover:bg-neutral-800/70': datePickerIsSelectedDate(day) == true
                                         
-                                    }" 
+                                         }"
+                    
+
                                     class="flex justify-center items-center w-7 h-7 text-sm leading-none text-center rounded-full cursor-pointer"></div>
                             </div>
                         </template>
@@ -137,28 +137,20 @@
          <span id="date-error" class="text-red-500 text-sm mt-1 "></span>
 
             <div>
-                <button 
-                    type="submit" class="hover:shadow-form w-full rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">
-                    Check in
+                   <button 
+                    type="submit" 
+                    class="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 px-6 py-3 text-center text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 transition hover:from-indigo-500 hover:to-violet-500 focus:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500/40 active:scale-[.99]">
+                    Check in 
                 </button>
             </div>
         </form>
+    </div>
         
         
         <div id="error-messages" class="text-red-500 mt-2"></div>
         <div id="success-message" class="text-green-500 mt-2"></div>
     </div>
 </div> 
-
-
-
-
-
-
-<!--<div class="max-w-5xl mx-auto mt-10 p-4 bg-white rounded-xl shadow">
-  <div id="calendar"></div>
-</div>-->
-
 
 
 

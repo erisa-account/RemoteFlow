@@ -22,6 +22,11 @@ document.addEventListener("DOMContentLoaded", function () {
 // resources/js/status.js
 
 
+    
+
+    
+    
+
 // Define your component
 function datePickerComponent() {
   return {

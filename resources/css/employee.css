@@ -1,0 +1,231 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Calendar Styles */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background-color: #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.calendar-header {
+    background-color: #f9fafb;
+    padding: 12px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #374151;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.calendar-day {
+    background-color: white;
+    padding: 12px;
+    min-height: 80px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.calendar-day:hover {
+    background-color: #f9fafb;
+}
+
+.calendar-day.other-month {
+    background-color: #f9fafb;
+    color: #9ca3af;
+}
+
+.calendar-day.today {
+    background-color: #dbeafe;
+    border: 2px solid #3b82f6;
+}
+
+.calendar-day.vacation {
+    background-color: #dcfce7;
+    border-left: 4px solid #22c55e;
+}
+
+.calendar-day.pending {
+    background-color: #fef3c7;
+    border-left: 4px solid #f59e0b;
+}
+
+.calendar-day-number {
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: 4px;
+}
+
+.calendar-day-events {
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+.vacation-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 4px;
+}
+
+.vacation-dot.approved {
+    background-color: #22c55e;
+}
+
+.vacation-dot.pending {
+    background-color: #f59e0b;
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.status-approved {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.status-pending {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.status-rejected {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.status-active {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.status-on-vacation {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+/* Progress Bars */
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Firefox scrollbar */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .calendar-grid {
+        font-size: 0.75rem;
+    }
+   
+    .calendar-day {
+        min-height: 60px;
+        padding: 8px;
+    }
+   
+    .calendar-day-number {
+        font-size: 0.75rem;
+    }
+   
+    .calendar-day-events {
+        font-size: 0.625rem;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #0f172a;
+        color: #f8fafc;
+    }
+   
+    .calendar-day {
+        background-color: #1e293b;
+        color: #f8fafc;
+    }
+   
+    .calendar-day:hover {
+        background-color: #334155;
+    }
+   
+    .calendar-header {
+        background-color: #334155;
+        color: #f8fafc;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

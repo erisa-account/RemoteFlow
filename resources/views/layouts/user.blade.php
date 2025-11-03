@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Windmill Dashboard</title>
   
-    @vite(['resources/css/app.css', 'resources/js/app.js','resources/js/init-alpine.js'])
-    <!-- <script src="{{ asset('js/init-alpine.js') }}" defer></script> -->
+
+     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="{{ asset('js/init-alpine.js') }}" defer></script>
     <script
       src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
       defer
@@ -17,7 +18,7 @@
 
   </head>
   <body>
-    <div
+    <div 
       class="flex h-screen bg-gray-50 dark:bg-gray-900"
       :class="{ 'overflow-hidden': isSideMenuOpen }"
     >
@@ -27,7 +28,7 @@
       >
         <div class="py-4 text-gray-500 dark:text-gray-400">
           <a
-            class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200"
+            class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200" 
             href="#"
           >
             Windmill
@@ -108,7 +109,7 @@
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="{{ route('test') }}" 
+                href="{{ route('vacanciesemployee') }}" 
               >
                 <svg
                   class="w-5 h-5"
@@ -821,10 +822,11 @@
           </div>
         </header>
         <main class="h-full overflow-y-auto">
-          <div class="container px-6 mx-auto grid">
+        
            @hasSection('content')
           @yield('content') 
           @else  
+            <div class="container px-6 mx-auto grid">
             <h2
               class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200"
             >

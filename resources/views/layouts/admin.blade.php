@@ -4,10 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Windmill Dashboard</title>
-    <!-- <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    /> -->
+   
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="{{ asset('js/init-alpine.js') }}" defer></script>
     <script
@@ -87,7 +84,7 @@
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="cards.html"
+                href="{{ route('admin.vacanciesadmin') }}"
               >
                 <svg
                   class="w-5 h-5"
@@ -369,7 +366,7 @@
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-        href="{{ route('admin.form') }}"
+                href="{{ route('admin.vacanciesadmin') }}"
 
               >
                 <svg
@@ -392,10 +389,10 @@
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="charts.html"
+                 href="#" 
               >
                 <svg
-                  class="w-5 h-5"
+                  class="w-5 h-5" 
                   aria-hidden="true"
                   fill="none"
                   stroke-linecap="round"
