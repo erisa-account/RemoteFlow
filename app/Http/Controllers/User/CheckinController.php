@@ -16,7 +16,7 @@ class CheckinController extends Controller
     public function __construct(CheckinService $checkinService)
     {
         $this->checkinService = $checkinService;
-    }
+    } 
 
     public function store(StoreCheckinRequest $request)
     {   

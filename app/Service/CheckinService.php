@@ -11,7 +11,7 @@ class CheckinService
 
    public function storeData(StoreCheckinRequest $request) :Remotive 
 {
-    $data = $request->validated();
+    $data = $request->validated(); 
     $data['user_id'] = Auth::id();
 
     

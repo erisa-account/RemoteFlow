@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-           Schema::table('remotive', function (Blueprint $table) {
+         /*  Schema::table('remotive', function (Blueprint $table) {
            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
-        });
+        });*/
     }
 
     /**
@@ -22,7 +22,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('remotive', function (Blueprint $table) {
+             if (Schema::hasColumn('remotive', 'updated_at')) {
             $table->dropColumn('updated_at');
+        }
         });
     }
 };
