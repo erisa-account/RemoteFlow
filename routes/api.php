@@ -6,7 +6,9 @@ use App\Http\Controllers\User\StatusController;
 use App\Http\Controllers\Admin\RemotiveFilterController;
 use App\Http\Controllers\User\SendEmailController;
 use App\Http\Controllers\User\RequestLeaveController; 
-
+use App\Http\Controllers\Admin\LeavesController;
+use App\Http\Requests\Admin\RejectLeaveRequestRequest;
+use App\Http\Requests\Admin\ApproveLeaveRequestRequest;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -30,5 +32,13 @@ Route::get('/remotive-table/filter', [RemotiveFilterController::class, 'getRemot
 Route::post('/send-email', [SendEmailController::class, 'sendEmail']);
 Route::get('/remotive-events', [RemotiveFilterController::class, 'events']); 
 Route::get('/statusesnotonsite', [StatusController::class, 'getStatusesNotOnSite']); 
-Route::post('/leave-request', [RequestLeaveController::class, 'storerequest'])->middleware('auth');
- 
+
+Route::get('/leave-summary', [RequestLeaveController::class, 'getLeaveSummary']);
+
+
+
+
+Route::get('/admin/leaves', [LeavesController::class, 'getLeaves']);
+
+  
+

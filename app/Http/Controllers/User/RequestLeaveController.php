@@ -4,7 +4,9 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\StoreLeaveRequestRequest;
 use App\Resources\LeaveRequestResource;
+use App\Resources\LeaveSummaryResource;
 use App\Service\LeaveRequestService;
+use App\Service\BalanceService;
 use App\Models\LeaveRequest;
 use App\Models\LeaveType;
 use App\Models\Holiday; 
@@ -19,9 +21,11 @@ class RequestLeaveController extends Controller
 {
     protected  $leaverequestService;
 
-    public function __construct(LeaveRequestService $leaverequestService) {
+    public function __construct(LeaveRequestService $leaverequestService, BalanceService $balanceService) {
         $this->leaverequestService = $leaverequestService;
+        $this->balanceService = $balanceService;
     }
+
 
     public function storerequest(StoreLeaveRequestRequest $request)
     {
@@ -30,4 +34,15 @@ class RequestLeaveController extends Controller
 
         return new LeaveRequestResource($leave->load(['type','user']));
     }
-}
+
+    public function getLeaveSummary(Request $request)
+        {
+             $userId = $request->input('user_id', 1); 
+             $year = now()->year;
+
+            $leaveSummary = $this->balanceService->getLeaveSummary($userId, $year);
+
+            return new LeaveSummaryResource($leaveSummary);
+        }
+
+} 

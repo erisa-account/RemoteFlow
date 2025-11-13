@@ -38,6 +38,7 @@ class StoreLeaveRequestRequest extends FormRequest
             $v->errors()->add('start_date', 'You already have a leave request during this period.');
         } 
 
+       
         });
     }
 }

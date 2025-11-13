@@ -70,7 +70,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v4M16 2v4M3 10h18M4 6h16a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z"/></svg>
           </div>
         </div>
-        <p id="totalDays" class="mt-3 text-3xl font-bold tracking-tight">20</p>
+        <p id="totalDays" class="mt-3 text-3xl font-bold tracking-tight"></p>
       </div>
 
       <div class="bg-white dark:bg-neutral-950 rounded-2xl p-5 shadow-soft border border-neutral-200 dark:border-neutral-800">
@@ -80,7 +80,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
           </div>
         </div>
-        <p id="usedDays" class="mt-3 text-3xl font-bold tracking-tight">0</p>
+        <p id="usedDays" class="mt-3 text-3xl font-bold tracking-tight"></p>
       </div>
 
       <div class="bg-white dark:bg-neutral-950 rounded-2xl p-5 shadow-soft border border-neutral-200 dark:border-neutral-800">
@@ -90,7 +90,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 7-7"/><path d="M14 5h7v7"/></svg>
           </div>
         </div>
-        <p id="remainingDays" class="mt-3 text-3xl font-bold tracking-tight">20</p>
+        <p id="remainingDays" class="mt-3 text-3xl font-bold tracking-tight"></p>
       </div>
       <div class="hidden lg:block"></div>
     </section>
@@ -239,12 +239,12 @@
         </div>
 
         <!-- body -->
-        <form id="leaveForm" class="p-5 space-y-4">
+        <form id="leaveForm" class="p-5 space-y-4" method="POST" enctype="multipart/form-data" action="/leave-request">
           <!-- Leave type -->
           <div>
             <label class="text-sm font-medium">Leave Type <span class="text-rose-600">*</span></label>
             <div class="relative mt-1">
-              <select id="leaveType" class="w-full appearance-none rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-3.5 py-2.5 pr-9 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400">
+              <select id="leaveType" name="leave_type_id" class="w-full appearance-none rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-3.5 py-2.5 pr-9 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400">
                 <option value="1">Vacation</option>
                 <option value="2">Sick Leave</option>
                 <option value="personal">Personal</option>
@@ -261,7 +261,7 @@
             <div>
               <label class="text-sm font-medium">Start Date <span class="text-rose-600">*</span></label>
               <div class="relative mt-1">
-                <input id="startDate" type="date" placeholder="dd/mm/yyyy"
+                <input id="startDate" name="start_date"  type="date" placeholder="dd/mm/yyyy"
                   class="w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-3.5 py-2.5 pr-9 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400"/>
                 <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v4M16 2v4M3 10h18M4 6h16a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z"/></svg>
@@ -271,7 +271,7 @@
             <div>
               <label class="text-sm font-medium">End Date <span class="text-rose-600">*</span></label>
               <div class="relative mt-1">
-                <input id="endDate" type="date" placeholder="dd/mm/yyyy"
+                <input id="endDate" name="end_date" type="date" placeholder="dd/mm/yyyy"
                   class="w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-3.5 py-2.5 pr-9 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400"/>
                 <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v4M16 2v4M3 10h18M4 6h16a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z"/></svg>
@@ -283,7 +283,7 @@
           <!-- Reason -->
           <div>
             <label class="text-sm font-medium">Reason <span class="text-rose-600">*</span></label>
-            <textarea id="reason" rows="4" placeholder="Briefly describe the reason for your leave request..."
+            <textarea id="reason" name="reason" rows="4" placeholder="Briefly describe the reason for your leave request..."
               class="mt-1 w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-3.5 py-2.5 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400"></textarea>
           </div>
 
@@ -292,7 +292,7 @@
             <label class="text-sm font-medium">Medical Certificate <span class="text-rose-600">*</span></label>
             <div id="dropzone"
               class="mt-1 rounded-2xl border-2 border-dashed border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900/40 p-6 text-center hover:bg-neutral-100 dark:hover:bg-neutral-800 transition cursor-pointer">
-              <input id="medicalFileInput" type="file" accept="application/pdf" class="hidden"/>
+              <input id="medical_certificate" name="medical_certificate" type="file" accept="application/pdf" class="hidden"/>
               <div class="flex flex-col items-center gap-2">
                 <div class="rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 p-3 shadow-soft">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-brand-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

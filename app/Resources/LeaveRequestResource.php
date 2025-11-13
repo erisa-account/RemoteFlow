@@ -3,6 +3,9 @@ namespace App\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+use Carbon\Carbon;
+
+
 class LeaveRequestResource extends JsonResource
 {
     public function toArray($request)
@@ -12,8 +15,8 @@ class LeaveRequestResource extends JsonResource
             'type' => $this->type->id,
             'typeName' => $this->type->display_name,
             'status'    => $this->status,
-            'start'     => $this->start_date->toDateString(),
-            'end'       => $this->end_date->toDateString(),
+            'start' => Carbon::parse($this->start_date)->toDateString(),
+            'end'   => Carbon::parse($this->end_date)->toDateString(),
             'days'      => $this->days,
             'reason'    => $this->reason,
             'usesCompTime' => (bool) $this->uses_comp_time,

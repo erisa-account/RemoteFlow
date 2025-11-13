@@ -3,15 +3,24 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // -------- State --------
-    const state = {
-      totalDays: 20,
-      usedDays: 0,
+  const state = {
+     
       current: new Date(),
       viewDate: new Date(),
       selected: null,
       leaves: {} // 'YYYY-MM-DD': 'vacation' | 'sick' | 'personal' | 'unpaid'
     };
+
+    fetch('/api/leave-summary')
+    .then(response => response.json())
+    .then(data =>
+      {
+        document.getElementById('totalDays').textContent = data.data.total_days;
+        document.getElementById('usedDays').textContent = data.data.used_days;
+        document.getElementById('remainingDays').textContent = data.data.remaing_days;
+      }
+      )
+    .catch(error => console.error('Error', error ));
 
     // -------- Helpers --------
     const pad2 = n => String(n).padStart(2,'0');
@@ -101,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Conditional medical certificate
     const typeSelect = document.getElementById('leaveType');
     const medicalGroup = document.getElementById('medicalGroup');
-    const fileInput = document.getElementById('medicalFileInput');
+    const fileInput = document.getElementById('medical_certificate');
     const fileBadge = document.getElementById('fileBadge');
     const dropzone = document.getElementById('dropzone');
 
@@ -124,7 +133,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleFile(file){
       if(file.type !== 'application/pdf'){ showError('Please upload a PDF file.'); return; }
       if(file.size > 5*1024*1024){ showError('File is too large (max 5MB).'); return; }
-      fileInput.files = new DataTransfer().files; // keep default
+      
+      
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      fileInput.files = dt.files;
       // show badge
       fileBadge.textContent = file.name;
       fileBadge.classList.remove('hidden');
@@ -137,6 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const endInput = document.getElementById('endDate');
     const reasonInput = document.getElementById('reason');
     const errorBox = document.getElementById('formError');
+    
 
     function showError(msg){ errorBox.textContent = msg; errorBox.classList.remove('hidden'); }
     function hideError(){ errorBox.textContent = ''; errorBox.classList.add('hidden'); }
@@ -145,6 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       hideError();
 
+      
       const type = typeSelect.value;
       const start = startInput.value;
       const end = endInput.value;
@@ -153,44 +168,49 @@ document.addEventListener('DOMContentLoaded', () => {
       if(!type || !start || !end || !reason){ showError('Please complete all required fields.'); return; }
       const d1 = parseISO(start), d2 = parseISO(end);
       if(d2 < d1){ showError('End date cannot be earlier than start date.'); return; }
-      if(type === '2' && (!fileInput.files || !fileInput.files[0])){ showError('Medical certificate (PDF) is required for Sick Leave.'); return; }
+      //if(type === '2' && (!fileInput.files || !fileInput.files[0])){ showError('Medical certificate (PDF) is required for Sick Leave.'); return; }
 
       
-      try {
-        const formData = new FormData();
-        formData.append('leave_type_key', type);
-        formData.append('start_date', start);
-        formData.append('end_date', end);
-        formData.append('reason', reason);
-        if (type === '2' && fileInput.files[0]) {
-        formData.append('medical_report', fileInput.files[0]);
-       }
+      
 
+       
+       
+      const formData = new FormData(form);
+
+    formData.append('leave_type_id', type);
+    formData.append('start_date', start);
+    formData.append('end_date', end);
+    formData.append('reason', reason);
+    if(fileInput.files[0]) formData.append('medical_certificate', fileInput.files[0]);
+
+    try {
+        const token = document.querySelector('meta[name="csrf-token"]').content;
         const response = await fetch('/leave-request', {
             method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            },
+            headers: { 
+            'X-CSRF-TOKEN': token,
+            'Accept': 'application/json'
+        },
             body: formData
         });
 
-        if (!response.ok) {
-            const data = await response.json();
-            console.error('Error:', data);
-            showError('Ndodhi një gabim gjatë dërgimit të kërkesës.');
+        const data = await response.json();
+
+
+        if(!response.ok){
+            if(data.errors){
+                showError(Object.values(data.errors).flat().join(' '));
+            } 
+             else if(data.message) {
+                    showError(data.message);
+
+            } else {
+                showError('An unexpected error occurred.');
+            }
             return;
         }
 
-        // ✅ Success — update UI and show Swal
-        const data = await response.json();
-
-        Swal.fire({
-            icon: 'success',
-            title: 'Kërkesa është dërguar!',
-            text: 'Kërkesa juaj për pushim u ruajt me sukses.',
-            confirmButtonColor: '#3085d6',
-            confirmButtonText: 'OK'
-        });
+        
 
       // Add to calendar + KPI
       const days = Math.round((d2 - d1) / 86400000) + 1; // inclusive
@@ -202,13 +222,14 @@ document.addEventListener('DOMContentLoaded', () => {
       renderKpis();
       renderCalendar();
       closeModal();
-    
 
-    } catch (err) {
-    console.error(err);
-    showError('Gabim gjatë dërgimit të kërkesës.');
-     } 
-   });
+
+      } catch(err){
+        console.error(err);
+        showError('Failed to submit leave request. Please try again.');
+    }
+
+    });
 
     function resetForm(){
       form.reset();

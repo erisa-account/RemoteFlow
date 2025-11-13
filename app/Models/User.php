@@ -46,6 +46,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(Remotive::class);
     }
+    public function leaveBalance()
+    {
+        return $this->hasOne(LeaveBalance::class);
+    }
+
+    public function leaveRequests()
+    {
+        return $this->hasMany(LeaveRequest::class);
+    }
 }
 
 

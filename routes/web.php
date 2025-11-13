@@ -12,6 +12,8 @@ use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\Admin\UsersNameController;
 use App\Http\Controllers\Admin\RemotiveTableController;
 use App\Http\Controllers\Admin\RemotiveFilterController;
+use App\Http\Controllers\User\RequestLeaveController;
+use App\Http\Controllers\Admin\LeavesController; 
 
 
 
@@ -70,7 +72,7 @@ Route::get('/user', function () {
 })->middleware(['auth', 'verified'])->name('user'); 
 
 
-
+Route::post('/leave-request', [RequestLeaveController::class, 'storerequest'])->middleware('auth');
 
 //Route::post('/admin/users/store', [TestController::class, 'store'])->name('admin.users.store');
 
@@ -94,7 +96,8 @@ Route::middleware('auth')->group(function () {
 // });
 
  
-    
+     
+ 
     
     //Route::post('/user/test/store', [TestController::class, 'store'])->name('user.test.store');
     //Route::get('/test/get', [TestController::class, 'getData'])->name('test.get');
@@ -119,8 +122,10 @@ Route::middleware('auth')->group(function () {
         
         Route::get('/export-status-calendar', [RemotiveFilterController::class, 'exportStatusCalendar'])
         ->name('admin.remotive.exportStatusCalendar');
-
-
+        
+        Route::post('/leaves/{id}/approve', [LeavesController::class, 'approve']);
+        
+         Route::post('/leaves/{id}/reject', [LeavesController::class, 'reject']);
          
     });
 

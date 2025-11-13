@@ -30,14 +30,14 @@ class LeaveRequest extends Model
     ];
 
     // Cast dates automatically to Carbon objects
-    protected $dates = [
-        'start_date',
-        'end_date',
-        'approved_at',
-        'created_at',
-        'updated_at',
-        'rejected_at',
-        'requested_at',
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date'=> 'datetime',
+        'approved_at'=> 'datetime',
+        'created_at'=> 'datetime',
+        'updated_at'=> 'datetime',
+        'rejected_at'=> 'datetime',
+        'requested_at'=> 'datetime',
     ];
 
     // Relationships
@@ -51,4 +51,4 @@ class LeaveRequest extends Model
         return $this->belongsTo(LeaveType::class, 'leave_type_id');
     }
 
-}
+} 
