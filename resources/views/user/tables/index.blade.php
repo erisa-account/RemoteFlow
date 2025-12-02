@@ -10,7 +10,7 @@
 </head>
 
 
-<div class="flex items-center justify-center">
+<div class="flex items-center justify-center"> 
     <!-- Author: FormBold Team -->
     <div class="mx-auto w-full max-w-[550px]"> 
         <section class="mx-auto max-w-2xl">
@@ -49,7 +49,7 @@
               d="M22 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-15A2.5 2.5 0 0 1 2 17.5v-11A2.5 2.5 0 0 1 4.5 4h15A2.5 2.5 0 0 1 22 6.5Zm-2 .1L12.7 12a1.5 1.5 0 0 1-1.4 0L4 6.6v10.9A1.5 1.5 0 0 0 5.5 19h13a1.5 1.5 0 0 0 1.5-1.5Z" />
           </svg>
           <input input type="email" name="email" id="email" required placeholder="example@domain.com"
-            class="w-full bg-transparent text-slate-900 placeholder-slate-400 outline-none border-0 focus:ring-0 dark:text-slate-100" />
+           class="w-full bg-transparent text-slate-900 placeholder-slate-400 outline-none border-0 focus:ring-0 dark:text-slate-100" />
         </div>
       </div>
 
@@ -64,7 +64,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M16 13H8M16 17H8"/>
           </svg>
         <input type="text" name="subject" id="subject" placeholder="Remote schedule" required
-          class="w-full bg-transparent text-slate-900 outline-none border-0 focus:ring-0 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100" />
+          class="w-full text-slate-900 outline-none border-0 focus:ring-0 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 bg-white" />
           </div>
           </div>
       

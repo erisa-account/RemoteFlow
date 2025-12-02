@@ -15,9 +15,9 @@ class StoreLeaveRequestRequest extends FormRequest
         'leave_type_id' => ['required','integer','exists:leave_types,id'],
         'start_date'  => ['required','date'],
         'end_date' => ['required','date','after_or_equal:start_date'],
-        'reason'  => ['required','string','max:2000'],
-        'uses_comp_time' => ['boolean'],
+        'is_replacement' => ['boolean'],
         'medical_certificate' => ['nullable','file','mimes:pdf','max:10240'],
+        'reason' => ['nullable', 'string'],
         ];
     }
 
@@ -33,10 +33,18 @@ class StoreLeaveRequestRequest extends FormRequest
         $userId = $this->user()->id;
         $start = $this->start_date;
         $end = $this->end_date;
+        $typeId = $this->input('leave_type_id');
 
-        if ($overlapValidator->hasOverlap($userId, $start, $end)) {
+        if($typeId !=4) {
+         if($overlapValidator->hasOverlap($userId, $start, $end)) {
             $v->errors()->add('start_date', 'You already have a leave request during this period.');
-        } 
+         } 
+        }
+        else {
+            if ($overlapValidator->hasOverlapReplacment($userId, $start, $end)) {
+                $v->errors()->add('start_date', 'You already have replacment request during this period.');
+            } 
+        }
 
        
         });

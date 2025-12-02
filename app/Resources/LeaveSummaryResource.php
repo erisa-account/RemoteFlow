@@ -11,7 +11,7 @@ class LeaveSummaryResource extends JsonResource
         return [
             'total_days' => $this['total_days'],
             'used_days' => $this['used_days'],
-            'remaining_days' => $this['remaining_days'],
+            //'remaining_days' => $this['total-days'] - $this['used_days'],
         ];
     }
 }

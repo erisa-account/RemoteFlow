@@ -19,11 +19,12 @@ class AdminLeaveResource extends JsonResource
             ? $this->days
             : Carbon::parse($this->start_date)->diffInDays(Carbon::parse($this->end_date)) + 1,
             'reason' => $this->reason,
-            'usesCompTime' => (bool) $this->uses_comp_time,
+            'is_replacement' => (bool) $this->is_replacement,
             'createdAt' => $this->created_at? Carbon::parse($this->created_at)->toIso8601String() : null,
             'approvedAt' => $this->approved_at? Carbon::parse($this->approved_at)->toIso8601String() : null,
             'rejectedAt' => $this->rejected_at? Carbon::parse($this->rejected_at)->toIso8601String() : null,
             'rejectionReason' => $this->rejection_reason ?? null,
+            'medical_certificate_path' => $this->medical_certificate_path ? url('storage/'.$this->medical_certificate_path) : null,
 
             // Employee info for admin dashboard
             'employee' => [
@@ -32,7 +33,9 @@ class AdminLeaveResource extends JsonResource
                 'role' => $this->user->role ?? '',
                 'totalDays' => $this->user->leaveBalance?->total_days ?? 0,
                 'usedDays' => $this->user->leaveBalance?->used_days ?? 0,
+
             ],
+            
         ];
     }
 }

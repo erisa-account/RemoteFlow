@@ -1,3 +1,5 @@
+import Swal from 'sweetalert2';
+
 
    document.addEventListener('DOMContentLoaded', () => {
    // ---------- UTIL ----------
@@ -10,7 +12,8 @@
       const o = {month:'short',day:'numeric',year:'numeric'};
       return `${s.toLocaleDateString(undefined,o)} - ${e.toLocaleDateString(undefined,o)}`
     };
-    const daysBetween = (a,b) => Math.max(1, Math.round((new Date(b) - new Date(a))/86400000) + 1);
+    
+    //const daysBetween = (a,b) => Math.max(1, Math.round((new Date(b) - new Date(a))/86400000) + 1);
 
     // ---------- METRICS ----------
     function renderMetrics(m) {
@@ -97,7 +100,7 @@
             </div>
           </div>
 
-          <button class="mt-4 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm hover:bg-neutral-50">View Details</button>
+          <button class="mt-4 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm hover:bg-neutral-50 hidden">View Details</button>
         </div>`;
       return el;
     }
@@ -108,6 +111,7 @@
   document.querySelectorAll('.approve-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
       const id = btn.dataset.id;
+     
       try {
         const res = await fetch(`/admin/leaves/${id}/approve`, {
           method: 'POST',
@@ -127,12 +131,27 @@
         
       } 
        const data = await res.json();
-      alert(data.message);
+       
+       Swal.fire({
+        icon: 'success',
+        title: 'Approved',
+        text: data.message,
+        timer: 2000,
+        showConfirmationButton: false,
+       });
+
+      //alert(data.message);
       loadDashboardData();
+      
     }
       catch (err) {
         console.error(err);
-        alert('Error approving leave');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error approving leave',
+        });
+        //alert('Error approving leave');
       }
     });
   });
@@ -141,7 +160,26 @@
   document.querySelectorAll('.reject-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
       const id = btn.dataset.id;
-      const reason = prompt('Reason for rejection?') || '';
+     
+      const {value : reason} = await Swal.fire({
+        title: 'Reason for rejection',
+        input: 'text',
+        inputLabel: 'Please provide a reason for rejection',
+        inputPlaceholder: 'Type rejection reason here',
+        showCancelButton: true,
+        confirmButtonText: 'Reject',
+        cancelButtonText: 'Cancel',
+        inputValidator: (value) => {
+          if (!value) {
+            return 'You need to enter a reason.';
+          }
+        }
+      });
+
+      //const reason = prompt('Reason for rejection?') || '';
+
+      if(!reason) return;
+
       try {
         const res = await fetch(`/admin/leaves/${id}/reject`, {
           method: 'POST',
@@ -157,11 +195,27 @@
         if (!res.ok) 
             throw new Error('Failed to reject');
         const data = await res.json();
-        alert(data.message);
+
+        Swal.fire({
+          icon: 'warning',
+          title: 'Rejected',
+          text: data.message,
+          timer: 2000,
+          showConfirmButton: false,
+        });
+
+        //alert(data.message);
         loadDashboardData(); // refresh
+
       } catch (err) {
         console.error(err);
-        alert('Error rejecting leave');
+        //alert('Error rejecting leave');
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error rejecting leave',
+        });
       }
     });
   });
@@ -169,13 +223,13 @@
     function renderEmployees(arr){
       const grid=document.getElementById('employeeGrid'); grid.innerHTML='';
       arr.forEach(e=>grid.appendChild(employeeCard(e)));
-      const list = document.getElementById('requestList');
-        list.innerHTML = '';
-        arr.forEach(r => list.appendChild(requestItem(r)));
+      //const list = document.getElementById('requestList');
+        //list.innerHTML = '';
+        //arr.forEach(r => list.appendChild(requestItem(r)));
 
-        [...list.children].forEach((c,i) => { if(i%2===1) c.classList.add('bg-neutral-50'); });
+        //[...list.children].forEach((c,i) => { if(i%2===1) c.classList.add('bg-neutral-50'); });
 
-        attachRequestButtons(); // attach events
+        //attachRequestButtons(); // attach events
             }
 
     // filters
@@ -196,7 +250,7 @@
         let list=employees.filter(e=>{
           const inDept=!d || e.department===d;
           const inSearch=!q || (e.name?.toLowerCase().includes(q) || e.email?.toLowerCase().includes(q) || e.role?.toLowerCase().includes(q));
-          return inDept && inSearch;
+          return inDept && inSearch; 
         });
         switch(sortSel.value){
           case 'remaining': list.sort((a,b)=>((b.totalDays-b.usedDays)-(a.totalDays-a.usedDays))); break;
@@ -210,12 +264,12 @@
     }
 
     // ---------- REQUESTS ----------
-    const TYPE_LABEL = {vacation:'vacation', sick:'sick', personal:'personal', unpaid:'unpaid'};
+    const TYPE_LABEL = {1:'vacation', 2:'sick', personal:'personal', 3:'other', 4:'replacment'}; 
     const TYPE_BADGE = {
-      vacation:'bg-brand-50 text-brand-700 border border-brand-200',
-      sick:'bg-rose-50 text-rose-700 border border-rose-200',
+      1:'bg-brand-50 text-brand-700 border border-brand-200',
+      2:'bg-rose-50 text-rose-700 border border-rose-200',
       personal:'bg-violet-50 text-violet-700 border border-violet-200',
-      unpaid:'bg-amber-50 text-amber-800 border border-amber-200'
+      3:'bg-amber-50 text-amber-800 border border-amber-200'
     };
     const STATUS_BADGE = {
       approved:'bg-emerald-50 text-emerald-700 border border-emerald-200',
@@ -223,15 +277,19 @@
       rejected:'bg-rose-50 text-rose-700 border border-rose-200'
     };
     function requestItem(r){
-      const days = daysBetween(r.start, r.end);
+      //const days = daysBetween(r.start, r.end);
       const el=document.createElement('div');
       el.className='rounded-xl border border-neutral-200 bg-white px-4 py-3';
+
+    
+
+
       el.innerHTML=`
         <div class="flex flex-col gap-2">
           <div class="flex items-start gap-3">
             <span class="h-9 w-9 rounded-full bg-neutral-100 text-neutral-600 flex items-center justify-center text-xs font-semibold">${initials(r.employee?.name||'')}</span>
             <div class="min-w-0 grow">
-              <div class="flex flex-wrap items-center justify-between gap-2">
+              <div class="flex flex-wrap items-center justify-start gap-6">
                 <div class="min-w-0">
                   <div class="font-medium truncate">${r.employee?.name||''}</div>
                   <div class="text-xs text-neutral-500 truncate">${r.employee?.role||''}</div>
@@ -239,7 +297,21 @@
                 <div class="flex items-center gap-2">
                   <span class="text-[11px] px-2 py-1 rounded-md ${TYPE_BADGE[r.type]||'bg-neutral-100 text-neutral-700 border'} capitalize">${TYPE_LABEL[r.type]||r.type}</span>
                   <span class="text-[11px] px-2 py-1 rounded-md ${STATUS_BADGE[r.status]||'bg-neutral-100 text-neutral-700 border'} capitalize">${r.status}</span>
-                  ${r.type==='sick' ? '<span class="text-[11px] px-2 py-1 rounded-md bg-neutral-100 text-neutral-700 border">📄 Document</span>' : ''}
+                 ${r.medical_certificate_path ? `
+                  <a href="${r.medical_certificate_path}" target="_blank"
+                    class="text-blue-600 flex-shrink-0 inline-flex items-center gap-1 ml-1"
+                    aria-label="Open medical certificate" title="Open medical certificate">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 block"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                      <path d="M14 2v6h6" />
+                      <path d="M8 10h8" />
+                      <path d="M8 13h8" />
+                      <path d="M8 16h5" />
+                    </svg>
+                  </a>
+                ` : ''}
                 </div>
               </div>
 
@@ -251,15 +323,17 @@
                 </span>
                 <span class="inline-flex items-center gap-2 text-neutral-600">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-                  ${days} days
+                 ${r.days} days
                 </span>
               </div>
 
-              ${r.reason ? `<blockquote class="mt-1 text-xs italic text-neutral-500">"${r.reason}"</blockquote>` : ''}
+              
 
               <div class="mt-3 flex justify-end gap-2">
-                <button class="approve-btn rounded-xl bg-emerald-600 text-white text-sm px-3 py-1.5 hover:bg-emerald-700" data-id="${r.id}">Approve</button>
-                <button class="reject-btn rounded-xl bg-rose-600 text-white text-sm px-3 py-1.5 hover:bg-rose-700" data-id="${r.id}">Reject</button>
+              <button class="approve-btn rounded-xl bg-emerald-600 text-white text-sm px-3 py-1.5 hover:bg-emerald-700 ${r.status === 'approved' ? 'hidden' : ''}" data-id="${r.id}">
+    Approve
+  </button>
+                <button class="reject-btn rounded-xl bg-rose-600 text-white text-sm px-3 py-1.5 hover:bg-rose-700  ${r.status === 'rejected' ? 'hidden' : ''}" data-id="${r.id}">Reject</button>
               </div>
             </div>
           </div>
@@ -296,6 +370,7 @@
     // your API probably returns something like: { data: [...] }
     // adapt structure to match renderAdminAdminDashboard()
     const requests = data.data || [];
+    console.log('API request' , requests);
 
     // extract employees + metrics
     const employeesMap = new Map();

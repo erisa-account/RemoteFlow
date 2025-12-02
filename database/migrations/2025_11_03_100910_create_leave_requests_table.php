@@ -28,7 +28,7 @@ return new class extends Migration {
             $table->timestamps();
 
              // Optional helper flags for comp-time usage (UI can send this):
-            $table->boolean('uses_comp_time')->default(false);
+            $table->boolean('is_replacement')->default(false);
             });
     }
 

@@ -31,9 +31,10 @@ Route::get('/remotive-table', [RemotiveFilterController::class, 'getRemotiveTabl
 Route::get('/remotive-table/filter', [RemotiveFilterController::class, 'getRemotiveFilteredTable']);
 Route::post('/send-email', [SendEmailController::class, 'sendEmail']);
 Route::get('/remotive-events', [RemotiveFilterController::class, 'events']); 
-Route::get('/statusesnotonsite', [StatusController::class, 'getStatusesNotOnSite']); 
+Route::get('/statusesnotonsite', [StatusController::class, 'getStatusesNotOnSite']);
 
-Route::get('/leave-summary', [RequestLeaveController::class, 'getLeaveSummary']);
+
+
 
 
 

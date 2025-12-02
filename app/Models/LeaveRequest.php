@@ -19,7 +19,7 @@ class LeaveRequest extends Model
         'end_date',
         'days',
         'reason',
-        'uses_comp_time',
+        'is_replacement',
         'status',
         'medical_certificate_path',
         'approved_at',
@@ -38,6 +38,7 @@ class LeaveRequest extends Model
         'updated_at'=> 'datetime',
         'rejected_at'=> 'datetime',
         'requested_at'=> 'datetime',
+        'is_replacement'=> 'boolean',
     ];
 
     // Relationships
@@ -49,6 +50,6 @@ class LeaveRequest extends Model
     public function type()
     {
         return $this->belongsTo(LeaveType::class, 'leave_type_id');
-    }
+    } 
 
 } 

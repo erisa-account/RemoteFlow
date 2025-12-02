@@ -6,31 +6,44 @@ use App\Models\LeaveType;
 use App\Http\Requests\User\StoreLeaveRequestRequest;
 use Illuminate\Support\Facades\Auth; 
 use App\Resources\LeaveRequestResource;
+use App\Service\LeaveCalculator;
 
 class LeaveRequestService {
 public function store(StoreLeaveRequestRequest $request)
 {
     $data = $request->validated();
 
-    // Optional: calculate days before storing
-    // $days = app(LeaveCalculator::class)->businessDays($data['start_date'], $data['end_date']);
-
     $leaveType = LeaveType::findOrFail($data['leave_type_id']);
+
+    // Optional: calculate days before storing
+    $days = app(LeaveCalculator::class)->businessDays($data['start_date'], $data['end_date']);
+
+    if($leaveType->id === 4){
+        $days = 1;
+    }
+
+    
+   
+    
+
+    
 
     $leave = LeaveRequest::create([
         'user_id' => auth()->id(),
         'leave_type_id' => $data['leave_type_id'],
         'start_date' => $data['start_date'],
         'end_date' => $data['end_date'],
-        'days' => 0, // or $days if calculated
+        'days' => $days,
+        
         'reason' => $data['reason'],
-        'uses_comp_time' => $data['uses_comp_time'] ?? false,
+        //'uses_comp_time' => $data['uses_comp_time'] ?? false,
+        'is_replacement' => $leaveType -> id === 4,
         'status' => 'pending',
     ]);
 
     // Handle file upload
     if ($file = $request->file('medical_certificate')) {
-        $path = $file->store('medical_certificates');
+        $path = $file->store('medical_certificates', 'public');
         $leave->update(['medical_certificate_path' => $path]);
     }
 

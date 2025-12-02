@@ -8,6 +8,9 @@ class LeaveCalculator
 {
     public function businessDays(string $start, string $end, array $holidayDates = [], bool $skipWeekends = true): int
     {
+        $compensationDays = app(DayMarkerService::class)->getWeekendHolidays($holidayDates);
+        $holidayDates = array_merge($holidayDates, $compensationDays);
+
         $period = CarbonPeriod::create($start, $end);
         $hol = array_flip($holidayDates);
         $count = 0;
@@ -17,5 +20,7 @@ class LeaveCalculator
                      $count++;
                     }
         return max(1, $count);
+        //return $count;
         }
+
 } 

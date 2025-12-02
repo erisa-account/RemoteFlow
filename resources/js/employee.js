@@ -14,7 +14,7 @@ class VacationManagementSystem {
         this.currentView = 'calendar';
         this.currentYear = new Date().getFullYear();
         this.currentMonth = new Date().getMonth();
-        this.filteredEmployees = [...employees];
+        this.filteredEmployees = [...employees]; 
        
         this.init();
     }

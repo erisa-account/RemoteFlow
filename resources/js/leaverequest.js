@@ -1,5 +1,5 @@
 
-
+import Swal from 'sweetalert2';
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -8,20 +8,41 @@ document.addEventListener('DOMContentLoaded', () => {
       current: new Date(),
       viewDate: new Date(),
       selected: null,
-      leaves: {} // 'YYYY-MM-DD': 'vacation' | 'sick' | 'personal' | 'unpaid'
+      leaves: {},  // 'YYYY-MM-DD': 'vacation' | 'sick' | 'personal' | 'unpaid'
+      totalDays: 0,
+      usedDays: 0,
+      replacementLeaves: {},
+      replacementDates: {},
+      remainingDays: 0,
+      dayMarkers: {},
     };
+    
 
-    fetch('/api/leave-summary')
+    fetch('/leave-summary', {
+      method: 'GET',
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+      }
+    })
+
     .then(response => response.json())
     .then(data =>
       {
-        document.getElementById('totalDays').textContent = data.data.total_days;
-        document.getElementById('usedDays').textContent = data.data.used_days;
-        document.getElementById('remainingDays').textContent = data.data.remaing_days;
+        //document.getElementById('totalDays').textContent = data.total_days;
+        //document.getElementById('usedDays').textContent = data.used_days;
+        //document.getElementById('remainingDays').textContent = data.remaining_days;
+         state.totalDays = data.data.total_days;
+         state.usedDays = data.data.used_days;
+         state.remainingDays = data.data.remaining_days;
+         renderKpis();
       }
+      
       )
+    
     .catch(error => console.error('Error', error ));
-
+    
     // -------- Helpers --------
     const pad2 = n => String(n).padStart(2,'0');
     const ymd = d => `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
@@ -42,10 +63,12 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('usageBar').style.width = pct + '%';
     }
 
+    
     function renderCalendar(){  
       const grid = document.getElementById('calendarGrid'); grid.innerHTML='';
       const view = new Date(state.viewDate.getFullYear(), state.viewDate.getMonth(), 1);
       document.getElementById('monthLabel').textContent = monthLabel(view);
+      
 
       const y = view.getFullYear(), m = view.getMonth();
       const first = new Date(y, m, 1).getDay();
@@ -62,6 +85,11 @@ document.addEventListener('DOMContentLoaded', () => {
       for(let d=1; d<=total; d++){
         const date = new Date(y,m,d); 
         const key = ymd(date);
+       
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+
+        
         const cell = document.createElement('button');
         cell.type = 'button';
         cell.className = 'relative aspect-square rounded-xl border bg-white dark:bg-neutral-950 border-neutral-200 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition focus:outline-none focus:ring-2 focus:ring-brand-400';
@@ -70,12 +98,48 @@ document.addEventListener('DOMContentLoaded', () => {
         number.textContent = d;
         cell.appendChild(number);
 
+        //grid.appendChild(cell);
+
+      
+
+        state.holidays?.forEach(h => {
+          if ( h.month === month && h.day === d) {
+            //const dot = document.createElement('span');
+             cell.style.backgroundColor = h.color || '#f8b9b9ff';
+             const hName = document.createElement('span');
+             hName.textContent = h.name;
+             hName.className = 'absolute bottom-1 left-1 text-[10px] font-medium text-red-700 dark:text-red-400';
+             cell.appendChild(hName);
+          }
+        });
+        
+
         const type = state.leaves[key];
+        //state.replacementLeaves = {};
+
         if(type){
-          const color = {vacation:'bg-brand-500', sick:'bg-rose-500', personal:'bg-violet-500', unpaid:'bg-amber-500'}[type] || 'bg-neutral-300';
+          const color = {vacation:'bg-brand-500', sick:'bg-rose-500', unpaid:'bg-amber-500'}[type] || 'bg-violet-500';
           const dot = document.createElement('span');
           dot.className = `absolute bottom-2 left-2 h-2.5 w-2.5 rounded-full ${color}`;
           cell.appendChild(dot);
+        }
+
+        const rType = state.replacementLeaves[key];
+        if (rType){
+          const dot = document.createElement('span');
+          dot.className = 'absolute bottom-2 right-2 h-2.5 w-2.5 rounded-full bg-violet-500';
+          cell.appendChild(dot);
+        }
+
+        if (state.dayMarkers[key]) {
+          /*const dot = document.createElement('span');
+          dot.className = 'absolute bottom-2 right-2 h-2.5 w-2.5 rounded-full';
+          dot.style.backgroundColor = state.dayMarkers[key].color;
+          cell.appendChild(dot);*/
+
+          cell.style.backgroundColor = state.dayMarkers[key].color;
+          cell.classList.remove('bg0white', 'dark:bg-neutral-950');
+          cell.style.color = '#c2ea7dff';
         }
 
         if(ymd(date) === ymd(state.current)){
@@ -119,6 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
       else { medicalGroup.classList.add('hidden'); fileInput.value=''; fileBadge.classList.add('hidden'); fileBadge.textContent=''; }
     }
     typeSelect.addEventListener('change', updateMedicalVisibility); 
+    
 
     // Drag & Drop 
     ;['dragenter','dragover'].forEach(ev => dropzone.addEventListener(ev, e=>{ e.preventDefault(); dropzone.classList.add('ring-2','ring-brand-400'); }));
@@ -144,6 +209,25 @@ document.addEventListener('DOMContentLoaded', () => {
       hideError();
     }
 
+    function updateReplacementUI(){
+      const type = String(typeSelect.value);
+
+      const startLabel = document.querySelector('label[for="startDate"]');
+      const endLabel = document.querySelector('label[for="endDate"]');
+
+      if (type === '4'){
+        startLabel.textContent = 'Choose the date you are replacing:';
+        endLabel.textContent = 'Replacement day:';
+      }
+      else {
+        startLabel.textContent = 'Start date';
+        endLabel.textContent = 'End date';
+      }
+    }
+    typeSelect.addEventListener('change', updateReplacementUI);
+
+
+
     // Validation + submit
     const form = document.getElementById('leaveForm');
     const startInput = document.getElementById('startDate');
@@ -165,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const end = endInput.value;
       const reason = reasonInput.value.trim();
 
-      if(!type || !start || !end || !reason){ showError('Please complete all required fields.'); return; }
+      if(!type || !start || !end ){ showError('Please complete all required fields.'); return; }
       const d1 = parseISO(start), d2 = parseISO(end);
       if(d2 < d1){ showError('End date cannot be earlier than start date.'); return; }
       //if(type === '2' && (!fileInput.files || !fileInput.files[0])){ showError('Medical certificate (PDF) is required for Sick Leave.'); return; }
@@ -213,7 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
 
       // Add to calendar + KPI
-      const days = Math.round((d2 - d1) / 86400000) + 1; // inclusive
+      const days = inclusiveDays(start, end);
       for(let i=0;i<days;i++){
         const cur = new Date(d1); cur.setDate(cur.getDate() + i);
         state.leaves[ymd(cur)] = type;
@@ -223,10 +307,16 @@ document.addEventListener('DOMContentLoaded', () => {
       renderCalendar();
       closeModal();
 
+      await Swal.fire({
+        icon: 'success',
+        title: "Kerkesa eshte derguar me sukses", 
+        confirmButtonText: 'OK',
+      });
+
 
       } catch(err){
         console.error(err);
-        showError('Failed to submit leave request. Please try again.');
+        showError('Failed to submit leave request. Please try again.'); 
     }
 
     });
@@ -264,8 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // -------- Boot --------
-    renderKpis(); renderCalendar(); updateMedicalVisibility();
+   
 
 
 
@@ -282,11 +371,153 @@ document.addEventListener('DOMContentLoaded', () => {
 //     start:'YYYY-MM-DD', end:'YYYY-MM-DD' }
 // ]
 
-const TYPE_LABEL = { vacation:'Vacation', sick:'Sick Leave', personal:'Personal', unpaid:'Unpaid' };
+async function loadLeaveHistory() {
+  showLeaveHistorySkeleton();
+
+try {
+  const res = await fetch('/leave-history', {
+    headers : {'Accept': 'application/json'}
+  });
+
+
+  const json = await res.json();
+
+  function mapType(name) {
+    //if(!unpaid) return 'unpaid';
+    name = name.toLowerCase();
+    if(name.includes('vacation')) return 'vacation';
+    if (name.includes('sick')) return 'sick';
+    if (name.includes('unpaid')) return 'unpaid';
+    if (name.includes('replacement')) return 'replacement';
+    //return 'unpaid';
+  }
+
+  const items = json.data.map(item => ({
+    type: mapType(item.leave_type_name),
+    status: item.status,
+    start: item.start_date,
+    days: item.days,
+    end: item.end_date,
+    medical_certificate_path: item.medical_certificate_path,
+  }));
+
+
+  renderLeaveHistory('leaveHistory', items);
+
+  const approvedLeaves = items.filter(item => item.status === 'approved');
+  state.leaves = {};
+
+  state.replacementLeaves = {};
+
+  approvedLeaves.forEach (leave =>{
+        const start = new Date(leave.start);
+        const end = new Date(leave.end);
+
+        if(leave.type === 'replacement') {
+          
+             state.leaves[ymd(start)] = leave.type;
+             state.leaves[ymd(end)] = leave.type;
+             /*for (let d = new Date(start); d <= end; d.setDate(d.getDate() +1)) {
+              const key = ymd(d);
+              state.replacementLeaves[key] = leave.type;
+             }*/
+
+              state.replacementDates[ymd(start)] = 'replacement';
+              state.replacementDates[ymd(end)] = 'replacement';
+        } 
+        else 
+          {
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+          const key = ymd(d);
+          state.leaves[key] = leave.type;
+        }
+      }
+  });
+
+
+ 
+}catch (err) {
+  console.error('Error loading leave history:' , err);
+  renderLeaveHistory('leaveHistory', []);
+}
+}
+
+
+
+
+  async function loadHolidays() {
+    try{
+      const res = await fetch('/holidays', {
+        headers: {'Accept': 'application/json'}
+      });
+      const json = await res.json();
+      /*json.data.forEach(h => {
+        state.dayMarkers[h.date] = {
+          color: h.color,
+          name: h.name
+        };
+      });*/
+
+      state.holidays = json.data.map(h => {
+        const parts = h.date.split('-');
+        return {
+          year: parseInt(parts[0], 10),
+          month: parseInt(parts[1], 10),
+          day: parseInt(parts[2], 10),
+          name: h.name,
+          
+        };
+      });
+
+
+      renderCalendar();
+    }
+    catch (err) {
+      console.error('Error loding holidays:' , err);
+    }
+  }
+
+  async function loadWeekendHolidays() {
+    try {
+      const res = await fetch('/holidays/weekend', 
+        {
+          headers: {'Accept': 'application/json'} 
+        }
+      );
+      const json = await res.json();
+
+      const weekendHolidays = json.data.map(h => {
+        const parts = h.date.split('-');
+        return {
+          year: parseInt(parts[0], 10),
+          month: parseInt(parts[1], 10),
+          day: parseInt(parts[2], 10),
+          name: h.name,
+          color: h.color || '#60a5fa',
+        };
+      });
+
+
+      weekendHolidays.forEach (h => {
+        const key = `${h.year}-${String(h.month).padStart(2,'0')}-${String(h.day).padStart(2, '0')}`;
+        state.dayMarkers[key] = { name: h.name, color: h.color};
+      });
+
+      renderCalendar();
+    }
+    catch(err) {
+      console.error('Error loadinf weekend holidays:', err);
+    }
+  }
+
+
+
+
+const TYPE_LABEL = { vacation:'Vacation', sick:'Sick Leave', replacement: 'Replacement', unpaid:'Unpaid' };
 const TYPE_BADGE = {
   vacation: 'bg-brand-50 text-brand-700 border-brand-200 dark:bg-brand-500/10 dark:text-brand-300 dark:border-brand-900/40',
   sick:     'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-500/10 dark:text-rose-300 dark:border-rose-900/40',
-  personal: 'bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-500/10 dark:text-violet-300 dark:border-violet-900/40',
+  replacement: 'bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-500/10 dark:text-violet-300 dark:border-violet-900/40',
   unpaid:   'bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-500/10 dark:text-amber-300 dark:border-amber-900/40',
 };
 const STATUS_BADGE = {
@@ -342,7 +573,24 @@ function renderLeaveHistory(containerId, items) {
       <div class="flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-2">
           <span class="text-[11px] px-2 py-1 rounded-md border ${tClass} capitalize">${tLabel}</span>
-          <span class="text-[11px] px-2 py-1 rounded-md border ${sClass} capitalize">${item.status}</span>
+          <span class="text-[11px] px-2 py-1 rounded-md border ${sClass} capitalize">${item.status}</span>  
+        ${item.medical_certificate_path ? `
+  <a href="${item.medical_certificate_path}" target="_blank"
+     class="text-blue-600 inline-flex items-center gap-2 ml-2 flex-shrink-0 relative z-10"
+     aria-label="Open medical certificate" title="Open medical certificate">
+     <div class="h-9 w-9 rounded-xl text-gray-400 flex items-center justify-center dark:bg-gray-700/20 dark:text-gray-400">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 block"
+         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round" preserveAspectRatio="xMidYMid meet">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <path d="M14 2v6h6" />
+      <path d="M8 13h8" />
+      <path d="M8 10h8" />
+      <path d="M8 16h5" />
+    </svg>
+  </div>
+  </a>
+` : ''}
         </div>
       </div>
 
@@ -357,15 +605,41 @@ function renderLeaveHistory(containerId, items) {
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>
           </svg>
-          <span>${pluralize(days,'day')}</span>
+          <span>${item.days} days</span>
         </div>
       </div>
     `;
+
+    //if(item.medical_certificate_path){
+      //const link = document.createElement('a');
+      //link.href = item.medical_certificate_path;
+      //link.target = "_blank";
+      //link.textContent = "Open PDF:";
+      //link.className = "text-blue-600 underline mt-2 block";
+      //el.appendChild(link);
+
+    //}
+
+    //link.className = "text-blue-600 mt-2 inline-flex items-center gap-1";
+
+  //Add an SVG document icon
+  //link.innerHTML = `
+   // <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      //<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      //<path d="M14 2v6h6"/>
+    //</svg>
+    
+  //`;
+    
+
+  //el.appendChild(link);
+    
+   // }
     root.appendChild(el);
   });
 }
-
-
+ // -------- Boot --------
+    renderCalendar(); updateMedicalVisibility(); loadLeaveHistory(); loadHolidays(); loadWeekendHolidays();
 
 
 });

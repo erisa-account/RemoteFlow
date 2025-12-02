@@ -17,12 +17,20 @@ class ApprovalService
     public function approve(LeaveRequest $req, int $approverId): LeaveRequest
     {
         return DB::transaction(function () use ($req, $approverId) {
-        if (!in_array($req->status, ['pending'])) return $req;
+
+            $req=$req->fresh();
+
+            if($req->status==='approved') return $req;
+            
+
+            if (!in_array($req->status, ['pending', 'rejected'])) return $req;
 
         $req->forceFill([
         'status' => 'approved',
         'approver_id' => $approverId,
         'approved_at' => now(),
+        'rejected_at' => null,
+        'rejection_reason' => null,
         ])->save();
 
         $this->balance->applyApproval($req);
@@ -34,6 +42,9 @@ class ApprovalService
         public function reject(LeaveRequest $req, int $approverId, string $reason): LeaveRequest
          {
             return DB::transaction(function () use ($req, $approverId, $reason) {
+
+                $req = $req->fresh();
+                
             if ($req->status === 'approved') {
             $this->balance->revertApproval($req);
             }

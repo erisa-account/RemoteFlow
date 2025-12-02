@@ -37,7 +37,7 @@ class RequestLeaveController extends Controller
 
     public function getLeaveSummary(Request $request)
         {
-             $userId = $request->input('user_id', 1); 
+             $userId = $request->user()->id;
              $year = now()->year;
 
             $leaveSummary = $this->balanceService->getLeaveSummary($userId, $year);
@@ -45,4 +45,6 @@ class RequestLeaveController extends Controller
             return new LeaveSummaryResource($leaveSummary);
         }
 
+
+        
 } 

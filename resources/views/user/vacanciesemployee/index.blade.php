@@ -137,8 +137,8 @@
           <div class="flex flex-wrap items-center gap-5 text-xs">
             <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-brand-500"></span>Vacation</div>
             <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-rose-500"></span>Sick Leave</div>
-            <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-violet-500"></span>Personal</div>
-            <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-amber-500"></span>Unpaid</div>
+            <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-violet-500"></span>Replacment</div>
+            <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-amber-500"></span>Other</div>
             <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full border border-brand-500"></span>Today</div>
           </div>
         </div>
@@ -155,8 +155,8 @@
           <div class="p-4 space-y-3 text-sm">
             <div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-brand-500"></span>Vacation</div><span class="text-[10px] rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5">Paid</span></div>
             <div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-rose-500"></span>Sick Leave</div><span class="text-[10px] rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5">Paid</span></div>
-            <div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-violet-500"></span>Personal</div><span class="text-[10px] rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5">Paid</span></div>
-            <div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-amber-500"></span>Unpaid</div><span class="text-[10px] rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5">Unpaid</span></div>
+            <div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-violet-500"></span>Replacment</div><span class="text-[10px] rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5">Paid</span></div>
+            <div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-amber-500"></span>Other</div><span class="text-[10px] rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5">Unpaid</span></div>
           </div>
         </div>
 
@@ -247,8 +247,8 @@
               <select id="leaveType" name="leave_type_id" class="w-full appearance-none rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-3.5 py-2.5 pr-9 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400">
                 <option value="1">Vacation</option>
                 <option value="2">Sick Leave</option>
-                <option value="personal">Personal</option>
-                <option value="3">Unpaid</option>
+                <option value="3">Other</option>
+                <option value="4">Replacment</option>
               </select>
               <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
@@ -259,7 +259,7 @@
           <!-- Dates -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="text-sm font-medium">Start Date <span class="text-rose-600">*</span></label>
+              <label for="startDate" class="text-sm font-medium">Start Date <span class="text-rose-600">*</span></label>
               <div class="relative mt-1">
                 <input id="startDate" name="start_date"  type="date" placeholder="dd/mm/yyyy"
                   class="w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-3.5 py-2.5 pr-9 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400"/>
@@ -269,7 +269,7 @@
               </div>
             </div>
             <div>
-              <label class="text-sm font-medium">End Date <span class="text-rose-600">*</span></label>
+              <label for="endDate" class="text-sm font-medium">End Date <span class="text-rose-600">*</span></label>
               <div class="relative mt-1">
                 <input id="endDate" name="end_date" type="date" placeholder="dd/mm/yyyy"
                   class="w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-3.5 py-2.5 pr-9 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400"/>
@@ -282,7 +282,7 @@
 
           <!-- Reason -->
           <div>
-            <label class="text-sm font-medium">Reason <span class="text-rose-600">*</span></label>
+            <label class="text-sm font-medium">Reason <span class="text-rose-600"></span></label>
             <textarea id="reason" name="reason" rows="4" placeholder="Briefly describe the reason for your leave request..."
               class="mt-1 w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-3.5 py-2.5 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400"></textarea>
           </div>

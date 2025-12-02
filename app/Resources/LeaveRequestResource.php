@@ -19,7 +19,7 @@ class LeaveRequestResource extends JsonResource
             'end'   => Carbon::parse($this->end_date)->toDateString(),
             'days'      => $this->days,
             'reason'    => $this->reason,
-            'usesCompTime' => (bool) $this->uses_comp_time,
+            'is_replacement' => (bool) $this->is_replacement,
             'createdAt'  => $this->created_at?->toIso8601String(),
             'approvedAt' => $this->approved_at?->toIso8601String(),
         ];

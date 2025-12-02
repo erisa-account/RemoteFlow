@@ -14,7 +14,9 @@ use App\Http\Controllers\Admin\RemotiveTableController;
 use App\Http\Controllers\Admin\RemotiveFilterController;
 use App\Http\Controllers\User\RequestLeaveController;
 use App\Http\Controllers\Admin\LeavesController; 
-
+use App\Http\Controllers\User\UserLeavesController;
+use App\Http\Controllers\User\DayMarkerController;
+use App\Http\Controllers\User\HolidaysController;
 
 
 
@@ -74,7 +76,18 @@ Route::get('/user', function () {
 
 Route::post('/leave-request', [RequestLeaveController::class, 'storerequest'])->middleware('auth');
 
+
+Route::get('/leave-summary', [RequestLeaveController::class, 'getLeaveSummary']);
+
+
+Route::get('/leave-history', [UserLeavesController::class, 'getUserLeaves']);
+
+Route::get('/day-marker/{user}', [DayMarkerController::class, 'index']);
+
 //Route::post('/admin/users/store', [TestController::class, 'store'])->name('admin.users.store');
+
+Route::get('/holidays', [HolidaysController::class, 'index']);
+Route::get('/holidays/weekend', [HolidaysController::class, 'weekendHolidays']);
 
 
 
