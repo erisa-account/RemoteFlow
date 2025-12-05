@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
       usedDays: 0,
       replacementLeaves: {},
       replacementDates: {},
+      replacementMap: {},
       remainingDays: 0,
       dayMarkers: {},
     };
@@ -36,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
          state.totalDays = data.data.total_days;
          state.usedDays = data.data.used_days;
          state.remainingDays = data.data.remaining_days;
+
          renderKpis();
       }
       
@@ -98,10 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
         number.textContent = d;
         cell.appendChild(number);
 
-        //grid.appendChild(cell);
-
-      
-
         state.holidays?.forEach(h => {
           if ( h.month === month && h.day === d) {
             //const dot = document.createElement('span');
@@ -115,31 +113,53 @@ document.addEventListener('DOMContentLoaded', () => {
         
 
         const type = state.leaves[key];
-        //state.replacementLeaves = {};
-
+ 
         if(type){
-          const color = {vacation:'bg-brand-500', sick:'bg-rose-500', unpaid:'bg-amber-500'}[type] || 'bg-violet-500';
+           const leave = state.replacementDates[key]; // or any way you store start/end per key
+         const formattedStart = new Date(leave?.start || key).toLocaleDateString('en-GB');
+        const formattedEnd = new Date(leave?.end || key).toLocaleDateString('en-GB');
+
+          cell.classList.add("relative", "group");
+          const color = {vacation:'bg-brand-500', sick:'bg-rose-500', unpaid:'bg-amber-500', replacement:'bg-violet-500'}[type];
           const dot = document.createElement('span');
           dot.className = `absolute bottom-2 left-2 h-2.5 w-2.5 rounded-full ${color}`;
+          
+         if (type === "replacement") {
+           const tooltip = document.createElement("span");
+                   tooltip.textContent = `Replacement: ${formattedStart} → ${formattedEnd}`;
+          tooltip.className = `
+        absolute -top-8 left-1/2 -translate-x-1/2
+        whitespace-nowrap rounded-md bg-black text-white text-xs
+        px-2 py-1 opacity-0 pointer-events-none
+        transition-opacity duration-200
+        group-hover:opacity-100
+        `;
+        cell.appendChild(tooltip);
+        }
           cell.appendChild(dot);
         }
 
-        const rType = state.replacementLeaves[key];
-        if (rType){
-          const dot = document.createElement('span');
-          dot.className = 'absolute bottom-2 right-2 h-2.5 w-2.5 rounded-full bg-violet-500';
-          cell.appendChild(dot);
-        }
+          
+
+        // const rType = state.replacementLeaves[key];
+        // if (rType){
+        //   const dot = document.createElement('span');
+        //   dot.className = 'absolute bottom-2 right-2 h-2.5 w-2.5 rounded-full bg-violet-500';
+        //   cell.appendChild(dot);
+        // }
 
         if (state.dayMarkers[key]) {
           /*const dot = document.createElement('span');
           dot.className = 'absolute bottom-2 right-2 h-2.5 w-2.5 rounded-full';
           dot.style.backgroundColor = state.dayMarkers[key].color;
           cell.appendChild(dot);*/
+        
 
           cell.style.backgroundColor = state.dayMarkers[key].color;
           cell.classList.remove('bg0white', 'dark:bg-neutral-950');
-          cell.style.color = '#c2ea7dff';
+          //cell.style.color = '#7ec800ff';
+
+          
         }
 
         if(ymd(date) === ymd(state.current)){
@@ -354,22 +374,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-   
-
-
-
-
-    
-// Public API:
-//   showLeaveHistorySkeleton()
-//   hideLeaveHistorySkeleton()
-//   renderLeaveHistory('leaveHistory', itemsArray)
-//
-// itemsArray shape:
-// [
-//   { type:'vacation'|'sick'|'personal'|'unpaid', status:'approved'|'pending'|'rejected',
-//     start:'YYYY-MM-DD', end:'YYYY-MM-DD' }
-// ]
+ 
 
 async function loadLeaveHistory() {
   showLeaveHistorySkeleton();
@@ -403,10 +408,9 @@ try {
 
 
   renderLeaveHistory('leaveHistory', items);
-
+populateReplacementDates(items);
   const approvedLeaves = items.filter(item => item.status === 'approved');
   state.leaves = {};
-
   state.replacementLeaves = {};
 
   approvedLeaves.forEach (leave =>{
@@ -422,14 +426,16 @@ try {
               state.replacementLeaves[key] = leave.type;
              }*/
 
-              state.replacementDates[ymd(start)] = 'replacement';
-              state.replacementDates[ymd(end)] = 'replacement';
+              // state.replacementDates[ymd(start)] = 'replacementstart';
+              // state.replacementDates[ymd(end)] = 'replacementend';
+              
         } 
         else 
           {
         for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
           const key = ymd(d);
           state.leaves[key] = leave.type;
+         
         }
       }
   });
@@ -440,6 +446,22 @@ try {
   console.error('Error loading leave history:' , err);
   renderLeaveHistory('leaveHistory', []);
 }
+}
+function populateReplacementDates(items) {
+  state.replacementDates = {}; // reset
+
+  items.forEach(item => {
+    if (item.type === "replacement") {
+      const start = new Date(item.start);
+      const end   = new Date(item.end);
+
+      // Fill every day in the range
+      for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+        const key = d.toISOString().slice(0, 10); // YYYY-MM-DD
+        state.replacementDates[key] = { start: item.start, end: item.end };
+      }
+    }
+  });
 }
 
 
@@ -479,7 +501,8 @@ try {
 
   async function loadWeekendHolidays() {
     try {
-      const res = await fetch('/holidays/weekend', 
+      //const year = state.viewDate.getFullYear();
+      const res = await fetch('/holidays/weekend',
         {
           headers: {'Accept': 'application/json'} 
         }
@@ -493,7 +516,7 @@ try {
           month: parseInt(parts[1], 10),
           day: parseInt(parts[2], 10),
           name: h.name,
-          color: h.color || '#60a5fa',
+          color: h.color || '#c8efbcff',
         };
       });
 
@@ -506,7 +529,7 @@ try {
       renderCalendar();
     }
     catch(err) {
-      console.error('Error loadinf weekend holidays:', err);
+      console.error('Error loading weekend holidays:', err);
     }
   }
 
@@ -639,7 +662,7 @@ function renderLeaveHistory(containerId, items) {
   });
 }
  // -------- Boot --------
-    renderCalendar(); updateMedicalVisibility(); loadLeaveHistory(); loadHolidays(); loadWeekendHolidays();
+    renderCalendar(); updateMedicalVisibility(); loadLeaveHistory();  loadHolidays(); loadWeekendHolidays();
 
 
 });

@@ -13,5 +13,5 @@ class HolidayResource extends JsonResource{
             'country_code'=>$this->country_code,
             //'color'=>'#f87171',
         ];
-    }
+    }        
 }

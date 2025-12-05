@@ -36,14 +36,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+
+
+
+
 /*Route::get('/admin', function () {
     return view('admin.dashboard');
 });*/
 
 
 Route::get('/dashboard', function () {
-    return view('dashboard'); 
-})->middleware(['auth', 'verified'])->name('dashboard');         
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+
+
 
 Route::get('/forms', function () { 
     return view('user.forms.forms'); 

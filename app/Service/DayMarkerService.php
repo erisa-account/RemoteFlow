@@ -2,6 +2,10 @@
 namespace App\Service;
 
 use App\Models\DayMarker;
+use App\Models\Holidays;
+use App\Models\LeaveRequest;
+use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 class DayMarkerService
 {
@@ -13,46 +17,8 @@ class DayMarkerService
             'status'  => 'HOLIDAY_WORKED',
         ],[
             'note'  => 'Worked on public holiday',
-            'color' => '#10b981',
+            'color' => '#4fffc4ff',
         ]);
-    }
-
-    public function getWeekendHolidays(array $holidayDates): array {
-        $off = [];
-
-        foreach ($holidayDates as $date) {
-            $d = \Carbon\Carbon::parse($date);
-
-            if($d->isSaturday()) {
-                $off[] = $d->copy()->addDays(2)->toDateString();
-            }
-
-            if($d->isSunday()) {
-                $off[] = $d->copy()->addDay()->toDateString();
-            }
-        }
-
-        if(count($off) === 2 && $off[0] === $off[1]) {
-            $off[] = \Carbon\Carbon::parse($off[0])->addDay()->toDateString();
-        }
-
-        return array_unique($off);
-    }
-
-    public function markWeekendHolidays(int $userId, array $holidayDates): array {
-        $offDays  = $this->getWeekendHolidays($holidayDates);
-
-        foreach ($offDays as $offDate) {
-            DayMarker::updateOrCreate(
-                ['user_id' => $userId, 'date' => $offDate, 'status' => 'WEEKEND_HOLIDAY'],
-                [
-                    'note' => 'Off day due to weekend holiday',
-                    'color' => '#8e8bc8ff',
-                ]
-                );
-        }
-
-        return $offDays;
     }
 
 

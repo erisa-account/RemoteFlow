@@ -17,19 +17,18 @@ class HolidaysController extends Controller {
 
     public function weekendHolidays() {
 
-        $holidays = HolidaysService::allHolidays();
-        $holidayDates = $holidays->pluck('date')->toArray();
+        
+        $holidaysService = app(HolidaysService::class);
 
-        $compensationDays = app(DayMarkerService::class)->getWeekendHolidays($holidayDates);
+        $allOffDays = $holidaysService->getWeekendHolidays();
 
-        $allCompensated = [];
-        foreach ($compensationDays as $d) {
-            $allCompensated[] = [
-                'date' => $d,
-                'name' => 'Weekend Holiday',
-                'color' => '#9bda49ff',
-            ];
-        }
+        $allCompensated = array_map(function($date) {
+            return [
+                'date' => $date,
+                'name' => "Weekend Holiday",
+                ];
+        }, $allOffDays);
+
         return response()->json(['data' => $allCompensated]);
     }
 
