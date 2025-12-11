@@ -1,6 +1,8 @@
 import Swal from 'sweetalert2';
 
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('load', () => {
+    
+
     const form = document.getElementById('checkin-form');
     const statusInput = document.getElementById('status');
     const dateInput = document.getElementById('datepicker');
@@ -12,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let isSubmitting = false;
 
     form.addEventListener('submit', async function (e) {
-        e.preventDefault();
+        e.preventDefault(); 
 
         if (isSubmitting) return;
         isSubmitting = true;

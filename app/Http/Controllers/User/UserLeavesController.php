@@ -13,10 +13,11 @@ class UserLeavesController extends Controller
     {
          $this->leavehistoryService = $leavehistoryService;
     }
-
+ 
     public function getUserLeaves()
     {
-        $requests = $this->leavehistoryService->getAll();
+        $userId = auth()->id();
+        $requests = $this->leavehistoryService->getAll($userId);
 
         return UserLeavesResource::collection($requests);
     }

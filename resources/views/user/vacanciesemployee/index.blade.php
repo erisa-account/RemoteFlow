@@ -27,16 +27,15 @@
 </head>
 <body class="h-full bg-neutral-50 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-100">
   <!-- Header -->
-  <header class="sticky top-0 z-10 bg-white/90 dark:bg-neutral-950/80 backdrop-blur border-b border-neutral-200 dark:border-neutral-800">
+  <header class="sticky top-0 bg-white/90 dark:bg-gray-800 backdrop-blur border-b border-neutral-200 dark:border-neutral-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
       <div>
-        <p class="text-sm text-neutral-500 dark:text-neutral-400 leading-tight">Vacation Management</p>
-        <p class="text-xs text-neutral-400 dark:text-neutral-500 -mt-0.5">Welcome, John Doe</p>
+        
       </div>
 
       <div class="flex items-center gap-2">
         <!-- Theme toggle -->
-        <button id="themeToggle" class="rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-2.5 py-2 shadow-soft hover:bg-neutral-50 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-brand-400" title="Toggle dark mode" aria-label="Toggle dark mode">
+        <button id="themeToggle" class="rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-2.5 py-2 shadow-soft hover:bg-neutral-50 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-brand-400 hidden " title="Toggle dark mode" aria-label="Toggle dark mode">
           <span id="themeIcon" class="inline-block">
              <!--moon -->
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 hidden dark:block" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 1 0 9.79 9.79z"/></svg>
@@ -58,12 +57,12 @@
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
     <section>
       <h2 class="text-lg font-semibold">Your Vacation Balance</h2>
-      <p class="text-sm text-neutral-500 dark:text-neutral-400">Track your time off for 2025</p>
+      <p class="text-sm text-neutral-500 dark:text-neutral-400">Track your time off</p>
     </section>
 
     <!-- KPIs -->
     <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      <div class="bg-white dark:bg-neutral-950 rounded-2xl p-5 shadow-soft border border-neutral-200 dark:border-neutral-800">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-soft border border-neutral-200 dark:border-neutral-800">
         <div class="flex items-center justify-between">
           <p class="text-xs uppercase tracking-wide text-neutral-500 dark:text-neutral-400">Total Days</p>
           <div class="h-9 w-9 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center dark:bg-brand-500/10 dark:text-brand-400">
@@ -73,7 +72,7 @@
         <p id="totalDays" class="mt-3 text-3xl font-bold tracking-tight"></p>
       </div>
 
-      <div class="bg-white dark:bg-neutral-950 rounded-2xl p-5 shadow-soft border border-neutral-200 dark:border-neutral-800">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-soft border border-neutral-200 dark:border-neutral-800">
         <div class="flex items-center justify-between">
           <p class="text-xs uppercase tracking-wide text-neutral-500 dark:text-neutral-400">Used Days</p>
           <div class="h-9 w-9 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center dark:bg-rose-500/10 dark:text-rose-400">
@@ -83,7 +82,7 @@
         <p id="usedDays" class="mt-3 text-3xl font-bold tracking-tight"></p>
       </div>
 
-      <div class="bg-white dark:bg-neutral-950 rounded-2xl p-5 shadow-soft border border-neutral-200 dark:border-neutral-800">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-soft border border-neutral-200 dark:border-neutral-800">
         <div class="flex items-center justify-between">
           <p class="text-xs uppercase tracking-wide text-neutral-500 dark:text-neutral-400">Remaining Days</p>
           <div class="h-9 w-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center dark:bg-emerald-500/10 dark:text-emerald-400">
@@ -98,7 +97,7 @@
     <!-- Calendar + Sidebar -->
     <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <!-- Calendar card -->
-      <div class="lg:col-span-2 bg-white dark:bg-neutral-950 rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-soft">
+      <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-soft">
         <div class="p-5 border-b border-neutral-200 dark:border-neutral-800">
           <h3 class="text-sm font-semibold">Vacation Calendar</h3>
           <p class="text-xs text-neutral-500 dark:text-neutral-400">View your scheduled time off</p>
@@ -148,19 +147,19 @@
 
       <!-- Sidebar -->
       <aside class="space-y-6">
-        <div class="bg-white dark:bg-neutral-950 rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-soft">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-soft">
           <div class="p-5 border-b border-neutral-200 dark:border-neutral-800">
             <h4 class="text-sm font-semibold">Leave Types</h4>
           </div>
           <div class="p-4 space-y-3 text-sm">
             <div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-brand-500"></span>Vacation</div><span class="text-[10px] rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5">Paid</span></div>
             <div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-rose-500"></span>Sick Leave</div><span class="text-[10px] rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5">Paid</span></div>
-            <div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-violet-500"></span>Replacment</div><span class="text-[10px] rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5">Paid</span></div>
+            <div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-violet-500"></span>Replacment</div><span class="text-[10px] rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5">Unpaid</span></div>
             <div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-amber-500"></span>Other</div><span class="text-[10px] rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5">Unpaid</span></div>
           </div>
         </div>
 
-        <div class="bg-white dark:bg-neutral-950 rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-soft">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-soft">
           <div class="p-5 border-b border-neutral-200 dark:border-neutral-800">
             <h4 class="text-sm font-semibold">Usage Progress</h4>
           </div>
@@ -169,16 +168,16 @@
               <div class="flex items-center justify-between text-xs text-neutral-500 dark:text-neutral-400 mb-1">
                 <span>2025 Usage</span><span id="usagePct">0%</span>
               </div>
-              <div class="h-2 w-full bg-neutral-100 dark:bg-neutral-800 rounded-full overflow-hidden">
+              <div class="h-2 w-full bg-neutral-100 dark:bg-white rounded-full overflow-hidden">
                 <div id="usageBar" class="h-full bg-brand-500 rounded-full" style="width:0%"></div>
               </div>
             </div>
             <div class="grid grid-cols-2 gap-3 text-xs">
-              <div class="rounded-xl border border-neutral-200 dark:border-neutral-800 p-3">
+              <div class="rounded-xl border border-neutral-200 dark:border-neutral-800 p-3 dark:bg-gray-700">
                 <p class="text-neutral-500 dark:text-neutral-400">Days used</p>
                 <p class="mt-1 font-semibold"><span id="usedDaysSmall">0</span> days</p>
               </div>
-              <div class="rounded-xl border border-neutral-200 dark:border-neutral-800 p-3">
+              <div class="rounded-xl border border-neutral-200 dark:border-neutral-800 p-3 dark:bg-gray-700">
                 <p class="text-neutral-500 dark:text-neutral-400">Days remaining</p>
                 <p class="mt-1 font-semibold"><span id="remainingDaysSmall">20</span> days</p>
               </div>
@@ -189,7 +188,7 @@
 
       <!-- Leave History -->
  
-   <section class="mt-6 bg-white lg:col-span-2 dark:bg-neutral-950 rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-soft">
+   <section class="mt-6 bg-white lg:col-span-2 dark:bg-gray-800 rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-soft">
   <div class="px-5 pt-5">
     <div class="flex items-center gap-2 text-sm font-semibold">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-neutral-500 dark:text-neutral-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -226,7 +225,7 @@
     <!-- dialog -->
     <div class="relative h-full w-full flex items-start sm:items-center justify-center p-4">
       <div role="dialog" aria-modal="true" aria-labelledby="modalTitle"
-        class="w-full max-w-2xl rounded-2xl bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 shadow-modal">
+        class="w-full max-w-2xl rounded-2xl bg-white dark:bg-gray-800 border border-neutral-200 dark:border-neutral-800 shadow-modal">
         <!-- header -->
         <div class="flex items-start justify-between p-5 border-b border-neutral-200 dark:border-neutral-800">
           <div>
@@ -244,7 +243,7 @@
           <div>
             <label class="text-sm font-medium">Leave Type <span class="text-rose-600">*</span></label>
             <div class="relative mt-1">
-              <select id="leaveType" name="leave_type_id" class="w-full appearance-none rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-3.5 py-2.5 pr-9 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400">
+              <select id="leaveType" name="leave_type_id" class="w-full appearance-none rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-gray-700 px-3.5 py-2.5 pr-9 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400">
                 <option value="1">Vacation</option>
                 <option value="2">Sick Leave</option>
                 <option value="3">Other</option>
@@ -262,7 +261,7 @@
               <label for="startDate" class="text-sm font-medium">Start Date <span class="text-rose-600">*</span></label>
               <div class="relative mt-1">
                 <input id="startDate" name="start_date"  type="date" placeholder="dd/mm/yyyy"
-                  class="w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-3.5 py-2.5 pr-9 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400"/>
+                  class="w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-gray-700 px-3.5 py-2.5 pr-9 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400"/>
                 <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v4M16 2v4M3 10h18M4 6h16a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z"/></svg>
                 </span>
@@ -272,7 +271,7 @@
               <label for="endDate" class="text-sm font-medium">End Date <span class="text-rose-600">*</span></label>
               <div class="relative mt-1">
                 <input id="endDate" name="end_date" type="date" placeholder="dd/mm/yyyy"
-                  class="w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-3.5 py-2.5 pr-9 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400"/>
+                  class="w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-gray-700 px-3.5 py-2.5 pr-9 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400"/>
                 <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v4M16 2v4M3 10h18M4 6h16a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z"/></svg>
                 </span>
@@ -284,7 +283,7 @@
           <div>
             <label class="text-sm font-medium">Reason <span class="text-rose-600"></span></label>
             <textarea id="reason" name="reason" rows="4" placeholder="Briefly describe the reason for your leave request..."
-              class="mt-1 w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-3.5 py-2.5 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400"></textarea>
+              class="mt-1 w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-gray-700 px-3.5 py-2.5 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400"></textarea>
           </div>
 
           <!-- Medical certificate (conditional) -->
@@ -314,7 +313,7 @@
           <!-- footer -->
           <div class="pt-2 flex items-center justify-end gap-3">
             <button type="button" id="cancelModal"
-              class="rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-4 py-2 text-sm shadow-soft hover:bg-neutral-50 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-brand-400">Cancel</button>
+              class="rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-gray-700 px-4 py-2 text-sm shadow-soft hover:bg-neutral-50 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-brand-400">Cancel</button>
             <button type="submit" id="submitBtn"
               class="rounded-xl bg-brand-600 px-4 py-2 text-sm font-medium text-white shadow-soft hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-400 disabled:opacity-60 disabled:cursor-not-allowed">Submit Request</button>
           </div>

@@ -14,7 +14,7 @@ class BalanceService
          ['user_id' => $userId, 'year' => $year],
          ['total_days' => $defaultTotal]
         );
-    }
+    } 
 
         public function applyApproval(LeaveRequest $r): void
         {

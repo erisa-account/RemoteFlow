@@ -33,6 +33,10 @@ Route::post('/send-email', [SendEmailController::class, 'sendEmail']);
 Route::get('/remotive-events', [RemotiveFilterController::class, 'events']); 
 Route::get('/statusesnotonsite', [StatusController::class, 'getStatusesNotOnSite']);
 
+//Route::middleware('auth:sanctum')->get('/pending-leaves', [StatusController::class, 'countPending']); 
+
+//Route::middleware('auth')->get('/pending-leaves', [StatusController::class, 'countPending']);
+
 
 
 

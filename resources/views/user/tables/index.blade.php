@@ -15,9 +15,8 @@
     <div class="mx-auto w-full max-w-[550px]"> 
         <section class="mx-auto max-w-2xl">
         <div
-          class="relative overflow-hidden rounded-xl border border-slate-200/70 bg-white/80 p-6 mt-7 mb-5 shadow-xl backdrop-blur-sm dark:border-slate-700/60 dark:bg-slate-900/70">
+          class="relative overflow-hidden  rounded-xl bg-gradient-to-b from-indigo-200/30 to-transparent dark:from-indigo-500/10 border border-slate-200/70 p-6 mt-7 mb-5 shadow-xl backdrop-blur-sm dark:border-slate-700/60 dark:bg-slate-900/70">
         <!-- subtle gradient glow -->
-        <div class="pointer-events-none absolute -inset-1 rounded-3xl bg-gradient-to-b from-indigo-200/30 to-transparent dark:from-indigo-500/10"></div>
        
         <form id="uploadform" method="POST" class="py-4 px-9">
 
@@ -38,21 +37,20 @@
       </div>
        </div>
 
-             <div class="space-y-2 mt-6">
-        <label for="email" class="text-sm font-medium text-slate-700 dark:text-slate-300">Send files to this
-          email</label>
-        <div
-          class="group flex items-center gap-3 rounded-2xl border border-slate-300 bg-white px-4 py-1 shadow-sm ring-indigo-500/20 transition focus-within:ring-4 dark:border-slate-700 dark:bg-slate-900">
-          <svg class="h-5 w-5 text-slate-400 transition group-focus-within:text-indigo-500 dark:text-slate-500"
+             
+
+      <div class="space-y-2 mt-6">
+        <label for="subject" class="text-sm font-medium text-slate-700 dark:text-slate-300">Send files to this email</label>
+        <div class="flex items-center gap-3 rounded-2xl border border-slate-300 bg-white px-4 py-1 shadow-sm focus-within:ring-4 ring-indigo-500/20 dark:border-slate-700 dark:bg-slate-900">
+         <svg class="h-5 w-5 text-slate-400 transition group-focus-within:text-indigo-500 dark:text-slate-500"
             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
             <path
               d="M22 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-15A2.5 2.5 0 0 1 2 17.5v-11A2.5 2.5 0 0 1 4.5 4h15A2.5 2.5 0 0 1 22 6.5Zm-2 .1L12.7 12a1.5 1.5 0 0 1-1.4 0L4 6.6v10.9A1.5 1.5 0 0 0 5.5 19h13a1.5 1.5 0 0 0 1.5-1.5Z" />
           </svg>
-          <input input type="email" name="email" id="email" required placeholder="example@domain.com"
-           class="w-full bg-transparent text-slate-900 placeholder-slate-400 outline-none border-0 focus:ring-0 dark:text-slate-100" />
-        </div>
-      </div>
-
+        <input type="email" name="email" id="email" placeholder="example@domain.com" required
+          class="w-full text-slate-900 outline-none border-0 focus:ring-0 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 bg-white" />
+          </div>
+          </div>
 
          
       <div class="space-y-2 mt-6">

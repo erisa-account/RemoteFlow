@@ -1,9 +1,13 @@
-
+ 
 document.addEventListener("DOMContentLoaded", function () {
+
+  const select = document.getElementById('status');
+  if(!select) return;
+  
     fetch('/api/statuses')
         .then(response => response.json())
         .then(data => {
-            const select = document.getElementById('status');
+            
             select.innerHTML = '<option value="">Zgjidh një status</option>';
 
             data.forEach(status => {

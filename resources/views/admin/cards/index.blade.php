@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 @section('content')
 
+
 <head>
     @vite(['resources/css/app.css', 'resources/js/admindashboard.js']) 
     
@@ -29,8 +30,8 @@
 <body class="h-full bg-neutral-50 text-neutral-800">
 
   <!-- Top strip -->
-  <header class="sticky top-0 z-10 bg-white/90 border-b border-neutral-200 backdrop-blur">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+  <header class="sticky top-0 z-10 bg-white/90 border-b border-neutral-200 backdrop-blur dark:border-neutral-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between hidden">
       <div>
         <p class="text-sm font-medium">Admin Dashboard</p>
         <p class="text-xs text-neutral-500 -mt-0.5">Manage employee time off</p>
@@ -45,25 +46,25 @@
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
     <!-- Overview title -->
     <section>
-      <h2 class="text-xl font-semibold">Overview</h2>
-      <p class="text-sm text-neutral-500">Monitor vacation usage and leave requests</p>
+      <h2 class="text-xl font-semibold dark:text-white">Overview</h2>
+      <p class="text-sm text-neutral-500 dark:text-white/70">Monitor vacation usage and leave requests</p>
     </section>
 
     <!-- Metrics -->
     <section id="metrics" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></section>
 
     <!-- Employees -->
-    <section class="bg-white rounded-2xl border border-neutral-200 shadow-soft">
-      <div class="p-5 border-b border-neutral-200">
-        <h3 class="text-sm font-semibold">Employee Overview</h3>
-        <p class="text-xs text-neutral-500">View vacation balances for all employees</p>
+    <section class="bg-white dark:bg-gray-800 rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-soft">
+      <div class="p-5 border-b border-neutral-200 dark:border-neutral-800">
+        <h3 class="text-sm font-semibold dark:text-gray-200">Employee Overview</h3>
+        <p class="text-xs text-neutral-500 dark:text-gray-200">View vacation balances for all employees</p>
       </div>
 
       <!-- Toolbar -->
       <div class="px-5 py-4 flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
         <div class="w-full md:max-w-md">
           <div class="relative">
-            <input id="empSearch" type="text" placeholder="Search employees…" class="w-full rounded-xl border border-neutral-200 bg-white px-3.5 py-2 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400">
+            <input id="empSearch" type="text" placeholder="Search employees…" class="w-full rounded-xl border border-neutral-200 bg-white dark:bg-gray-700 dark:border-gray-600 px-3.5 py-2 text-sm shadow-soft dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400">
             <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
             </span>
@@ -71,7 +72,7 @@
         </div>
         <div class="flex gap-3">
           <div class="relative">
-            <select id="empDept" class="appearance-none rounded-xl border border-neutral-200 bg-white px-3.5 py-2 pr-9 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400">
+            <select id="empDept" class="appearance-none rounded-xl border border-neutral-200 bg-white dark:bg-gray-700 dark:border-gray-600 px-3.5 py-2 pr-9 text-sm shadow-soft dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400">
               <option value="">All Departments</option>
             </select>
             <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400">
@@ -79,7 +80,7 @@
             </span>
           </div>
           <div class="relative">
-            <select id="empSort" class="appearance-none rounded-xl border border-neutral-200 bg-white px-3.5 py-2 pr-9 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400">
+            <select id="empSort" class="appearance-none rounded-xl border border-neutral-200 bg-white dark:bg-gray-700 dark:border-gray-600 px-3.5 py-2 pr-9 text-sm shadow-soft dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400">
               <option value="name">Name</option>
               <option value="remaining">Remaining days</option>
               <option value="total">Total days</option>
@@ -96,15 +97,15 @@
     </section>
 
     <!-- Leave Requests -->
-    <section class="bg-white rounded-2xl border border-neutral-200 shadow-soft">
-      <div class="p-5 border-b border-neutral-200">
-        <div class="flex items-center gap-2 text-sm font-semibold">
+    <section class="bg-white dark:bg-gray-800 rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-soft">
+      <div class="p-5 border-b border-neutral-200 dark:border-neutral-800">
+        <div class="flex items-center gap-2 text-sm font-semibold dark:text-gray-200">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-neutral-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M8 2v4M16 2v4M3 10h18M4 6h16a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z"/>
           </svg>
           Leave Requests
         </div>
-        <p class="text-xs text-neutral-500">Review and manage employee leave requests</p>
+        <p class="text-xs text-neutral-500 dark:text-gray-200">Review and manage employee leave requests</p>
       </div>
       <div id="requestList" class="p-5 space-y-3"></div>
 

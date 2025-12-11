@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\LeavesController;
 use App\Http\Controllers\User\UserLeavesController;
 use App\Http\Controllers\User\DayMarkerController;
 use App\Http\Controllers\User\HolidaysController;
+use App\Http\Controllers\User\StatusController;
 
 
 
@@ -85,10 +86,10 @@ Route::get('/user', function () {
 Route::post('/leave-request', [RequestLeaveController::class, 'storerequest'])->middleware('auth');
 
 
-Route::get('/leave-summary', [RequestLeaveController::class, 'getLeaveSummary']);
+Route::get('/leave-summary', [RequestLeaveController::class, 'getLeaveSummary'])->middleware('auth');
 
 
-Route::get('/leave-history', [UserLeavesController::class, 'getUserLeaves']);
+Route::get('/leave-history', [UserLeavesController::class, 'getUserLeaves'])->middleware('auth');
 
 Route::get('/day-marker/{user}', [DayMarkerController::class, 'index']);
 
@@ -96,6 +97,10 @@ Route::get('/day-marker/{user}', [DayMarkerController::class, 'index']);
 
 Route::get('/holidays', [HolidaysController::class, 'index']);
 Route::get('/holidays/weekend', [HolidaysController::class, 'weekendHolidays']);
+
+
+
+Route::get('/pending-leaves', [StatusController::class, 'countPending'])->middleware('auth');
 
 
 

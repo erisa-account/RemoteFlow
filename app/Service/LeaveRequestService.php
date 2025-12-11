@@ -19,7 +19,7 @@ public function store(StoreLeaveRequestRequest $request)
     
 
     $holidayService = app(\App\Service\HolidaysService::class);
-
+ 
     $offDays = $holidayService->getAllOffDaysForYear();
 
     $leaveType = LeaveType::findOrFail($data['leave_type_id']);

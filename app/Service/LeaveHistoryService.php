@@ -7,11 +7,12 @@ use Illuminate\Support\Facades\DB;
 
 class LeaveHistoryService
 {
-    public function getAll()
+    public function getAll($userId)
     {
         return LeaveRequest::with(['user', 'type'])
+            ->where('user_id', $userId)
             ->orderBy('id', 'desc')
-            ->get();
+            ->get(); 
     }
 
     public function getByUser($userId)

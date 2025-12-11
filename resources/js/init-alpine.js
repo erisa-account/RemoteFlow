@@ -12,7 +12,7 @@ window.data = function() {
         window.localStorage.setItem('dark', val)
     }
 
-    return { 
+    return {  
         dark: getThemeFromLocalStorage(),
         toggleTheme() {
             this.dark = !this.dark

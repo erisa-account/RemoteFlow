@@ -25,7 +25,7 @@ class RequestLeaveController extends Controller
         $this->leaverequestService = $leaverequestService;
         $this->balanceService = $balanceService;
     }
-
+ 
 
     public function storerequest(StoreLeaveRequestRequest $request)
     {

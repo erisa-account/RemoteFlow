@@ -1,13 +1,11 @@
 
-
-
 @extends ('layouts.user')
 @section('content')
 
     
-    <head>
+    
          @vite(['resources/css/app.css', 'resources/js/status.js', 'resources/js/alerts.js']) 
-</head>
+
 
      
     <div class="mx-auto w-full max-w-[550px] mt-12">

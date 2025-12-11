@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
 
     fetch('/leave-summary', {
+      
       method: 'GET',
       credentials: 'same-origin',
       headers: {
@@ -34,6 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
         //document.getElementById('totalDays').textContent = data.total_days;
         //document.getElementById('usedDays').textContent = data.used_days;
         //document.getElementById('remainingDays').textContent = data.remaining_days;
+        console.log("api result", data);
+        
          state.totalDays = data.data.total_days;
          state.usedDays = data.data.used_days;
          state.remainingDays = data.data.remaining_days;
@@ -79,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // leading blanks
       for(let i=0;i<first;i++){
         const c = document.createElement('div');
-        c.className = 'aspect-square rounded-xl bg-neutral-50 dark:bg-neutral-900 border border-dashed border-neutral-200 dark:border-neutral-800';
+        c.className = 'aspect-square rounded-xl bg-neutral-50 dark:bg-gray-800 border border-dashed border-neutral-200 dark:border-neutral-800';
         grid.appendChild(c);
       }
 
@@ -94,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const cell = document.createElement('button');
         cell.type = 'button';
-        cell.className = 'relative aspect-square rounded-xl border bg-white dark:bg-neutral-950 border-neutral-200 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition focus:outline-none focus:ring-2 focus:ring-brand-400';
+        cell.className = 'relative aspect-square rounded-xl border bg-white dark:bg-gray-800 border-neutral-200 dark:border-gray-600 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition focus:outline-none focus:ring-2 focus:ring-brand-400';
         const number = document.createElement('span');
         number.className = 'absolute top-2 left-2 text-sm font-medium';
         number.textContent = d;
@@ -347,17 +350,8 @@ document.addEventListener('DOMContentLoaded', () => {
       hideError();
     }
 
-    // -------- Theme toggle --------
-    const themeBtn = document.getElementById('themeToggle');
-    const root = document.documentElement;
-    function applyTheme(t){ if(t==='dark') root.classList.add('dark'); else root.classList.remove('dark'); }
-    function currentTheme(){ return localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); }
-    applyTheme(currentTheme());
-    themeBtn.addEventListener('click', ()=>{
-      const t = root.classList.contains('dark') ? 'light' : 'dark';
-      applyTheme(t); localStorage.setItem('theme', t);
-    });
-
+    
+    
     // -------- Calendar navigation --------
     document.getElementById('prevBtn').addEventListener('click', ()=>{
       state.viewDate = new Date(state.viewDate.getFullYear(), state.viewDate.getMonth()-1, 1);
@@ -591,7 +585,7 @@ function renderLeaveHistory(containerId, items) {
     const days = inclusiveDays(item.start, item.end);
 
     const el = document.createElement('div');
-    el.className = 'rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 px-4 py-3';
+    el.className = 'rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-gray-700 px-4 py-3';
     el.innerHTML = `
       <div class="flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-2">
@@ -618,13 +612,13 @@ function renderLeaveHistory(containerId, items) {
       </div>
 
       <div class="mt-2 flex flex-wrap items-center gap-4 text-sm">
-        <div class="flex items-center gap-2 text-neutral-600 dark:text-neutral-300">
+        <div class="flex items-center gap-2 text-neutral-600 dark:text-gray-200">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M8 2v4M16 2v4M3 10h18M4 6h16a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z"/>
           </svg>
           <span>${fmtRange(item.start, item.end)}</span>
         </div>
-        <div class="flex items-center gap-2 text-neutral-600 dark:text-neutral-300">
+        <div class="flex items-center gap-2 text-neutral-600 dark:text-gray-200">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>
           </svg>

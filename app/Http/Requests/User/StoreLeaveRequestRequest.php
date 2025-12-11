@@ -9,7 +9,7 @@ class StoreLeaveRequestRequest extends FormRequest
 {
     public function authorize(): bool { return true; }
 
-    public function rules(): array
+    public function rules(): array 
     {
         return [
         'leave_type_id' => ['required','integer','exists:leave_types,id'],

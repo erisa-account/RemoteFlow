@@ -26,12 +26,12 @@ import Swal from 'sweetalert2';
       ];
       items.forEach(it=>{
         const card=document.createElement('div');
-        card.className='bg-white rounded-2xl border border-neutral-200 shadow-soft';
+        card.className='bg-white dark:bg-gray-800 rounded-2xl border dark:border-neutral-800 shadow-soft';
         card.innerHTML=`
           <div class="p-5">
-            <div class="text-xs uppercase tracking-wide text-neutral-500">${it.label}</div>
+            <div class="text-xs uppercase tracking-wide text-neutral-500 dark:text-gray-200">${it.label}</div>
             <div class="mt-2 flex items-center justify-between">
-              <div class="text-3xl font-semibold">${it.value}</div>
+              <div class="text-3xl font-semibold dark:text-gray-200">${it.value}</div>
               <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl ${it.badge}">${it.icon}</span>
             </div>
           </div>`;
@@ -46,22 +46,22 @@ import Swal from 'sweetalert2';
     function usageBar(used,total){
       const p = pct(used,total);
       return `<div class="mt-3">
-        <div class="flex items-center justify-between text-xs text-neutral-500 mb-1"><span>Usage</span><span>${p}%</span></div>
+        <div class="flex items-center justify-between text-xs text-neutral-500 mb-1 dark:text-gray-200"><span>Usage</span><span>${p}%</span></div>
         <div class="h-2 w-full bg-neutral-100 rounded-full overflow-hidden">
-          <div class="h-full bg-brand-500 rounded-full" style="width:${p}%;"></div>
+          <div class="h-full bg-brand-500 rounded-full dark:text-gray-200" style="width:${p}%;"></div>
         </div>
       </div>`;
     }
     function employeeCard(e){
       const remain = Math.max(0,(e.totalDays||0)-(e.usedDays||0));
       const el=document.createElement('div');
-      el.className='rounded-2xl border border-neutral-200 bg-white shadow-soft';
+      el.className='rounded-2xl border  border-neutral-200 bg-white dark:bg-gray-700 dark:border-gray-600 shadow-soft';
       el.innerHTML=`
         <div class="p-5">
           <div class="flex items-start gap-3">
             <span class="h-10 w-10 rounded-full bg-brand-50 text-brand-700 flex items-center justify-center text-sm font-semibold">${initials(e.name)}</span>
             <div class="min-w-0">
-              <div class="font-medium">${e.name}</div>
+              <div class="font-medium dark:text-gray-200">${e.name}</div>
               <div class="text-xs text-neutral-500">${e.role||''}</div>
               <div class="mt-2 flex flex-wrap items-center gap-3 text-xs text-neutral-600">
                 <span class="inline-flex items-center gap-1">
@@ -78,25 +78,25 @@ import Swal from 'sweetalert2';
 
           <div class="mt-4 grid grid-cols-2 gap-6">
             <div>
-              <div class="text-[10px] uppercase text-neutral-500">Total Days</div>
-              <div class="text-lg font-semibold">${e.totalDays||0}</div>
+              <div class="text-[10px] uppercase text-neutral-500 dark:text-gray-200">Total Days</div>
+              <div class="text-lg font-semibold dark:text-gray-200">${e.totalDays||0}</div>
             </div>
             <div>
-              <div class="text-[10px] uppercase text-neutral-500">Remaining</div>
-              <div class="text-lg font-semibold text-emerald-600">${remain}</div>
+              <div class="text-[10px] uppercase text-neutral-500 dark:text-gray-200">Remaining</div>
+              <div class="text-lg font-semibold text-emerald-600 dark:text-gray-200">${remain}</div>
             </div>
           </div>
 
           ${usageBar(e.usedDays||0, e.totalDays||0)}
 
           <div class="mt-2 grid grid-cols-2 gap-3 text-xs">
-            <div class="rounded-xl border border-neutral-200 p-3">
-              <div class="text-neutral-500">Used</div>
-              <div class="mt-1 font-semibold">${e.usedDays||0}</div>
+            <div class="rounded-xl border border-neutral-200 p-3 dark:border-gray-600">
+              <div class="text-neutral-500 dark:text-gray-200">Used</div>
+              <div class="mt-1 font-semibold dark:text-gray-200">${e.usedDays||0}</div>
             </div>
-            <div class="rounded-xl border border-neutral-200 p-3">
-              <div class="text-neutral-500">Available</div>
-              <div class="mt-1 font-semibold">${remain}</div>
+            <div class="rounded-xl border border-neutral-200 p-3 dark:border-gray-600">
+              <div class="text-neutral-500 dark:text-gray-200">Available</div>
+              <div class="mt-1 font-semibold dark:text-gray-200">${remain}</div>
             </div>
           </div>
 
@@ -279,7 +279,7 @@ import Swal from 'sweetalert2';
     function requestItem(r){
       //const days = daysBetween(r.start, r.end);
       const el=document.createElement('div');
-      el.className='rounded-xl border border-neutral-200 bg-white px-4 py-3';
+      el.className='rounded-xl border border-neutral-200 bg-white dark:bg-gray-700 dark:border-gray-600 px-4 py-3';
 
     
 
@@ -291,8 +291,8 @@ import Swal from 'sweetalert2';
             <div class="min-w-0 grow">
               <div class="flex flex-wrap items-center justify-start gap-6">
                 <div class="min-w-0">
-                  <div class="font-medium truncate">${r.employee?.name||''}</div>
-                  <div class="text-xs text-neutral-500 truncate">${r.employee?.role||''}</div>
+                  <div class="font-medium truncate dark:text-gray-200">${r.employee?.name||''}</div>
+                  <div class="text-xs text-neutral-500 truncate dark:text-gray-200">${r.employee?.role||''}</div>
                 </div>
                 <div class="flex items-center gap-2">
                   <span class="text-[11px] px-2 py-1 rounded-md ${TYPE_BADGE[r.type]||'bg-neutral-100 text-neutral-700 border'} capitalize">${TYPE_LABEL[r.type]||r.type}</span>
@@ -316,12 +316,12 @@ import Swal from 'sweetalert2';
               </div>
 
               <div class="mt-2 flex flex-wrap items-center gap-4 text-sm">
-                <span class="inline-flex items-center gap-2 text-neutral-600">
+                <span class="inline-flex items-center gap-2 text-neutral-600 dark:text-gray-200">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M8 2v4M16 2v4M3 10h18M4 6h16a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z"/></svg>
                   ${fmtRange(r.start,r.end)}
                 </span>
-                <span class="inline-flex items-center gap-2 text-neutral-600">
+                <span class="inline-flex items-center gap-2 text-neutral-600 dark:text-gray-200">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
                  ${r.days} days
                 </span>
