@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminProductController; 
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\CheckinController;
 // use App\Http\Controllers\TestController;
 use App\Http\Controllers\Admin\TestController;
@@ -18,6 +18,8 @@ use App\Http\Controllers\User\UserLeavesController;
 use App\Http\Controllers\User\DayMarkerController;
 use App\Http\Controllers\User\HolidaysController;
 use App\Http\Controllers\User\StatusController;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\EmailController;
 
 
 
@@ -53,34 +55,47 @@ Route::get('/dashboard', function () {
 
 
 
+Route::middleware(['auth', 'is_user'])->name('user.')->prefix('user')->group(function () {
+
+/*Route::get('/user', function () {
+    return view('user');
+})->name('user');*/
+
+
+Route::get('/', [UserController::class, 'index'])->name('userdashboard');
+
+
+    
 
 Route::get('/forms', function () { 
     return view('user.forms.forms'); 
-})->middleware(['auth', 'verified'])->name('forms'); 
+})->name('forms'); 
 
 Route::get('/index', function () { 
     return view('user.tables.index'); 
-})->middleware(['auth', 'verified'])->name('index'); 
+})->name('index'); 
 
 Route::get('/test', function () { 
     return view('test.test'); 
-})->middleware(['auth', 'verified'])->name('test');
+})->name('test');
 
 
 Route::get('/vacanciesemployee', function () {
     return view('user.vacanciesemployee.index');
-})->middleware(['auth', 'verified'])->name('vacanciesemployee');
+})->name('vacanciesemployee');
 
 
 Route::get('/remotivecalendar', function () { 
     return view('user.schedule.index'); 
-})->middleware(['auth', 'verified'])->name('remotivecalendar'); 
+})->name('remotivecalendar'); 
 
+
+    Route::post('/checkin/store', [CheckinController::class, 'store'])->name('checkin.store');
+    Route::post('/checkin/update/{id}', [CheckinController::class, 'update'])->name('checkin.update');
+    
+    
  
-
-Route::get('/user', function () {
-    return view('user');
-})->middleware(['auth', 'verified'])->name('user'); 
+});
 
 
 Route::post('/leave-request', [RequestLeaveController::class, 'storerequest'])->middleware('auth');
@@ -93,7 +108,6 @@ Route::get('/leave-history', [UserLeavesController::class, 'getUserLeaves'])->mi
 
 Route::get('/day-marker/{user}', [DayMarkerController::class, 'index']);
 
-//Route::post('/admin/users/store', [TestController::class, 'store'])->name('admin.users.store');
 
 Route::get('/holidays', [HolidaysController::class, 'index']);
 Route::get('/holidays/weekend', [HolidaysController::class, 'weekendHolidays']);
@@ -101,6 +115,7 @@ Route::get('/holidays/weekend', [HolidaysController::class, 'weekendHolidays']);
 
 
 Route::get('/pending-leaves', [StatusController::class, 'countPending'])->middleware('auth');
+
 
 
 
@@ -112,30 +127,25 @@ Route::middleware('auth')->group(function () {
 
 
 
-// Route::middleware(['auth'])->group(function () {
-//     Route::resource('/product', ProductController::class);
 
-//     Route:: middleware(['is_admin'])->name('admin.')->prefix('admin')->group(function () {
-//         Route::get('/', [AdminController::class, 'index'])->name('index');
-//         Route::resource('/products', AdminProductController::class);
-//     });
-// });
+
+
 
  
      
- 
-    
-    //Route::post('/user/test/store', [TestController::class, 'store'])->name('user.test.store');
-    //Route::get('/test/get', [TestController::class, 'getData'])->name('test.get');
-    
     
     
     Route::middleware(['auth'])->group(function () {
     Route::resource('/product', ProductController::class);
+    });
 
-    Route::middleware(['is_admin'])->name('admin.')->prefix('admin')->group(function () {
+
+    Route::middleware(['auth', 'is_admin'])->name('admin.')->prefix('admin')->group(function () {
+       
         Route::get('/', [AdminController::class, 'index'])->name('index');
+       
         Route::resource('/products', AdminProductController::class);
+        
         Route::get('/form', function () {
             return view('admin.forms.index');
         })->name('form');
@@ -158,29 +168,26 @@ Route::middleware('auth')->group(function () {
 
 
 
-       
-    Route::prefix('user')->name('user.')->group(function () {
-        Route::get('/', [UserController::class, 'index'])->name('index');
-    });
-    Route::prefix('admin')->name('admin.')->group(function () {
-        Route::get('/', [AdminController::class, 'index'])->name('index');
-       
+/*Route::get('/test-mail', function () {
+    Mail::raw('Hello, this is a test email from Laravel.', function ($message) {
+        $message->to('erisaibro@c7.al')
+                ->subject('Test Email from Laravel')
+                ->from(config('mail.from.address'), config('mail.from.name'));
     });
 
-     //Route::put('/admin/test/{id}', [TestController::class, 'update'])->name('admin.test.update');
-        //Route::post('admin/test/store', [TestController::class, 'store'])->name('admin.test.store'); 
-    Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
-    Route::post('/checkin/store', [CheckinController::class, 'store'])->name('checkin.store');
-    Route::post('/checkin/update/{id}', [CheckinController::class, 'update'])->name('checkin.update');
-});
-    
-    Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
-        Route::get('/test/get', [TestController::class, 'getData'])->name('test.get');
-        Route::post('/test/store', [TestController::class, 'store'])->name('test.store');
+    return 'Email sent successfully!';
+});*/
+
+
+Route::post('/send-email', [EmailController::class, 'send'])
+    ->name('email.send');
+
 
     
-});
-});
+       
+
+   
+
 
 
     

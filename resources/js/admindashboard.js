@@ -22,7 +22,7 @@ import Swal from 'sweetalert2';
         {label:'Total Employees', value:m.totalEmployees ?? 0, icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`, badge:'bg-brand-50 text-brand-600'},
         {label:'Approved Requests', value:m.approved ?? 0, icon:`<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>`, badge:'bg-emerald-50 text-emerald-600'},
         {label:'Pending Requests', value:m.pending ?? 0, icon:`<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>`, badge:'bg-amber-50 text-amber-600'},
-        {label:'Total Days Off', value:m.daysOff ?? 0, icon:`<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>`, badge:'bg-neutral-100 text-neutral-600'}
+        //{label:'Total Days Off', value:m.daysOff ?? 0, icon:`<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>`, badge:'bg-neutral-100 text-neutral-600'}
       ];
       items.forEach(it=>{
         const card=document.createElement('div');
@@ -422,5 +422,7 @@ import Swal from 'sweetalert2';
 
 // load automatically when the page loads
 loadDashboardData();
+
+
 
 });

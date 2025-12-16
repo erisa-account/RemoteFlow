@@ -43,7 +43,7 @@
               ></span>
               <a
                 class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-                href="{{ route('user.index') }}"
+                href="{{ route('user.userdashboard') }}"
               >
                 <svg
                   class="w-5 h-5"
@@ -67,7 +67,7 @@
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="{{ route('forms') }}"
+                href="{{ route('user.forms') }}"
               >
                 <svg
                   class="w-5 h-5"
@@ -89,7 +89,7 @@
             <li class="relative px-6 py-3"> 
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="{{ route('index') }}"
+                href="{{ route('user.index') }}"
               >
                 <svg
                   class="w-5 h-5"
@@ -111,7 +111,7 @@
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="{{ route('vacanciesemployee') }}" 
+                href="{{ route('user.vacanciesemployee') }}" 
               >
                 <svg
                   class="w-5 h-5"
@@ -134,7 +134,7 @@
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="{{ route('remotivecalendar') }}"
+                href="{{ route('user.remotivecalendar') }}"
               >
                 <svg
                   class="w-5 h-5"
@@ -220,7 +220,7 @@
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="{{ route('forms') }}"
+                href="{{ route('user.forms') }}"
               >
                 <svg
                   class="w-5 h-5"
@@ -242,7 +242,7 @@
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="{{ route('forms') }}"
+                href="{{ route('user.forms') }}"
               >
                 <svg
                   class="w-5 h-5"

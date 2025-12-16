@@ -6,6 +6,8 @@
     @vite(['resources/css/app.css', 'resources/js/admindashboard.js']) 
     
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Admin Dashboard • Time Off</title>
@@ -70,7 +72,7 @@
             </span>
           </div>
         </div>
-        <div class="flex gap-3">
+        <div class="flex gap-3 hidden">
           <div class="relative">
             <select id="empDept" class="appearance-none rounded-xl border border-neutral-200 bg-white dark:bg-gray-700 dark:border-gray-600 px-3.5 py-2 pr-9 text-sm shadow-soft dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400">
               <option value="">All Departments</option>

@@ -1,0 +1,18 @@
+@component('mail::message')
+
+Hello {{ $userName }}
+
+Your leave request from {{ $startDate }} to {{ $endDate }}
+has been **{{ ucfirst($status) }}**.
+
+Send by: {{ $approverName }}
+
+
+
+
+
+@component('mail::button', ['url' => route('user.userdashboard')])
+Go to Dashboard
+@endcomponent
+
+@endcomponent

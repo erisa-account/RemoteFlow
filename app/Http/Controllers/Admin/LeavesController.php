@@ -39,7 +39,7 @@ class LeavesController extends Controller
         $leaves = LeaveRequest::with('type', 'user.leaveBalance')
                     ->orderBy('start_date', 'desc')
                     ->get();
-
+ 
         return AdminLeaveResource::collection($leaves);
     }
 

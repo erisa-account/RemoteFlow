@@ -4,7 +4,7 @@ let remotiveTable;
 
 document.addEventListener("DOMContentLoaded", function () {
   fetch('/api/users')
-    .then(response => response.json())
+    .then(response => response.json()) 
     .then(data => {
       const userSelect = document.getElementById('users');
       userSelect.innerHTML = '<option value="">Zgjidh një përdorues</option>';

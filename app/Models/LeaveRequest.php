@@ -52,4 +52,9 @@ class LeaveRequest extends Model
         return $this->belongsTo(LeaveType::class, 'leave_type_id');
     } 
 
+    public function approver()
+    { 
+        return $this->belongsTo(User::class, 'approver_id');
+    }
+
 } 

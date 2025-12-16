@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
   
     fetch('/api/statuses')
         .then(response => response.json())
-        .then(data => {
+        .then(data => { 
             
             select.innerHTML = '<option value="">Zgjidh një status</option>';
 

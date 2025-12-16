@@ -18,7 +18,7 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://unpkg.com/flowbite@latest/dist/flowbite.js"></script>
+<script src="https://unpkg.com/flowbite@latest/dist/flowbite.js"></script> 
 
 </head> 
 
