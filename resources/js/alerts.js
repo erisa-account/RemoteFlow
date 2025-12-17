@@ -32,12 +32,12 @@ window.addEventListener('load', () => {
         // Validate
         let hasError = false;
         if (!status_id) {
-            statusError.textContent = 'Ju lutem zgjidhni një status.';
+            statusError.textContent = 'Please select a status:';
             hasError = true;
         }
 
         if (!date) {
-            dateError.textContent = 'Ju lutem zgjidhni një datë.';
+            dateError.textContent = 'Please choose a date.';
             hasError = true;
         }
 
@@ -68,19 +68,19 @@ window.addEventListener('load', () => {
             } else if (result.existing) {
              // ❗ Check-in already exists — use SweetAlert2 instead
                 const confirmResult = await Swal.fire({
-                title: 'Check-in ekziston!',
-                text: result.message + '\nDoni ta përditësoni me statusin e ri?',
+                title: 'Check-in exists!',
+                text: result.message + '\nDo you want to update it with the new status?',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Po, përditësoje',
-                cancelButtonText: 'Jo, anuloje',
+                confirmButtonText: 'Yes, update.',
+                cancelButtonText: 'No, cancel.',
                 reverseButtons: true
                });
 
             if (confirmResult.isConfirmed) {
             await updateCheckin(result.data.id, status_id);
               } else {
-                errorMessage.textContent = 'Veprimi u anulua nga përdoruesi.';
+                errorMessage.textContent = 'The action was canceled by the user.';
                }
             } 
             
@@ -90,7 +90,7 @@ window.addEventListener('load', () => {
             }
         } catch (err) {
             console.error("Fetch error:", err);
-            errorMessage.textContent = 'Gabim gjatë dërgimit.';
+            errorMessage.textContent = 'Error while sending.';
         } finally {
             isSubmitting = false;
         }
@@ -115,7 +115,7 @@ window.addEventListener('load', () => {
             if (result.success) {
             // ✅ Show SweetAlert2 only — do NOT use div message
             await Swal.fire({
-                title: 'Përditësuar!',
+                title: 'Updated!',
                 text: result.message,
                 icon: 'success'
             });
@@ -123,11 +123,11 @@ window.addEventListener('load', () => {
             successMessage.textContent = '';
             form.reset();
             } else {
-                errorMessage.textContent = result.message || 'Përditësimi dështoi.';
+                errorMessage.textContent = result.message || 'The update failed.';
             }
         } catch (err) {
             console.error("Update error:", err);
-            errorMessage.textContent = 'Gabim gjatë përditësimit.';
+            errorMessage.textContent = 'Error during update.';
         }
     }
 });

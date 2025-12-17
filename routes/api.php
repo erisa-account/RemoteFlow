@@ -40,9 +40,6 @@ Route::get('/statusesnotonsite', [StatusController::class, 'getStatusesNotOnSite
 
 
 
-
-
-
 Route::get('/admin/leaves', [LeavesController::class, 'getLeaves']);
 
   

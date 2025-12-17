@@ -28,6 +28,6 @@ class SendEmailController extends Controller
         $result = $this->sendEmailService->send($validated, $files);
 
         // Return formatted resource
-        return new SendEmailResource($result); 
+        return new SendEmailResource($result);  
     }
 }

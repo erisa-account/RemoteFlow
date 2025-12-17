@@ -18,8 +18,8 @@
           class="relative overflow-hidden  rounded-xl bg-gradient-to-b from-indigo-200/30 to-transparent dark:from-indigo-500/10 border border-slate-200/70 p-6 mt-7 mb-5 shadow-xl backdrop-blur-sm dark:border-slate-700/60 dark:bg-slate-900/70">
         <!-- subtle gradient glow -->
        
-        <form id="uploadform" method="POST" action="{{ route('email.send') }}" enctype="multipart/form-data" class="py-4 px-9">
-        @csfr 
+        <form id="uploadform" method="POST" action="/send-mail" enctype="multipart/form-data" class="py-4 px-9"> 
+       
 
 
        <div class="flex items-center gap-4"> 

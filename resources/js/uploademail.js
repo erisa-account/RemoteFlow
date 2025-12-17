@@ -1,3 +1,5 @@
+import Swal from 'sweetalert2';
+
 document.addEventListener('DOMContentLoaded', function () {
   const fileInput = document.getElementById('file');
   const dropzone = document.getElementById('dropzone');
@@ -80,18 +82,40 @@ document.addEventListener('DOMContentLoaded', function () {
           Accept: 'application/json',
           // 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
         },
-      });
+      }); 
 
       const data = await response.json();
       if (response.ok) {
-        alert('✅ ' + data.message);
-      } else {
-        alert('❌ ' + (data.message || 'Something went wrong'));
+       
+      await Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: data.data.message,
+        confirmButtonText: 'OK',
+      });
+
+      window.location.reload();
+
+      }
+
+      else {
+        await Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: data.data.message || 'Something went wrong',
+          confirmButtonText: 'OK',
+        });
       }
     } catch (error) {
       console.error(error);
-      alert('⚠️ Error sending email');
+      await Swal.fire({
+        icon: 'warning',
+        title: 'Network Error',
+        text: 'Error sending mail',
+        confirmButtonText: 'OK',
+      });
     }
+
   });
 });
 

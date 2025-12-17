@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(response => response.json())
         .then(data => { 
             
-            select.innerHTML = '<option value="">Zgjidh një status</option>';
+            select.innerHTML = '<option value="">Select the status</option>';
 
             data.forEach(status => {
                 const option = document.createElement('option');
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         })
         .catch(error => {
-            console.error('Gabim gjatë marrjes së statuseve:', error);
+            console.error('Error while retrieving statuses:', error);
         });
 });
  

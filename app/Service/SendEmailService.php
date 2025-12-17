@@ -27,7 +27,7 @@ class SendEmailService
             foreach ($attachments as $filePath) {
                 $mail->attach($filePath);
             }
-        });
+        }); 
 
 
         return [

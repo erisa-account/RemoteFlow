@@ -34,7 +34,7 @@
   </svg>
 
             <select id="status" name="status_id" class=" ps-10 py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-400 dark:text-neutral-400 dark:placeholder-neutral-500 dark:bg-[#e5e6ef30] dark:focus:ring-neutral-600">
-            <option selected="" value="">Select a status</option>
+            <option selected="" value="">Select the status</option>
             <option value=""></option>
  
             </select>

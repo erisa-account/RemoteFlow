@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(json => success(Array.isArray(json.data) ? json.data : json))
         .catch(failure);
     },
-       
+        
     // Let multiple employees stack in the same day
     //dayMaxEventRows: true,   // shows “+ n more” when crowded
     //moreLinkClick: 'popover', // nice UX for overflow
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
         cell.classList.add('hover:bg-blue-50','transition','duration-100');
       });
       document.querySelectorAll('.fc-scrollgrid').forEach(grid => {
-      grid.classList.add('rounded-lg','overflow-hidden');
+      grid.classList.add('rounded-lg');
       });
        const thead = document.querySelector("thead[role='rowgroup']");
       if (thead) {

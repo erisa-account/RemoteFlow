@@ -111,7 +111,7 @@ import Swal from 'sweetalert2';
   document.querySelectorAll('.approve-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
       const id = btn.dataset.id;
-     
+      
       try {
         const res = await fetch(`/admin/leaves/${id}/approve`, {
           method: 'POST',

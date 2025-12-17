@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
     .then(response => response.json()) 
     .then(data => {
       const userSelect = document.getElementById('users');
-      userSelect.innerHTML = '<option value="">Zgjidh një përdorues</option>';
+      userSelect.innerHTML = '<option value="">Select the user</option>';
 
       // 👇 Access the actual array inside "data"
       data.data.forEach(user => {
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     })
     .catch(error => {
-      console.error('Gabim gjatë marrjes së përdoruesve:', error);
+      console.error('Error retrieving users:', error);
     });
 });
 
@@ -121,12 +121,12 @@ document.getElementById('apply').addEventListener('click', async function () {
   const status_name = statusSelect.options[statusSelect.selectedIndex]?.text || '';
   
    const presetMap = {
-    'yesterday': 'Dje',
-    '7': '7 ditët e fundit',
-    '30': '30 ditët e fundit',
-    'last_week': 'Java e kaluar',
-    'last_month': 'Muaji i kaluar',
-    'last_year': 'Viti i kaluar'                          
+    'yesterday': 'Yesterday',
+    '7': 'Last 7 days',
+    '30': 'Last 30 days',
+    'last_week': 'Last week',
+    'last_month': 'Last month',
+    'last_year': 'Last year'                          
   };
 
   //  Handle preset name dynamically
@@ -185,24 +185,26 @@ document.getElementById('apply').addEventListener('click', async function () {
       if (!data.data || data.data.length === 0) {
         tableBody.innerHTML = '';
       
-      let message = 'Nuk ka të dhëna për filtrimin që keni bërë.';
+      let message = 'There is no data for the filtering you performed.';
 
       // 👇 Build a smarter message based on selected filters
       if (preset && status_name && user_name) {
-        message = `Nuk ka përdorues me emrin "${user_name}" me statusin "${status_name}" në datën "${preset_name}".`;
+        message = `There is no user with the name "${user_name}" with the status "${status_name}" in date "${preset_name}".`;
       } else if (preset && status_name) {
-        message = `Nuk ka status "${status_name}" në datën "${preset_name}".`;
+        message = `There is no status "${status_name}" in date "${preset_name}".`;
       } else if (preset && user_name) {
-        message = `Nuk ka të dhëna për përdoruesin "${user_name}" në datën "${preset_name}".`;
+        message = `There is no data for user "${user_name}" in date "${preset_name}".`;
       } else if (status_name && user_name) {
-        message = `Nuk ka të dhëna për përdoruesin "${user_name}" me status "${status_name}".`;
+        message = `There is no data for user "${user_name}" with status "${status_name}".`;
       } else if (status_name) {
-        message = `Nuk ka të dhëna për statusin "${status_name}".`;
+        message = `There is no data for status "${status_name}".`;
       } else if (user_name) {
-        message = `Nuk ka të dhëna për përdoruesin "${user_name}".`;
+        message = `There is no data for user "${user_name}".`;
       } else if (preset_name) {
-        message = `Nuk ka të dhëna për datën "${preset_name}".`;
+        message = `There is no data for date "${preset_name}".`;
       }
+
+      
       
       table.style.display = 'none';
         
@@ -213,7 +215,7 @@ document.getElementById('apply').addEventListener('click', async function () {
       document.getElementById('remotiveTable_paginate').classList.add('hidden');
 
       await Swal.fire({
-        title: 'Pa të dhëna!',
+        title: 'No data!',
         text: message,
         icon: 'info',
         confirmButtonText: 'OK'
@@ -243,12 +245,16 @@ document.getElementById('apply').addEventListener('click', async function () {
         responsive: true,
         pageLength: 10,
         lengthMenu: [5, 10, 25, 50, 100],
+
+        
       });
+
+      
           }
     catch(error) {console.error('Error fetching data:', error);
       await Swal.fire({
-      title: 'Gabim!',
-      text: 'Gabim gjatë marrjes së të dhënave nga serveri.',
+      title: 'Error!',
+      text: 'Error retrieving data from the server.',
       icon: 'error',
       confirmButtonText: 'OK'
     });
@@ -279,8 +285,8 @@ $('#exportDropdownMenu a').on('click', async function(e) {
 
     if (!remotiveTable || remotiveTable.rows().count() === 0) {
         await Swal.fire({
-            title: 'Pa të dhëna për eksport',
-            text: 'Nuk ka të dhëna për t\'u eksportuar me filtrat aktualë.',
+            title: 'No export data!',
+            text: 'There is no data to export with the current filters.',
             icon: 'info',
             confirmButtonText: 'OK'
         });

@@ -64,7 +64,7 @@
 
   <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
   <select id="status" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-      <option selected="" value="">Zgjidh një status</option>
+      <option selected="" value="">Select the status</option>
       <option value=""></option>
     </select>
   </div> 
@@ -72,7 +72,7 @@
 
   <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
   <select id="users" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3  text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-      <option selected="" value="">Zgjidh një përdorues</option>
+      <option selected="" value="">Select the user</option>
       <option value=""></option>
     </select>
   </div> 
