@@ -1,7 +1,11 @@
 import Alpine from 'alpinejs'
 
 // Expose your data() factory globally
+
 window.data = function() {
+
+        console.log('alpine:init fired', window.Alpine ? 'Alpine defined ✅' : 'Alpine undefined ❌');
+
     function getThemeFromLocalStorage() {
         if (window.localStorage.getItem('dark')) {
             return JSON.parse(window.localStorage.getItem('dark'))
@@ -11,7 +15,7 @@ window.data = function() {
     function setThemeToLocalStorage(val) {
         window.localStorage.setItem('dark', val)
     }
-
+ 
     return {  
         dark: getThemeFromLocalStorage(),
         toggleTheme() {
@@ -63,7 +67,6 @@ window.data = function() {
             this.isModalOpen = false
             this.trapCleanup && this.trapCleanup()
         },
-    }
+    }  
 }
 
-Alpine.start()

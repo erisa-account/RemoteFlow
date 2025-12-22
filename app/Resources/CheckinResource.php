@@ -25,8 +25,8 @@ class CheckinResource extends JsonResource
         'success' => true,
         'existing' => $isExisting, 
         'message' => $isExisting
-            ? 'Keni bërë tashmë check-in për këtë datë.'
-            : 'Check-in u ruajt me sukses!',
+            ? 'You have already checked in for this date.'
+            : 'Check-in saved successfully!',
         'data' => $response->getData()->data,
     ]);
 }

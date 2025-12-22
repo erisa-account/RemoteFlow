@@ -54,7 +54,7 @@
     if (datePickerValue) {
         currentDate = new Date(Date.parse(datePickerValue));
     } else {
-        datePickerValue = datePickerFormatDate(currentDate);
+       datePickerValue = datePickerFormatDate(currentDate);
     }
 
     datePickerMonth = currentDate.getMonth();

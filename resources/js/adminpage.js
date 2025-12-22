@@ -72,8 +72,10 @@
         const data = await res.json();
         
 
-        
-        document.getElementById('pendingleaves').textContent = data.pending;
+        const pendingEl = document.getElementById('pendingleaves');
+        if (pendingEl) {
+            pendingEl.textContent = data.pending;
+        }
 
     } catch (err) {
         console.error('Error fetching pending leaves', err);

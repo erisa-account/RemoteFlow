@@ -28,10 +28,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     
 
-    
-    
 
-// Define your component
+
+
+    // Define your component
 function datePickerComponent() {
   return {
     datePickerOpen: false,
@@ -106,6 +106,5 @@ function datePickerComponent() {
   };
 }
 
-// Optional: start Alpine if you haven't already somewhere else
 
 window.datePickerComponent = datePickerComponent;

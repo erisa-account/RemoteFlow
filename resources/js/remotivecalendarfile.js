@@ -34,34 +34,41 @@ document.addEventListener('DOMContentLoaded', function () {
     //moreLinkClick: 'popover', // nice UX for overflow
 
     // Tailwind “badges” for each event
-    eventContent: function(arg) {
-      //const p = arg.event.extendedProps || {};
-      const container = document.createElement('div');
-      container.className = 'text-[10px] sm:text-xs leading-tight break-words';
-  
-      const badge = document.createElement('div');
-      badge.className = 'px-1 py-0.5 rounded font-medium bg-opacity-10 truncate whitespace-normal sm:whitespace-nowrap';
-      // text color is readable already because FullCalendar applies the event color to the border/background.
-      // Keep our badge subtle:
-      badge.style.borderLeft = `3px solid ${arg.event.backgroundColor || arg.event.color || '#6b7280'}`;
+   eventContent: function(arg) {
+    const container = document.createElement('div');
+    container.className = 'text-[10px] sm:text-xs leading-tight break-words';
 
-      // Show "Name — Status"
-      //badge.innerText = `${p.userName ?? arg.event.title}`;
+    const badge = document.createElement('div');
+    badge.className = 'px-1 py-0.5 rounded font-medium bg-opacity-10 truncate whitespace-normal sm:whitespace-nowrap';
+    badge.style.borderLeft = `3px solid ${arg.event.backgroundColor || arg.event.color || '#6b7280'}`;
+    badge.innerText = arg.event.title;
 
-      // Optional subtitle on a second line (status only)
-      /*if (p.statusName) {
-        const small = document.createElement('div');
-        small.className = 'text-[11px] opacity-80';
-        small.innerText = p.statusName;
-        container.appendChild(badge);
-        container.appendChild(small);
-      } else {*/
-        badge.innerText = arg.event.title;
-        container.appendChild(badge);
-      //}
+    container.appendChild(badge);  
 
-      return { domNodes: [container] };
-    }, 
+    // Minimal click popup for mobile
+    container.addEventListener('click', (e) => {
+        e.stopPropagation(); // prevent other click events
+        // Remove existing popups
+        const existing = document.querySelector('.event-tooltip');
+        if (existing) existing.remove();
+
+        // Position popup above the badge
+        const rect = badge.getBoundingClientRect();
+        const popup = document.createElement('div');
+        popup.textContent = arg.event.title;
+        popup.className = 'event-tooltip absolute z-50 p-2 bg-white dark:bg-gray-200 border rounded shadow text-xs';
+        popup.style.position = 'absolute';
+        popup.style.left = `${rect.left + window.scrollX}px`;
+        popup.style.top = `${rect.top + window.scrollY - 30}px`;
+        popup.style.whiteSpace = 'nowrap';
+
+        document.body.appendChild(popup);
+        setTimeout(() => popup.remove(), 2000); // remove after 2s
+    });
+
+    return { domNodes: [container] };
+},
+
 
     datesSet: function() {
       // Tailwind polish for FullCalendar chrome

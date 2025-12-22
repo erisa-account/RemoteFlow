@@ -27,7 +27,7 @@
 </head>
 <body class="h-full bg-neutral-50 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-100">
   <!-- Header -->
-  <header class="sticky top-0 bg-white/90 dark:bg-gray-800 backdrop-blur border-b border-neutral-200 dark:border-neutral-800">
+  <header class=" top-0 bg-white/90 dark:bg-gray-800 backdrop-blur border-b border-neutral-200 dark:border-neutral-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
       <div>
         
@@ -45,7 +45,7 @@
         </button>
 
         <button id="requestLeaveBtn"
-          class="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-3.5 py-2 text-white text-sm font-medium shadow-soft hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-400">
+          class="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-3.5 py-2 text-white text-sm font-medium dark:text-gray-200 shadow-soft hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-400">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
           Request Leave
         </button>
@@ -56,7 +56,7 @@
   <!-- Main -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
     <section>
-      <h2 class="text-lg font-semibold">Your Vacation Balance</h2>
+      <h2 class="text-lg font-semibold dark:text-gray-200">Your Vacation Balance</h2>
       <p class="text-sm text-neutral-500 dark:text-neutral-400">Track your time off</p>
     </section>
 
@@ -69,7 +69,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v4M16 2v4M3 10h18M4 6h16a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z"/></svg>
           </div>
         </div>
-        <p id="totalDays" class="mt-3 text-3xl font-bold tracking-tight"></p>
+        <p id="totalDays" class="mt-3 text-3xl font-bold tracking-tight dark:text-gray-200"></p>
       </div>
 
       <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-soft border border-neutral-200 dark:border-neutral-800">
@@ -79,7 +79,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
           </div>
         </div>
-        <p id="usedDays" class="mt-3 text-3xl font-bold tracking-tight"></p>
+        <p id="usedDays" class="mt-3 text-3xl font-bold tracking-tight dark:text-gray-200"></p>
       </div>
 
       <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-soft border border-neutral-200 dark:border-neutral-800">
@@ -89,7 +89,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 7-7"/><path d="M14 5h7v7"/></svg>
           </div>
         </div>
-        <p id="remainingDays" class="mt-3 text-3xl font-bold tracking-tight"></p>
+        <p id="remainingDays" class="mt-3 text-3xl font-bold tracking-tight dark:text-gray-200"></p>
       </div>
       <div class="hidden lg:block"></div>
     </section>
@@ -99,23 +99,23 @@
       <!-- Calendar card -->
       <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-soft">
         <div class="p-5 border-b border-neutral-200 dark:border-neutral-800">
-          <h3 class="text-sm font-semibold">Vacation Calendar</h3>
+          <h3 class="text-sm font-semibold dark:text-gray-200">Vacation Calendar</h3>
           <p class="text-xs text-neutral-500 dark:text-neutral-400">View your scheduled time off</p>
         </div>
 
         <div class="px-5 py-4 flex items-center justify-between">
-          <span id="monthLabel" class="text-sm font-medium">October 2025</span>
+          <span id="monthLabel" class="text-sm font-medium dark:text-gray-200">October 2025</span>
           <div class="flex items-center gap-1">
             <div class="hidden sm:flex rounded-lg border border-neutral-200 dark:border-neutral-700 overflow-hidden">
-              <button class="px-2 py-1.5 text-xs hover:bg-neutral-50 dark:hover:bg-neutral-800 focus:outline-none" data-range="year">Year</button>
-              <button class="px-2 py-1.5 text-xs bg-neutral-100 dark:bg-neutral-800/60 font-medium" data-range="month">Month</button>
-              <button class="px-2 py-1.5 text-xs hover:bg-neutral-50 dark:hover:bg-neutral-800" data-range="week">Week</button>
+              <button class="px-2 py-1.5 text-xs hover:bg-neutral-50 dark:hover:bg-neutral-800 focus:outline-none dark:text-gray-200" data-range="year">Year</button>
+              <button class="px-2 py-1.5 text-xs bg-neutral-100 dark:bg-neutral-800/60 font-medium dark:text-gray-200" data-range="month">Month</button>
+              <button class="px-2 py-1.5 text-xs hover:bg-neutral-50 dark:hover:bg-neutral-800 dark:text-gray-200" data-range="week">Week</button>
             </div>
             <div class="flex rounded-lg border border-neutral-200 dark:border-neutral-700 overflow-hidden">
-              <button id="prevBtn" class="px-2 py-1.5 hover:bg-neutral-50 dark:hover:bg-neutral-800 focus:outline-none" aria-label="Previous">
+              <button id="prevBtn" class="px-2 py-1.5 hover:bg-neutral-50 dark:hover:bg-neutral-800 focus:outline-none dark:text-gray-200" aria-label="Previous">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
               </button>
-              <button id="nextBtn" class="px-2 py-1.5 hover:bg-neutral-50 dark:hover:bg-neutral-800 focus:outline-none" aria-label="Next">
+              <button id="nextBtn" class="px-2 py-1.5 hover:bg-neutral-50 dark:hover:bg-neutral-800 focus:outline-none dark:text-gray-200" aria-label="Next">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
               </button>
             </div>
@@ -134,11 +134,11 @@
         <!-- Legend -->
         <div class="px-5 pb-5">
           <div class="flex flex-wrap items-center gap-5 text-xs">
-            <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-brand-500"></span>Vacation</div>
-            <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-rose-500"></span>Sick Leave</div>
-            <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-violet-500"></span>Replacment</div>
-            <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-amber-500"></span>Other</div>
-            <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full border border-brand-500"></span>Today</div>
+            <div class="flex items-center gap-2 dark:text-gray-200"><span class="h-2.5 w-2.5 rounded-full bg-brand-500"></span>Vacation</div>
+            <div class="flex items-center gap-2 dark:text-gray-200"><span class="h-2.5 w-2.5 rounded-full bg-rose-500"></span>Sick Leave</div>
+            <div class="flex items-center gap-2 dark:text-gray-200"><span class="h-2.5 w-2.5 rounded-full bg-violet-500"></span>Replacment</div>
+            <div class="flex items-center gap-2 dark:text-gray-200"><span class="h-2.5 w-2.5 rounded-full bg-amber-500"></span>Other</div>
+            <div class="flex items-center gap-2 dark:text-gray-200"><span class="h-2.5 w-2.5 rounded-full border border-brand-500"></span>Today</div>
           </div>
         </div>
 </div>
@@ -149,19 +149,19 @@
       <aside class="space-y-6">
         <div class="bg-white dark:bg-gray-800 rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-soft">
           <div class="p-5 border-b border-neutral-200 dark:border-neutral-800">
-            <h4 class="text-sm font-semibold">Leave Types</h4>
+            <h4 class="text-sm font-semibold dark:text-gray-200">Leave Types</h4>
           </div>
           <div class="p-4 space-y-3 text-sm">
-            <div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-brand-500"></span>Vacation</div><span class="text-[10px] rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5">Paid</span></div>
-            <div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-rose-500"></span>Sick Leave</div><span class="text-[10px] rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5">Paid</span></div>
-            <div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-violet-500"></span>Replacment</div><span class="text-[10px] rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5">Unpaid</span></div>
-            <div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-amber-500"></span>Other</div><span class="text-[10px] rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5">Unpaid</span></div>
+            <div class="flex items-center justify-between"><div class="flex items-center gap-2 dark:text-gray-200"><span class="h-2.5 w-2.5 rounded-full bg-brand-500 "></span>Vacation</div><span class="text-[10px] rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 dark:text-gray-200">Paid</span></div>
+            <div class="flex items-center justify-between"><div class="flex items-center gap-2 dark:text-gray-200"><span class="h-2.5 w-2.5 rounded-full bg-rose-500 "></span>Sick Leave</span></div><span class="text-[10px] rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 dark:text-gray-200">Paid</span></div>
+            <div class="flex items-center justify-between"><div class="flex items-center gap-2 dark:text-gray-200"><span class="h-2.5 w-2.5 rounded-full bg-violet-500 "></span>Replacment</div><span class="text-[10px] rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 dark:text-gray-200">Unpaid</span></div>
+            <div class="flex items-center justify-between"><div class="flex items-center gap-2 dark:text-gray-200"><span class="h-2.5 w-2.5 rounded-full bg-amber-500 "></span>Other</div><span class="text-[10px] rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 dark:text-gray-200">Unpaid</span></div>
           </div>
         </div>
 
         <div class="bg-white dark:bg-gray-800 rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-soft">
           <div class="p-5 border-b border-neutral-200 dark:border-neutral-800">
-            <h4 class="text-sm font-semibold">Usage Progress</h4>
+            <h4 class="text-sm font-semibold dark:text-gray-200">Usage Progress</h4>
           </div>
           <div class="p-5 space-y-4">
             <div>
@@ -175,11 +175,11 @@
             <div class="grid grid-cols-2 gap-3 text-xs">
               <div class="rounded-xl border border-neutral-200 dark:border-neutral-800 p-3 dark:bg-gray-700">
                 <p class="text-neutral-500 dark:text-neutral-400">Days used</p>
-                <p class="mt-1 font-semibold"><span id="usedDaysSmall">0</span> days</p>
+                <p class="mt-1 font-semibold dark:text-gray-200"><span id="usedDaysSmall">0</span> days</p>
               </div>
               <div class="rounded-xl border border-neutral-200 dark:border-neutral-800 p-3 dark:bg-gray-700">
                 <p class="text-neutral-500 dark:text-neutral-400">Days remaining</p>
-                <p class="mt-1 font-semibold"><span id="remainingDaysSmall">20</span> days</p>
+                <p class="mt-1 font-semibold dark:text-gray-200"><span id="remainingDaysSmall">20</span> days</p>
               </div>
             </div>
           </div>
@@ -190,8 +190,8 @@
  
    <section class="mt-6 bg-white lg:col-span-2 dark:bg-gray-800 rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-soft">
   <div class="px-5 pt-5">
-    <div class="flex items-center gap-2 text-sm font-semibold">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-neutral-500 dark:text-neutral-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <div class="flex items-center gap-2 text-sm font-semibold dark:text-gray-200">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-neutral-500 dark:text-gray-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M7 21h10a2 2 0 0 0 2-2V8l-5-5H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z"/><path d="M14 3v5h5"/>
       </svg>
       Leave History
@@ -229,10 +229,10 @@
         <!-- header -->
         <div class="flex items-start justify-between p-5 border-b border-neutral-200 dark:border-neutral-800">
           <div>
-            <h3 id="modalTitle" class="text-lg font-semibold">Request Time Off</h3>
+            <h3 id="modalTitle" class="text-lg font-semibold dark:text-gray-200">Request Time Off</h3>
             <p class="text-xs text-neutral-500 dark:text-neutral-400">Submit a new leave request for approval</p>
           </div>
-          <button id="closeModal" class="rounded-lg p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-brand-400" aria-label="Close">
+          <button id="closeModal" class="rounded-lg p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400" aria-label="Close">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
           </button>
         </div>
@@ -241,9 +241,9 @@
         <form id="leaveForm" class="p-5 space-y-4" method="POST" enctype="multipart/form-data" action="/leave-request">
           <!-- Leave type -->
           <div>
-            <label class="text-sm font-medium">Leave Type <span class="text-rose-600">*</span></label>
+            <label class="text-sm font-medium dark:text-gray-200">Leave Type <span class="text-rose-600">*</span></label>
             <div class="relative mt-1">
-              <select id="leaveType" name="leave_type_id" class="w-full appearance-none rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-gray-700 px-3.5 py-2.5 pr-9 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400">
+              <select id="leaveType" name="leave_type_id" class="w-full appearance-none rounded-xl border border-neutral-200 dark:border-neutral-800 dark:text-gray-200 bg-white dark:bg-gray-700 px-3.5 py-2.5 pr-9 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400">
                 <option value="1">Vacation</option>
                 <option value="2">Sick Leave</option>
                 <option value="3">Other</option>
@@ -258,37 +258,33 @@
           <!-- Dates -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label for="startDate" class="text-sm font-medium">Start Date <span class="text-rose-600">*</span></label>
+              <label for="startDate" class="text-sm font-medium dark:text-gray-200">Start Date <span class="text-rose-600">*</span></label>
               <div class="relative mt-1">
                 <input id="startDate" name="start_date"  type="date" placeholder="dd/mm/yyyy"
-                  class="w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-gray-700 px-3.5 py-2.5 pr-9 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400"/>
-                <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v4M16 2v4M3 10h18M4 6h16a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z"/></svg>
-                </span>
+                  class="w-full rounded-xl border border-neutral-200 dark:border-neutral-800 dark:text-gray-200 bg-white dark:bg-gray-700 px-3.5 py-2.5 pr-9 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400"/>
+                
               </div>
             </div>
             <div>
-              <label for="endDate" class="text-sm font-medium">End Date <span class="text-rose-600">*</span></label>
+              <label for="endDate" class="text-sm font-medium dark:text-gray-200">End Date <span class="text-rose-600">*</span></label>
               <div class="relative mt-1">
                 <input id="endDate" name="end_date" type="date" placeholder="dd/mm/yyyy"
-                  class="w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-gray-700 px-3.5 py-2.5 pr-9 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400"/>
-                <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v4M16 2v4M3 10h18M4 6h16a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z"/></svg>
-                </span>
+                  class="w-full rounded-xl border border-neutral-200 dark:border-neutral-800 dark:text-gray-200 bg-white dark:bg-gray-700 px-3.5 py-2.5 pr-9 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400"/>
+                
               </div>
             </div>
           </div>
 
           <!-- Reason -->
           <div>
-            <label class="text-sm font-medium">Reason <span class="text-rose-600"></span></label>
+            <label class="text-sm font-medium dark:text-gray-200">Reason <span class="text-rose-600"></span></label>
             <textarea id="reason" name="reason" rows="4" placeholder="Briefly describe the reason for your leave request..."
-              class="mt-1 w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-gray-700 px-3.5 py-2.5 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400"></textarea>
+              class="mt-1 w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-gray-700 dark:text-gray-200 px-3.5 py-2.5 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400"></textarea>
           </div>
 
           <!-- Medical certificate (conditional) -->
           <div id="medicalGroup" class="hidden">
-            <label class="text-sm font-medium">Medical Certificate <span class="text-rose-600">*</span></label>
+            <label class="text-sm font-medium dark:text-gray-200">Medical Certificate <span class="text-rose-600">*</span></label>
             <div id="dropzone"
               class="mt-1 rounded-2xl border-2 border-dashed border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900/40 p-6 text-center hover:bg-neutral-100 dark:hover:bg-neutral-800 transition cursor-pointer">
               <input id="medical_certificate" name="medical_certificate" type="file" accept="application/pdf" class="hidden"/>
@@ -313,9 +309,9 @@
           <!-- footer -->
           <div class="pt-2 flex items-center justify-end gap-3">
             <button type="button" id="cancelModal"
-              class="rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-gray-700 px-4 py-2 text-sm shadow-soft hover:bg-neutral-50 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-brand-400">Cancel</button>
+              class="rounded-xl border border-neutral-200 dark:border-neutral-700 dark:text-gray-200 bg-white dark:bg-gray-700 px-4 py-2 text-sm shadow-soft hover:bg-neutral-50 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-brand-400">Cancel</button>
             <button type="submit" id="submitBtn"
-              class="rounded-xl bg-brand-600 px-4 py-2 text-sm font-medium text-white shadow-soft hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-400 disabled:opacity-60 disabled:cursor-not-allowed">Submit Request</button>
+              class="rounded-xl bg-brand-600 px-4 py-2 text-sm font-medium dark:text-gray-200 text-white shadow-soft hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-400 disabled:opacity-60 disabled:cursor-not-allowed">Submit Request</button>
           </div>
         </form>
       </div>

@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
       }
     })
-
+ 
     .then(response => response.json())
     .then(data =>
       {
@@ -99,21 +99,50 @@ document.addEventListener('DOMContentLoaded', () => {
         cell.type = 'button';
         cell.className = 'relative aspect-square rounded-xl border bg-white dark:bg-gray-800 border-neutral-200 dark:border-gray-600 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition focus:outline-none focus:ring-2 focus:ring-brand-400';
         const number = document.createElement('span');
-        number.className = 'absolute top-2 left-2 text-sm font-medium';
+        number.className = 'absolute top-2 left-2 text-sm font-medium dark:text-gray-200';
         number.textContent = d;
         cell.appendChild(number);
 
-        state.holidays?.forEach(h => {
-          if ( h.month === month && h.day === d) {
-            //const dot = document.createElement('span');
-             cell.style.backgroundColor = h.color || '#f8b9b9ff';
-             const hName = document.createElement('span');
-             hName.textContent = h.name;
-             hName.className = 'absolute bottom-1 left-1 text-[10px] font-medium text-red-700 dark:text-red-400';
-             cell.appendChild(hName);
-          }
-        });
+
+
+
+    state.holidays?.forEach(h => {
+    if (h.month === month && h.day === d) {
+        cell.style.backgroundColor = h.color || '#f8b9b9ff';
         
+        const hName = document.createElement('span');
+        hName.textContent = h.name;
+        hName.className = 'absolute bottom-1 left-1 right-1 text-[9px] sm:text-[10px] font-medium text-red-700 dark:text-red-400  leading-tight line-clamp-1 sm:line-clamp-2';
+
+        hName.title = h.name;
+
+       
+
+        cell.appendChild(hName);
+
+        cell.addEventListener('click', () => {
+        const rect = cell.getBoundingClientRect(); // get cell position
+        const popup = document.createElement('div');
+        popup.textContent = h.name;
+        popup.className = 'absolute z-50 p-2 bg-white dark:bg-gray-800 dark:text-gray-200 rounded shadow text-xs';
+        
+        // position popup above the cell
+        popup.style.position = 'absolute';
+        popup.style.left = `${rect.left + window.scrollX}px`; // align with cell left
+        popup.style.top = `${rect.top + window.scrollY - 30}px`; // 30px above cell
+        popup.style.whiteSpace = 'nowrap';
+        
+        document.body.appendChild(popup);                                               
+        setTimeout(() => popup.remove(), 2000); // remove after 2s
+    });
+        
+
+        
+    }
+  });
+
+
+
 
         const type = state.leaves[key];
  
@@ -125,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
           cell.classList.add("relative", "group");
           const color = {vacation:'bg-brand-500', sick:'bg-rose-500', unpaid:'bg-amber-500', replacement:'bg-violet-500'}[type];
           const dot = document.createElement('span');
-          dot.className = `absolute bottom-2 left-2 h-2.5 w-2.5 rounded-full ${color}`;
+          dot.className = `absolute top-1 right-2 sm:top-2 sm:right-2 h-2.5 w-2.5 rounded-full ${color}`;
           
          if (type === "replacement") {
            const tooltip = document.createElement("span");

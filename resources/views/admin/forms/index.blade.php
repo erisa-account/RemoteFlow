@@ -22,7 +22,7 @@
 
 </head> 
 
-<div class="w-full max-w-md mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-xl p-4 mt-6">
+<div class="w-full max-w-md mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-xl p-4 mt-6 bg-gradient-to-b from-indigo-200/30 dark:from-indigo-500/10">
   <!-- Header -->
   <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
     <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Date range selector</h2>
@@ -35,7 +35,7 @@
       <option value="last_year">Last year</option>
       <option value="custom">Custom</option>
     </select>-->
-    <select id="preset" class="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-1 text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <select id="preset" class="border border-gray-200 dark:border-gray-600 rounded-md px-3 py-1 text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
       <option value="yesterday">Yesterday</option>
       <option value="7">Last 7 days</option>
       <option value="30">Last 30 days</option>
@@ -50,20 +50,20 @@
   <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 mb-4">
     <div class="flex flex-col w-full sm:w-1/2">
       <label for="start_date" class="text-sm text-gray-600 dark:text-gray-300 mb-1">Start date</label>
-      <input id="start_date" type="date" value="2024-10-17" class="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
+      <input id="start_date" type="date" value="2024-10-17" class="border border-gray-200 dark:border-gray-600 rounded-md px-3 py-2 text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
     </div> 
 
     <span class="text-gray-500 dark:text-gray-400 self-center hidden sm:block">→</span>
 
     <div class="flex flex-col w-full sm:w-1/2">
       <label for="end_date" class="text-sm text-gray-600 dark:text-gray-300 mb-1">End date</label>
-      <input id="end_date" type="date" value="2024-10-23" class="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
+      <input id="end_date" type="date" value="2024-10-23" class="border border-gray-200 dark:border-gray-600 rounded-md px-3 py-2 text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
     </div>
   </div>
 
 
   <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
-  <select id="status" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+  <select id="status" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-3 text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
       <option selected="" value="">Select the status</option>
       <option value=""></option>
     </select>
@@ -71,7 +71,7 @@
     
 
   <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
-  <select id="users" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3  text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+  <select id="users" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-3  text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
       <option selected="" value="">Select the user</option>
       <option value=""></option>
     </select>
@@ -83,7 +83,9 @@
   
   <!-- Button -->
   <div class="flex justify-end">
-    <button id="apply" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <button id="apply" class="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 
+    px-6 py-3 text-center text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 transition hover:from-indigo-500 hover:to-violet-500 
+    focus:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500/40 active:scale-[.99]">
       Apply
     </button>
   </div>
