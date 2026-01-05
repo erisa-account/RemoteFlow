@@ -3,20 +3,11 @@ import '../css/app.css';
 import './status.js';
 import './alerts.js';
 
-
-import './init-alpine.js';
 import Alpine from 'alpinejs';
-import Swal from 'sweetalert2';
-
 window.Alpine = Alpine;
 
+import './init-alpine.js';
 
-Alpine.start();
-
-
-
-
- 
-
-
-
+document.addEventListener('DOMContentLoaded', () => {
+    Alpine.start();
+});

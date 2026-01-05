@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
 
+    
+
     fetch('/leave-summary', {
       
       method: 'GET',
@@ -42,11 +44,14 @@ document.addEventListener('DOMContentLoaded', () => {
          state.remainingDays = data.data.remaining_days;
 
          renderKpis();
+         
+         
       }
       
       )
     
     .catch(error => console.error('Error', error ));
+
     
     // -------- Helpers --------
     const pad2 = n => String(n).padStart(2,'0');
@@ -684,8 +689,29 @@ function renderLeaveHistory(containerId, items) {
     root.appendChild(el);
   });
 }
+
+
+const infoBtn = document.getElementById('statusInfoBtn');
+
+    if(infoBtn) {
+        infoBtn.addEventListener('click', () =>{
+            Swal.fire({
+                icon: 'info',
+                title: '',
+                html: `This page helps you manage your vacations and time off.
+Days highlighted in green (like Monday or Tuesday) indicate a weekend holiday.
+You can request leave in various categories: <b>Vacation,</b> <b>Sick Leave,</b> <b>Replacement,</b> or <b>Other</b>.
+You can also replace days you have already taken as leave.
+Check your <b>Leave History</b> to see which requests have been approved or rejected.`,
+                showCloseButton: true,
+                
+            })
+        })
+    }
+
+
  // -------- Boot --------
-    renderCalendar(); updateMedicalVisibility(); loadLeaveHistory();  loadHolidays(); loadWeekendHolidays();
+     updateMedicalVisibility(); loadLeaveHistory(); renderCalendar(); loadHolidays(); loadWeekendHolidays();
 
 
-});
+}); 

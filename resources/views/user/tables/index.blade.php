@@ -33,8 +33,22 @@
       </div>
       <div>
         <h2 class="text-xl font-semibold tracking-tight text-slate-900 dark:text-white">Send files via email</h2>
-        <p class="text-sm text-slate-500 dark:text-slate-400">Attach files and send them with your message.</p>
+        <p class="text-sm text-slate-500 dark:text-slate-400">Attach files and send them with your message.</p>        
       </div>
+
+      <div class="flex items-center justify-center">
+        <button
+          type="button"
+          id="statusInfoBtn"
+          class="inline-flex items-center justify-center w-6 h-6 ml-2
+                text-sm font-bold text-white
+                bg-green-500 rounded-full
+                hover:bg-green-600 focus:outline-none"
+          aria-label="Status information"
+        >
+          i
+        </button>
+            </div>
        </div>
 
              

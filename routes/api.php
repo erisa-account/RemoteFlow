@@ -9,6 +9,7 @@ use App\Http\Controllers\User\RequestLeaveController;
 use App\Http\Controllers\Admin\LeavesController;
 use App\Http\Requests\Admin\RejectLeaveRequestRequest;
 use App\Http\Requests\Admin\ApproveLeaveRequestRequest;
+use App\Http\Controllers\Admin\MeLejeController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -32,6 +33,8 @@ Route::get('/remotive-table/filter', [RemotiveFilterController::class, 'getRemot
 Route::post('/send-email', [SendEmailController::class, 'sendEmail']);
 Route::get('/remotive-events', [RemotiveFilterController::class, 'events']); 
 Route::get('/statusesnotonsite', [StatusController::class, 'getStatusesNotOnSite']);
+Route::get('/statusmeleje', [MeLejeController::class, 'getStatusMeLeje']);
+Route::get('/statusmeleje/filter', [MeLejeController::class, 'getStatusMeLejeFiltered']);
 
 //Route::middleware('auth:sanctum')->get('/pending-leaves', [StatusController::class, 'countPending']); 
 

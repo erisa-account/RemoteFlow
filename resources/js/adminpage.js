@@ -77,7 +77,7 @@
             pendingEl.textContent = data.pending;
         }
 
-    } catch (err) {
+    } catch (err) { 
         console.error('Error fetching pending leaves', err);
     }
 }

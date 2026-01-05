@@ -2,7 +2,7 @@
 
 Hello {{ $userName }}
 
-Your leave request from {{ $startDate }} to {{ $endDate }}
+Your **{{ $type }}** leave request from {{ $startDate }} to {{ $endDate }}
 has been **{{ ucfirst($status) }}**.
 
 Send by: {{ $approverName }}

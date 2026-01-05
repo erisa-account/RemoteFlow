@@ -16,10 +16,23 @@
     
 
      
-
+    <div class="flex items-center justify-center">
+        <span class="text-xl font-semibold tracking-tight text-slate-900 dark:text-white">Select your status for your day</span>
+        <button
+  type="button"
+  id="statusInfoBtn"
+  class="inline-flex items-center justify-center w-6 h-6 ml-2
+         text-sm font-bold text-white
+         bg-green-500 rounded-full
+         hover:bg-green-600 focus:outline-none"
+  aria-label="Status information"
+>
+  i
+</button>
+    </div>
     
     
-    <form action="{{ route('user.checkin.store') }}" class="py-4 px-9 pt-10" id="checkin-form">
+    <form action="{{ route('user.checkin.store') }}" class="py-4 px-9 pt-10" id="checkin-form" method="POST">
     @csrf
 
            

@@ -1,6 +1,6 @@
 <?php
 namespace App\Service;
-
+ 
 use App\Models\Remotive;
 use App\Http\Requests\User\StoreCheckinRequest;
 use Illuminate\Support\Facades\Auth;

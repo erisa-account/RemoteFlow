@@ -16,13 +16,13 @@ class CheckinResource extends JsonResource
         ];
     }
 
-
+    
     public function withResponse($request, $response)
     {
         $isExisting = !$this->wasRecentlyCreated;
 
         $response->setData([
-        'success' => true,
+        'success' => true, 
         'existing' => $isExisting, 
         'message' => $isExisting
             ? 'You have already checked in for this date.'

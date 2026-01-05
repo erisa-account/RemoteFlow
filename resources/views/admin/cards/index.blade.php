@@ -53,7 +53,7 @@
     </section>
 
     <!-- Metrics -->
-    <section id="metrics" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></section>
+    <section id="metrics" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></section>
 
     <!-- Employees -->
     <section class="bg-white dark:bg-gray-800 rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-soft">
@@ -109,6 +109,9 @@
         </div>
         <p class="text-xs text-neutral-500 dark:text-gray-200">Review and manage employee leave requests</p>
       </div>
+      
+      
+
       <div id="requestList" class="p-5 space-y-3"></div>
 
       <!-- Footer actions for bulk approve/reject if you want -->

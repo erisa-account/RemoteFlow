@@ -117,6 +117,23 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
   });
+
+  const infoBtn = document.getElementById('statusInfoBtn');
+  
+      if(infoBtn) {
+          infoBtn.addEventListener('click', () =>{
+              Swal.fire({
+                  icon: 'info',
+                  title: '',
+                  html: `You can send documents or messages to Admin, HR, or other recipients. 
+      Simply fill in <b>Subject</b>, <b>Description</b>, attach your <b>Document</b>, and click <b>Send</b>.`,
+                  showCloseButton: true,
+                  
+              })
+          })
+      }
+
+
 });
 
 

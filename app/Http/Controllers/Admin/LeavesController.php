@@ -37,7 +37,15 @@ class LeavesController extends Controller
    public function getLeaves()
     {
         $leaves = LeaveRequest::with('type', 'user.leaveBalance')
-                    ->orderBy('start_date', 'desc')
+                    ->orderByRaw("
+        CASE
+            WHEN status = 'pending' THEN 1
+            WHEN status = 'approved' THEN 2
+            WHEN status = 'rejected' THEN 3
+            ELSE 4
+        END
+    ")
+    ->orderBy('start_date', 'desc')
                     ->get();
  
         return AdminLeaveResource::collection($leaves);

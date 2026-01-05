@@ -11,7 +11,15 @@ class LeaveHistoryService
     {
         return LeaveRequest::with(['user', 'type'])
             ->where('user_id', $userId)
-            ->orderBy('id', 'desc')
+             ->orderByRaw("
+        CASE
+            WHEN status = 'pending' THEN 1
+            WHEN status = 'approved' THEN 2
+            WHEN status = 'rejected' THEN 3
+            ELSE 4
+        END
+    ")
+    ->orderBy('id', 'desc')
             ->get(); 
     }
 
@@ -19,7 +27,15 @@ class LeaveHistoryService
     {
         return LeaveRequest::with(['user', 'type'])
             ->where('user_id', $userId)
-            ->orderBy('id', 'desc')
+             ->orderByRaw("
+        CASE
+            WHEN status = 'pending' THEN 1
+            WHEN status = 'approved' THEN 2
+            WHEN status = 'rejected' THEN 3
+            ELSE 4
+        END
+    ")
+    ->orderBy('id', 'desc')
             ->get();
     }
 }

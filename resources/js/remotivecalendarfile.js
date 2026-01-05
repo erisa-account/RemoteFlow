@@ -2,6 +2,7 @@ import { Calendar } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import Swal from 'sweetalert2';
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -96,6 +97,24 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   calendar.render();
+
+
+
+      const infoBtn = document.getElementById('statusInfoBtn');
+  
+      if(infoBtn) {
+          infoBtn.addEventListener('click', () =>{
+              Swal.fire({
+                  icon: 'info',
+                  title: '',
+                  text: `The calendar displays each employee's selected statuses for their work days.
+Click on any day's label to see the assigned status for that day.`,
+                  showCloseButton: true,
+                  
+              })
+          })
+      }
+
 });
 
 

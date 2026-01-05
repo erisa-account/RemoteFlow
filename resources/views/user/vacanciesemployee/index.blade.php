@@ -44,6 +44,20 @@
           </span>
         </button>
 
+         <div class="flex items-center justify-center">
+        <button
+          type="button"
+          id="statusInfoBtn"
+          class="inline-flex items-center justify-center w-6 h-6 ml-2
+                text-sm font-bold text-white
+                bg-green-500 rounded-full
+                hover:bg-green-600 focus:outline-none"
+          aria-label="Status information"
+        >
+          i
+        </button>
+            </div>
+
         <button id="requestLeaveBtn"
           class="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-3.5 py-2 text-white text-sm font-medium dark:text-gray-200 shadow-soft hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-400">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
@@ -136,7 +150,7 @@
           <div class="flex flex-wrap items-center gap-5 text-xs">
             <div class="flex items-center gap-2 dark:text-gray-200"><span class="h-2.5 w-2.5 rounded-full bg-brand-500"></span>Vacation</div>
             <div class="flex items-center gap-2 dark:text-gray-200"><span class="h-2.5 w-2.5 rounded-full bg-rose-500"></span>Sick Leave</div>
-            <div class="flex items-center gap-2 dark:text-gray-200"><span class="h-2.5 w-2.5 rounded-full bg-violet-500"></span>Replacment</div>
+            <div class="flex items-center gap-2 dark:text-gray-200"><span class="h-2.5 w-2.5 rounded-full bg-violet-500"></span>Replacement</div>
             <div class="flex items-center gap-2 dark:text-gray-200"><span class="h-2.5 w-2.5 rounded-full bg-amber-500"></span>Other</div>
             <div class="flex items-center gap-2 dark:text-gray-200"><span class="h-2.5 w-2.5 rounded-full border border-brand-500"></span>Today</div>
           </div>
@@ -153,8 +167,8 @@
           </div>
           <div class="p-4 space-y-3 text-sm">
             <div class="flex items-center justify-between"><div class="flex items-center gap-2 dark:text-gray-200"><span class="h-2.5 w-2.5 rounded-full bg-brand-500 "></span>Vacation</div><span class="text-[10px] rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 dark:text-gray-200">Paid</span></div>
-            <div class="flex items-center justify-between"><div class="flex items-center gap-2 dark:text-gray-200"><span class="h-2.5 w-2.5 rounded-full bg-rose-500 "></span>Sick Leave</span></div><span class="text-[10px] rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 dark:text-gray-200">Paid</span></div>
-            <div class="flex items-center justify-between"><div class="flex items-center gap-2 dark:text-gray-200"><span class="h-2.5 w-2.5 rounded-full bg-violet-500 "></span>Replacment</div><span class="text-[10px] rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 dark:text-gray-200">Unpaid</span></div>
+            <div class="flex items-center justify-between"><div class="flex items-center gap-2 dark:text-gray-200"><span class="h-2.5 w-2.5 rounded-full bg-rose-500 "></span>Sick Leave</span></div><span class="text-[10px] rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 dark:text-gray-200">85% Paid</span></div>
+            <div class="flex items-center justify-between"><div class="flex items-center gap-2 dark:text-gray-200"><span class="h-2.5 w-2.5 rounded-full bg-violet-500 "></span>Replacement</div><span class="text-[10px] rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 dark:text-gray-200">Unpaid</span></div>
             <div class="flex items-center justify-between"><div class="flex items-center gap-2 dark:text-gray-200"><span class="h-2.5 w-2.5 rounded-full bg-amber-500 "></span>Other</div><span class="text-[10px] rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 dark:text-gray-200">Unpaid</span></div>
           </div>
         </div>
@@ -247,7 +261,7 @@
                 <option value="1">Vacation</option>
                 <option value="2">Sick Leave</option>
                 <option value="3">Other</option>
-                <option value="4">Replacment</option>
+                <option value="4">Replacement</option>
               </select>
               <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>

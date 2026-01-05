@@ -4,8 +4,7 @@ import Alpine from 'alpinejs'
 
 window.data = function() {
 
-        console.log('alpine:init fired', window.Alpine ? 'Alpine defined ✅' : 'Alpine undefined ❌');
-
+       
     function getThemeFromLocalStorage() {
         if (window.localStorage.getItem('dark')) {
             return JSON.parse(window.localStorage.getItem('dark'))

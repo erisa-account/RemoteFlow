@@ -4,6 +4,9 @@ window.addEventListener('load', () => {
     
 
     const form = document.getElementById('checkin-form');
+
+    if(!form) return;
+    
     const statusInput = document.getElementById('status');
     const dateInput = document.getElementById('datepicker');
     const statusError = document.getElementById('status-error');
@@ -116,7 +119,7 @@ window.addEventListener('load', () => {
             // ✅ Show SweetAlert2 only — do NOT use div message
             await Swal.fire({
                 title: 'Updated!',
-                text: result.message,
+                text: 'You have updated your status!',
                 icon: 'success'
             });
             errorMessage.textContent = '';
@@ -130,7 +133,23 @@ window.addEventListener('load', () => {
             errorMessage.textContent = 'Error during update.';
         }
     }
-});
+
+
+    const infoBtn = document.getElementById('statusInfoBtn');
+
+    if(infoBtn) {
+        infoBtn.addEventListener('click', () =>{
+            Swal.fire({
+                icon: 'info',
+                title: '',
+                text: `You can select a status for any day you choose.Once selected, the status will be applied to the chosen day.
+                You cannot select a past date for your status.`,
+                showCloseButton: true,
+                
+            })
+        })
+    }
+}); 
 
 
   

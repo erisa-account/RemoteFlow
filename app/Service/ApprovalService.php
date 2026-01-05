@@ -90,7 +90,8 @@ class ApprovalService
                     $req->user->name,
                     $req->start_date->format('Y-m-d'),
                     $req->end_date->format('Y-m-d'),
-                    $req->approver?->name ?? 'Admin'
+                    $req->approver?->name ?? 'Admin',
+                    $req->type->display_name,
                 )
             );
         } catch (\Exception $e) {

@@ -34,51 +34,20 @@ function pad(n) {
 }
 
 
-document.addEventListener("DOMContentLoaded", function () {
+ function getApiEndpoint(status_name, isFilter = false) {
+  if (status_name.toLowerCase() === 'me leje') {
+    return isFilter
+      ? '/api/statusmeleje/filter'
+      : '/api/statusmeleje';
+  }
+
+  // default: remote / on site
+  return isFilter
+    ? '/api/remotive-table/filter'
+    : '/api/remotive-table';
+}
    
-    fetch('/api/remotive-table')
-        .then(response => response.json())
-        .then(data => {
-            const tableBody = document.querySelector('#remotiveTable tbody');
-            if ($.fn.DataTable.isDataTable('#remotiveTable')) {
-                      remotiveTable.clear().destroy();
-                  } 
-            tableBody.innerHTML = '';
-      
-            data.data.forEach(item => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="px-4 py-3 text-xs text-gray-600 dark:text-gray-400">${item.id}</td>
-                    <td class="px-4 py-3 text-xs text-gray-600 dark:text-gray-400">${item.user_name}</td>
-                    <td class="px-4 py-3 text-xs text-gray-600 dark:text-gray-400">${item.status_name}</td>
-                    <td class="px-4 py-3 text-xs text-gray-600 dark:text-gray-400">${item.date}</td>
-                    <td class="px-4 py-3 text-xs text-gray-600 dark:text-gray-400">${item.created_at}</td>
-                    <td class="px-4 py-3 text-xs text-gray-600 dark:text-gray-400">${item.updated_at}</td>
-                `;
-                tableBody.appendChild(row);
-            });
-            
-             remotiveTable = $('#remotiveTable').DataTable({
-                responsive: true,
-                pageLength: 10,
-                lengthMenu: [5, 10, 25, 50, 100],
-                language: {
-                search: "",
-                searchPlaceholder: "Search...",
-                paginate: {
-                  previous: "‹",
-                  next: "›"
-                }
-              },
-              });
-
-            })  
-        .catch(error => {
-         console.error('Error fetching remotive data:', error);
-    });  
-    document.getElementById('tablewrap').classList.add('hidden');
-
-});
+  
 
 
 
@@ -97,11 +66,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.getElementById('apply').addEventListener('click', async function () {
   document.getElementById('tablewrap').classList.remove('hidden');
-  document.getElementById('exportButton').classList.remove('hidden');
-      document.getElementById('remotiveTable_length').classList.remove('hidden');
-      document.getElementById('remotiveTable_filter').classList.remove('hidden');
-      document.getElementById('remotiveTable_info').classList.remove('hidden');
-      document.getElementById('remotiveTable_paginate').classList.remove('hidden');
+  const exportBtn = document.getElementById('exportButton');
+if (exportBtn) exportBtn.classList.remove('hidden');
+
 
 
 
@@ -173,7 +140,9 @@ document.getElementById('apply').addEventListener('click', async function () {
   console.log('🔍 Sending params:', params.toString());
 
     try {
-    const response = await fetch('/api/remotive-table/filter?' + params.toString());
+    const apiUrl = getApiEndpoint(status_name, true);
+const response = await fetch(apiUrl + '?' + params.toString());
+
     const data = await response.json();
 
     //const table = document.querySelector('#remotiveTable');
@@ -208,11 +177,11 @@ document.getElementById('apply').addEventListener('click', async function () {
       
       table.style.display = 'none';
         
-      document.getElementById('exportButton').classList.add('hidden');
-      document.getElementById('remotiveTable_length').classList.add('hidden');
-      document.getElementById('remotiveTable_filter').classList.add('hidden');
-      document.getElementById('remotiveTable_info').classList.add('hidden');
-      document.getElementById('remotiveTable_paginate').classList.add('hidden');
+      document.getElementById('exportButton')?.classList.add('hidden');
+      document.getElementById('remotiveTable_length')?.classList.add('hidden');
+      document.getElementById('remotiveTable_filter')?.classList.add('hidden');
+      document.getElementById('remotiveTable_info')?.classList.add('hidden');
+      document.getElementById('remotiveTable_paginate')?.classList.add('hidden');
 
       await Swal.fire({
         title: 'No data!',

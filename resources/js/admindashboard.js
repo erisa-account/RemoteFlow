@@ -137,7 +137,7 @@ import Swal from 'sweetalert2';
         title: 'Approved',
         text: data.message,
         timer: 2000,
-        showConfirmationButton: false,
+        showConfirmButton: false,
        });
 
       //alert(data.message);

@@ -22,7 +22,8 @@ class LeaveRequestStatusMail extends Mailable
             public string $userName,
             public string $startDate,
             public string $endDate,
-            public string $approverName
+            public string $approverName,
+            public string $type,
         ) {}
     
 
