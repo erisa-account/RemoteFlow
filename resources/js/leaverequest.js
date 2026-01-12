@@ -15,13 +15,14 @@ document.addEventListener('DOMContentLoaded', () => {
       replacementDates: {},
       replacementMap: {},
       remainingDays: 0,
+      forwardedDays: 0,
       dayMarkers: {},
     };
     
 
     
 
-    fetch('/leave-summary', {
+    fetch('/user/leave-data', {
       
       method: 'GET',
       credentials: 'same-origin',
@@ -39,9 +40,14 @@ document.addEventListener('DOMContentLoaded', () => {
         //document.getElementById('remainingDays').textContent = data.remaining_days;
         console.log("api result", data);
         
-         state.totalDays = data.data.total_days;
+         /*state.totalDays = data.data.total_days;
          state.usedDays = data.data.used_days;
-         state.remainingDays = data.data.remaining_days;
+         state.remainingDays = data.data.remaining_days;*/
+
+         state.totalDays = data.total_days;
+         state.usedDays = data.used_days;
+         state.remainingDays = data.remaining_days;
+         state.forwardedDays = data.forwarded_days;
 
          renderKpis();
          
@@ -66,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('totalDays').textContent = state.totalDays;
       document.getElementById('usedDays').textContent = state.usedDays;
       document.getElementById('remainingDays').textContent = remaining;
+      document.getElementById('forwardedDays').textContent = state.forwardedDays;
       document.getElementById('usedDaysSmall').textContent = state.usedDays;
       document.getElementById('remainingDaysSmall').textContent = remaining;
       const pct = Math.min(100, Math.round((state.usedDays/state.totalDays)*100)) || 0;
@@ -703,6 +710,26 @@ Days highlighted in green (like Monday or Tuesday) indicate a weekend holiday.
 You can request leave in various categories: <b>Vacation,</b> <b>Sick Leave,</b> <b>Replacement,</b> or <b>Other</b>.
 You can also replace days you have already taken as leave.
 Check your <b>Leave History</b> to see which requests have been approved or rejected.`,
+                showCloseButton: true,
+                
+            })
+        })
+    }
+
+
+
+
+    const infoBtnForwarded = document.getElementById('statusInfoBtnForwarded');
+
+    if(infoBtnForwarded) {
+        infoBtnForwarded.addEventListener('click', () =>{
+            Swal.fire({
+                icon: 'info',
+                title: '',
+                html: `Forwarded days are unused leave days carried over from the previous year.
+If you do not use all of your annual leave, the remaining days are forwarded to the next year.
+These forwarded days are valid until 31 March of the current year and will expire after that date.
+When submitting a leave request, any available forwarded days will be used first.`,
                 showCloseButton: true,
                 
             })

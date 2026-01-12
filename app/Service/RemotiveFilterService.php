@@ -83,5 +83,28 @@ class RemotiveFilterService
     //return $query->get(); 
     return $query->with(['user', 'status'])->get();
 }
+
+public function resolveDateRange($preset, $startDate = null, $endDate = null)
+{
+    $now = Carbon::now();
+
+    if ($preset === 'custom') {
+        return [
+            Carbon::parse($startDate)->startOfDay(),
+            Carbon::parse($endDate)->endOfDay()
+        ];
+    }
+
+    switch ($preset) {
+        case '7':
+            return [$now->copy()->subDays(7)->startOfDay(), $now->copy()->endOfDay()];
+        case '30':
+            return [$now->copy()->subDays(30)->startOfDay(), $now->copy()->endOfDay()];
+        case 'last_month':
+            return [$now->copy()->subMonth()->startOfMonth(), $now->copy()->subMonth()->endOfMonth()];
+        default:
+            return [$now->copy()->startOfMonth(), $now->copy()->endOfMonth()];
+    }
+}
     
 }

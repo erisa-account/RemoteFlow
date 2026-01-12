@@ -7,13 +7,17 @@ use App\Http\Requests\Admin\RejectLeaveRequestRequest;
 use App\Service\ApprovalService;
 use App\Models\LeaveRequest;
 use App\Resources\AdminLeaveResource;
+use App\Service\LeaveService;
+use Illuminate\Http\Request;
 
 class LeavesController extends Controller
 {
     protected $approvalService;
+    protected $leaveService;
 
-    public function __construct(ApprovalService $approvalService){
+    public function __construct(ApprovalService $approvalService, LeaveService $leaveService){
         $this->approvalService = $approvalService;
+        $this->leaveService = $leaveService;
     }
     
 
@@ -34,20 +38,16 @@ class LeavesController extends Controller
         return response()->json(['message' => 'Leave rejected.', 'data' => $result]);
     }
 
-   public function getLeaves()
+
+
+    public function getLeaves(Request $request)
     {
-        $leaves = LeaveRequest::with('type', 'user.leaveBalance')
-                    ->orderByRaw("
-        CASE
-            WHEN status = 'pending' THEN 1
-            WHEN status = 'approved' THEN 2
-            WHEN status = 'rejected' THEN 3
-            ELSE 4
-        END
-    ")
-    ->orderBy('start_date', 'desc')
-                    ->get();
- 
+        $filters = $request->only(['status', 'user']);
+
+        $leaves = $this->leaveService->getLeaves($filters);
+
+    
+
         return AdminLeaveResource::collection($leaves);
     }
 

@@ -360,16 +360,61 @@ import Swal from 'sweetalert2';
    
 
 
+
+     fetch('/api/users')
+    .then(response => response.json()) 
+    .then(data => {
+      const userSelect = document.getElementById('empName');
+      userSelect.innerHTML = '<option value="">Filter based on user</option>';
+
+      // 👇 Access the actual array inside "data"
+      data.data.forEach(user => {
+        const option = document.createElement('option');
+        option.value = user.id;
+        option.textContent = user.name;
+        userSelect.appendChild(option);
+      });
+    })
+    .catch(error => {
+      console.error('Error retrieving users:', error);
+    });
+
+
+
+    document.getElementById('empStatus')?.addEventListener('change', loadDashboardData);
+document.getElementById('empName')?.addEventListener('change', loadDashboardData);
+document.getElementById('empDept')?.addEventListener('change', loadDashboardData);
+
     async function loadDashboardData() {
   try {
-    const response = await fetch('/api/admin/leaves'); // <-- your Laravel route
+    const status = document.getElementById('empStatus')?.value || '';
+    const user = document.getElementById('empName')?.value || '';
+    const department = document.getElementById('empDept')?.value || '';
+
+
+     const params = new URLSearchParams();
+    if(status) params.append('status', status);
+    if(user) params.append('user', user);
+    if(department) params.append('department', department);
+
+    console.log('Params sent:', params.toString());
+    
+    const response = await fetch(`/api/admin/leaves?${params.toString()}`);
+
+    //const response = await fetch('/api/admin/leaves');
     if (!response.ok) throw new Error('Failed to fetch dashboard data');
 
     const data = await response.json();
 
     // your API probably returns something like: { data: [...] }
     // adapt structure to match renderAdminAdminDashboard()
-    const requests = data.data || [];
+    
+    //const requests = data.data || [];
+    let requests = [];
+if (Array.isArray(data)) requests = data;
+else if (Array.isArray(data.data)) requests = data.data;
+else console.warn('Unexpected API response', data);
+
     console.log('API request' , requests);
 
     // extract employees + metrics

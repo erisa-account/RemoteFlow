@@ -108,6 +108,34 @@
           Leave Requests
         </div>
         <p class="text-xs text-neutral-500 dark:text-gray-200">Review and manage employee leave requests</p>
+
+        <div class="flex gap-3 ">
+          <div class="relative">
+            <select id="empStatus" class="appearance-none rounded-xl border border-neutral-200 bg-white dark:bg-gray-700 dark:border-gray-600 px-3.5 py-2 pr-9 text-sm shadow-soft dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400">
+              <option value="">Filter based on status</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+            </select>
+
+            
+            <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </span>
+          </div>
+          <div class="relative">
+            <select id="empName" class="appearance-none rounded-xl border border-neutral-200 bg-white dark:bg-gray-700 dark:border-gray-600 px-3.5 py-2 pr-9 text-sm shadow-soft dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400">
+              <option value="">Filter based on user name</option>
+              <option value=""></option>
+            </select>
+            
+            <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </span>
+          </div>
+        </div>
+        
+
       </div>
       
       

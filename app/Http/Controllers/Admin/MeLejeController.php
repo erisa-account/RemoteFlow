@@ -28,7 +28,7 @@ class MeLejeController extends Controller {
         $leaves = $this->getmelejeService->getMeLeje();
 
          foreach ($leaves as $leave) {
-        dd($leave->user); // <--- this will stop execution at the first leave
+        //dd($leave->user); // <--- this will stop execution at the first leave
     };
 
         return response()->json(

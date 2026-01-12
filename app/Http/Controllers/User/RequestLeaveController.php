@@ -15,11 +15,14 @@ use App\Service\OverLapValidator;
 use App\Service\ApprovalService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 
 class RequestLeaveController extends Controller
 {
     protected  $leaverequestService;
+    protected $balanceService;
 
     public function __construct(LeaveRequestService $leaverequestService, BalanceService $balanceService) {
         $this->leaverequestService = $leaverequestService;
@@ -46,5 +49,38 @@ class RequestLeaveController extends Controller
         }
 
 
+         public function getLeaveData()
+        {
+            $userId = Auth::id();
+
+            $data = $this->balanceService->calculateLeave($userId);
+
+            if (!$data) {
+                return response()->json([
+                    'error' => 'Leave balance not found'
+                ], 404);
+            }
+
+            return response()->json($data);
+        }
         
+
+        public function storeStartingDate(Request $request)
+        {
+            $request->validate([
+                'starting_date' => ['required', 'date'],
+            ]);
+
+            $userId = Auth::id(); // logged-in user
+
+            $balance = $this->balanceService->storeStartingDate(
+            $userId,
+            $request->starting_date
+            );
+
+            return response()->json([
+                'message' => 'Starting date saved successfully',
+                'starting_date' => $balance->starting_date->toDateString(),
+            ], 201);
+        }
 } 

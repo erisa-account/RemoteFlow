@@ -19,6 +19,13 @@ class StatusService
             ->get(['id', 'user_id', 'status_id', 'date']);
     }
 
+    public function getApprovedLeaves()
+    {
+        return LeaveRequest::with(['user'])
+            ->where('status', 'approved')
+            ->latest()
+            ->get();
+    }
     
 } 
 

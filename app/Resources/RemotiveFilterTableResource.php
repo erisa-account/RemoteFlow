@@ -3,7 +3,7 @@ namespace App\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class RemotiveFilterResource extends JsonResource
+class RemotiveFilterTableResource extends JsonResource
 {
     public function toArray($request)
     {

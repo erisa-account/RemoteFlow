@@ -33,6 +33,7 @@ Route::get('/remotive-table/filter', [RemotiveFilterController::class, 'getRemot
 Route::post('/send-email', [SendEmailController::class, 'sendEmail']);
 Route::get('/remotive-events', [RemotiveFilterController::class, 'events']); 
 Route::get('/statusesnotonsite', [StatusController::class, 'getStatusesNotOnSite']);
+Route::get('/approved-leaves', [StatusController::class, 'approvedLeaves']);
 Route::get('/statusmeleje', [MeLejeController::class, 'getStatusMeLeje']);
 Route::get('/statusmeleje/filter', [MeLejeController::class, 'getStatusMeLejeFiltered']);
 

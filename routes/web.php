@@ -93,7 +93,8 @@ Route::get('/remotivecalendar', function () {
     Route::post('/checkin/store', [CheckinController::class, 'store'])->name('checkin.store');
     Route::post('/checkin/update/{id}', [CheckinController::class, 'update'])->name('checkin.update');
     
-    
+   Route::post('/user/starting-date', [RequestLeaveController::class, 'storeStartingDate'])->name('starting-date');
+   Route::get('/leave-data', [RequestLeaveController::class, 'getLeaveData']);
  
 });
 

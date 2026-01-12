@@ -286,18 +286,43 @@ function downloadBlob(content, filename, type) {
     URL.revokeObjectURL(a.href);
 }
 
+function normalizeDateForCSV(dateStr) {
+    return dateStr
+        .replace(/\s*→\s*/g, ' to ')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
+function escapeCSV(value) {
+    if (value == null) return '';
+    value = value.replace(/"/g, '""');
+    return `"${value}"`;
+}
+
+
+
 function exportTableToCSV(filename) {
     const rows = remotiveTable.rows({ search: 'applied' }).nodes();
     const csv = [];
     $(rows).each(function() {
         const rowData = [];
-        $(this).find('td').each(function() {
-            rowData.push($(this).text().trim());
+        $(this).find('td').each(function(index) {
+            
+            let text = $(this).text().trim();
+
+            // normalize DATE column only
+            if (index === 3) {
+                text = normalizeDateForCSV(text);
+            }
+
+            rowData.push(escapeCSV(text));
         });
+
         csv.push(rowData.join(','));
     });
-    downloadBlob(csv.join('\n'), filename, 'text/csv');
+    downloadBlob(csv.join('\n'), filename, 'text/csv;charset=utf-8;');
 }
+
 
 function exportTableToTXT(filename) {
     const rows = remotiveTable.rows({ search: 'applied' }).nodes();
@@ -325,9 +350,43 @@ function exportTableToJSON(filename) {
 }
 
 function exportTableToExcel(filename) {
-    const tableHtml = remotiveTable.table().node().outerHTML;
+    const rows = remotiveTable.rows({ search: 'applied' }).nodes();
+    let tableHtml = '<table><thead>';
+
+    // Add headers
+    $('#remotiveTable thead th').each(function() {
+        tableHtml += `<th>${$(this).text().trim()}</th>`;
+    });
+    tableHtml += '</thead><tbody>';
+
+    // Add filtered rows
+    $(rows).each(function() {
+        tableHtml += '<tr>';
+        $(this).find('td').each(function() {
+            tableHtml += `<td>${$(this).text().trim()}</td>`;
+        });
+        tableHtml += '</tr>';
+    });
+
+    tableHtml += '</tbody></table>';
     downloadBlob(tableHtml, filename, 'application/vnd.ms-excel');
 }
+
+
+document.getElementById('exportCustomExcel').addEventListener('click', function(e){
+    e.preventDefault();
+
+    let url = new URL(this.href);
+    let params = new URLSearchParams({
+        user_id: document.querySelector('#users').value,
+        status_id: document.querySelector('#status').value,
+        preset: document.querySelector('#preset').value,
+        start_date: document.querySelector('#start_date').value,
+        end_date: document.querySelector('#end_date').value,
+    });
+    url.search = params.toString();
+    window.location.href = url;
+});
 
 function exportTableToSQL(filename) {
     const rows = remotiveTable.rows({ search: 'applied' }).nodes();
@@ -340,6 +399,14 @@ function exportTableToSQL(filename) {
     downloadBlob(sql, filename, 'text/sql');
 }
 
+
+function normalizeDateForPDF(dateStr) {
+    return dateStr
+        .replace(/\s*→\s*/g, ' to ')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
 // PDF export requires jsPDF and AutoTable
 function exportTableToPDF() {
     const { jsPDF } = window.jspdf;
@@ -347,8 +414,16 @@ function exportTableToPDF() {
     const rows = remotiveTable.rows({ search: 'applied' }).nodes();
     const data = [];
     $(rows).each(function() {
-        data.push($(this).find('td').map(function(){ return $(this).text().trim(); }).get());
+      const row = [];
+    $(this).find('td').each(function(i) {
+        let text = $(this).text().trim();
+        if (i === 3) { // date column index
+            text = normalizeDateForPDF(text);
+        }
+        row.push(text);
     });
+    data.push(row);
+  });
     const columns = $('#remotiveTable thead th').map(function(){ return $(this).text().trim(); }).get();
     doc.autoTable({ head: [columns], body: data });
     doc.save('remotive_data.pdf');

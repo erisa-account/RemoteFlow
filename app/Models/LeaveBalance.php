@@ -16,7 +16,13 @@ class LeaveBalance extends Model
         'user_id',              
         'year',
         'total_days',
-        'used_days',             
+        'used_days',  
+        'starting_date',
+                 
+    ];
+
+    protected $casts = [
+        'starting_date' => 'date',
     ];
 
    // Relationships

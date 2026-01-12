@@ -23,12 +23,28 @@ document.addEventListener('DOMContentLoaded', function () {
     buttonText: { today:'Today', month:'Month', week:'Week', day:'Day' },
 
     // If your endpoint returns { data: [...] }, use this instead:
-    events: function(fetchInfo, success, failure) {
-        fetch('/api/statusesnotonsite')
-        .then(res => res.json()) 
-        .then(json => success(Array.isArray(json.data) ? json.data : json))
-        .catch(failure);
-    },
+    
+    events: function (fetchInfo, success, failure) {
+    Promise.all([
+        fetch('/api/statusesnotonsite').then(res => res.json()),
+        fetch('/api/approved-leaves').then(res => res.json())
+    ])
+    .then(([statusesRes, leavesRes]) => {
+
+        const statuses = Array.isArray(statusesRes.data)
+            ? statusesRes.data
+            : statusesRes;
+
+        const leaves = Array.isArray(leavesRes.data)
+            ? leavesRes.data
+            : leavesRes;
+
+        // merge both event sources
+        success([...statuses, ...leaves]);
+    })
+    .catch(failure);
+},
+    
         
     // Let multiple employees stack in the same day
     //dayMaxEventRows: true,   // shows “+ n more” when crowded

@@ -6,6 +6,7 @@ use App\Service\StatusService;
 //use App\Resources\RemotiveEventResource; 
 use App\Resources\StatusesNotSiteResource;
 use App\Models\LeaveRequest;
+use App\Resources\LeavesCalendarResource;
 
 
 class StatusController extends Controller 
@@ -51,5 +52,12 @@ class StatusController extends Controller
         'pending' => $pendingCount
     ]);
      }
+
+     public function approvedLeaves()
+    {
+        $leaves = $this->statusService->getApprovedLeaves();
+
+        return LeavesCalendarResource::collection($leaves);
+    }
 
 }

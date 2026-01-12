@@ -94,4 +94,61 @@ class GetMeLejeService{
     ->get();
 
 }
+
+public function resolveDateRange($preset, $startDate = null, $endDate = null)
+{
+    $now = Carbon::now();
+
+    if ($preset === 'custom') {
+        return [
+            Carbon::createFromFormat('d/m/Y', $startDate)->startOfDay(),
+        Carbon::createFromFormat('d/m/Y', $endDate)->endOfDay()
+        ];
+    }
+
+    switch ($preset) {
+    case 'yesterday':
+        return [
+            $now->copy()->subDay()->startOfDay(),
+            $now->copy()->subDay()->endOfDay()
+        ];
+
+    case '7':
+        return [
+            $now->copy()->subDays(6)->startOfDay(), // last 7 days including today
+            $now->copy()->endOfDay()
+        ];
+
+    case '30':
+        return [
+            $now->copy()->subDays(29)->startOfDay(), // last 30 days
+            $now->copy()->endOfDay()
+        ];
+
+    case 'last_week':
+        return [
+            $now->copy()->startOfWeek()->subWeek(),
+            $now->copy()->endOfWeek()->subWeek()
+        ];
+
+    case 'last_month':
+        return [
+            $now->copy()->subMonth()->startOfMonth(),
+            $now->copy()->subMonth()->endOfMonth()
+        ];
+
+    case 'last_year':
+        return [
+            $now->copy()->subYear()->startOfYear(),
+            $now->copy()->subYear()->endOfYear()
+        ];
+
+    default:
+        // fallback: current month
+        return [
+            $now->copy()->startOfMonth(),
+            $now->copy()->endOfMonth()
+        ];
+}
+}
 } 

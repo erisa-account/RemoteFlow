@@ -58,6 +58,49 @@
         </button>
             </div>
 
+
+<div x-data="{ open: false, startingDate: '{{ auth()->user()->leaveBalance?->starting_date?->format('Y-m-d') }}' }" 
+     class="relative inline-flex items-center gap-2 rounded-xl bg-brand-400 px-3.5 py-2 text-white text-sm font-medium dark:text-gray-200 shadow-soft hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-400 w-80">
+
+    <!-- Display current start date -->
+    <div class="flex justify-between items-center w-full">
+        <span>
+            <strong>Company Start Date:</strong>
+            <span x-text="startingDate ? startingDate : 'Not set'"></span>
+        </span>
+        <!-- Edit button -->
+        <button @click="open = true" class="px-2 py-1 text-sm text-white bg-blue-500 rounded hover:bg-blue-600">
+            Edit
+        </button>
+    </div>
+
+    <!-- Inline form, shown when editing -->
+    <div x-show="open" x-transition class="absolute top-full left-0 mt-1 bg-white text-black rounded shadow p-3 w-full z-10">
+        <form 
+            method="POST"
+            action="{{ route('user.starting-date') }}"
+            @submit="open = false"
+        >
+            @csrf
+            <label class="block text-sm font-medium mb-1" for="starting_date">Start Date</label>
+            <input type="date" name="starting_date" x-model="startingDate" 
+            value="{{ auth()->user()->leaveBalance?->starting_date?->format('Y-m-d') }}"
+                   class="border rounded p-2 w-full mb-3">
+                   
+            <div class="flex justify-end">
+                <button type="button" @click="open = false" 
+                        class="px-3 py-1 mr-2 text-sm border rounded hover:bg-gray-100">
+                    Cancel
+                </button>
+                <button type="submit" 
+                        class="px-3 py-1 text-sm text-white bg-green-500 rounded hover:bg-green-600">
+                    Save
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
         <button id="requestLeaveBtn"
           class="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-3.5 py-2 text-white text-sm font-medium dark:text-gray-200 shadow-soft hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-400">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
@@ -75,7 +118,7 @@
     </section>
 
     <!-- KPIs -->
-    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-soft border border-neutral-200 dark:border-neutral-800">
         <div class="flex items-center justify-between">
           <p class="text-xs uppercase tracking-wide text-neutral-500 dark:text-neutral-400">Total Days</p>
@@ -105,6 +148,26 @@
         </div>
         <p id="remainingDays" class="mt-3 text-3xl font-bold tracking-tight dark:text-gray-200"></p>
       </div>
+
+      <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-soft border border-neutral-200 dark:border-neutral-800">
+        <div class="flex items-center justify-between">
+          <p class="text-xs uppercase tracking-wide text-neutral-500 dark:text-neutral-400">Forwarded days</p>
+          <div class="flex items-center justify-center">
+        <button type="button" id="statusInfoBtnForwarded" class="inline-flex items-center justify-center w-6 h-6 ml-2
+                text-sm font-bold text-white
+                bg-green-500 rounded-full
+                hover:bg-green-600 focus:outline-none" aria-label="Status information">
+          i
+        </button>
+            </div>
+          <div class="h-9 w-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center dark:bg-emerald-500/10 dark:text-emerald-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 7-7"/><path d="M14 5h7v7"/></svg>
+          </div>
+        </div>
+        <p id="forwardedDays" class="mt-3 text-3xl font-bold tracking-tight dark:text-gray-200"></p>
+      </div>
+
+       
       <div class="hidden lg:block"></div>
     </section>
 

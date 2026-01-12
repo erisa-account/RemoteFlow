@@ -5,6 +5,8 @@ use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\EmployeeStatusCalendarExport;
+use App\Service\RemotiveFilterService;
+use App\Service\GetMeLejeService;
 
 class RemotiveCalendarExportService
 {
@@ -17,36 +19,62 @@ class RemotiveCalendarExportService
 
      public function exportStatusCalendar(array $filters)
      {
-        $start = isset($filters['start_date'])
-        ? Carbon::parse($filters['start_date'])->startOfDay()
-        : Carbon::now()->startOfMonth()->startOfDay();
+        /*dd([
+        'filters_received' => $filters,
+        'preset' => $filters['preset'] ?? null,
+        'start_date' => $filters['start_date'] ?? null,
+        'end_date' => $filters['end_date'] ?? null,
+        'user_id' => $filters['user_id'] ?? null,
+        'status_id' => $filters['status_id'] ?? null,
+    ]);*/
 
-        $end = isset($filters['end_date'])
-        ? Carbon::parse($filters['end_date'])->endOfDay()
-        : Carbon::now()->endOfMonth()->endOfDay();
+       
+    [$start, $end] = $this->remotiveFilterService->resolveDateRange(
+        $filters['preset'] ?? null,
+        $filters['start_date'] ?? null,
+        $filters['end_date'] ?? null
+    );
 
-        // Get same filtered rows as your API
-         $records = $this->remotiveFilterService->getFilteredRemotiveTable(
-         $filters['user_id']  ?? null,
-         $filters['status_id'] ?? null,
-         $filters['preset'] ?? null,
-         $start->toDateString(),
-         $end->toDateString()
+    // Determine status name from ID
+    $statusName = null;
+    if (!empty($filters['status_id'])) {
+        $statusName = \App\Models\Status::find($filters['status_id'])->name ?? null;
+        
+    }
+
+    // Get filtered records
+    if (strtolower($statusName) === 'me leje') {
+        $records = app(GetMeLejeService::class)->getFilteredLeaveRequestTable(
+            $filters['user_id'] ?? null,
+            $filters['preset'] ?? null,
+            $start->toDateString(),   
+            $end->toDateString() 
         );
+    } else {
+        $records = $this->remotiveFilterService->getFilteredRemotiveTable(
+            $filters['user_id'] ?? null,
+            $filters['status_id'] ?? null,
+            $filters['preset'] ?? null,
+            $start->toDateString(),
+            $end->toDateString()
+        );
+    }
 
-        // Build date columns
-        $period = CarbonPeriod::create($start->copy()->startOfDay(), $end->copy()->startOfDay());
-        $dates = array_map(fn($d) => $d->toDateString(), iterator_to_array($period));
+    // Build date columns
+    $period = CarbonPeriod::create($start, $end);
+    $dates = array_map(fn($d) => $d->toDateString(), iterator_to_array($period));
 
-         // Pivot into Employees × Days 
-        [$exportData] = $this->buildEmployeeDayMatrix($records, $dates); 
+    // Pivot data
+    [$exportData] = $this->buildEmployeeDayMatrix($records, $dates);
 
-         $filename = sprintf('employee-status-%s-%s.xlsx', $start->format('Ymd'), $end->format('Ymd'));
-          
-         
+    $filename = sprintf(
+        'employee-status-%s-%s.xlsx',
+        $start->format('Ymd'),
+        $end->format('Ymd')
+    );
 
-        return Excel::download(new EmployeeStatusCalendarExport($exportData, $dates), $filename);
-        }
+    return Excel::download(new EmployeeStatusCalendarExport($exportData, $dates), $filename);
+}
 
      public function buildEmployeeDayMatrix(iterable $records, array $dates): array
     {
@@ -112,3 +140,10 @@ class RemotiveCalendarExportService
          return [$exportData];
  }
 } 
+
+
+
+
+
+
+

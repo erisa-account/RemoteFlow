@@ -16,50 +16,122 @@ class BalanceService
         );
     } 
 
-        public function applyApproval(LeaveRequest $r): void
+
+    public function storeStartingDate(int $userId, string $startingDate): LeaveBalance
+        {
+            return LeaveBalance::updateOrCreate(
+                ['user_id' => $userId],
+                ['starting_date' => Carbon::parse($startingDate)]
+            );
+        }
+    
+    
+        
+     public function calculateLeave(int $userId): ?array
+    {
+        $leaveBalance = LeaveBalance::where('user_id', $userId)->first();
+
+        if (!$leaveBalance) {
+            return null;
+        }
+
+        $today = Carbon::today();
+        $startingDate = Carbon::parse($leaveBalance->starting_date);
+        $usedDays = $leaveBalance->used_days ?? 0;
+
+        // 1. Calculate total days based on months
+        $monthsDiff = $startingDate->diffInMonths($today);
+        $totalDays = ceil($monthsDiff * 1.7);
+
+        // 2. Calculate forwarded days
+        $forwardedDays = 0;
+        if ($today->format('d/m') === '31/12') {
+            $forwardedDays = max($totalDays - $usedDays, 0);
+        }
+
+        if ($today->format('d/m') === '31/03') {
+            $forwardedDays = 0;
+        }
+
+        // 3. Determine how many leave days can be used
+        // Priority: forwarded days first, then current total days
+        $leaves = [
+            'from_forwarded' => 0,
+            'from_total'     => 0,
+        ];
+
+        if ($forwardedDays > 0) {
+            $leaves['from_forwarded'] = $forwardedDays;
+            $leaves['from_total'] = max($totalDays - $usedDays - $forwardedDays, 0);
+        } else {
+            $leaves['from_total'] = max($totalDays - $usedDays, 0);
+        }
+
+        return [
+            'starting_date'   => $startingDate->toDateString(),
+            'total_days'      => $totalDays,
+            'used_days'       => $usedDays,
+            'forwarded_days'  => $forwardedDays,
+            'available_leave' => $leaves,
+        ];
+    }
+
+                public function applyApproval(LeaveRequest $r): void
         {
             // Only count if paid type and NOT using comp time
             if (!$r->type->is_paid || $r->is_replacement) return;
           
 
+            //$year = Carbon::parse($r->start_date)->year;
             $year = (int) Carbon::parse($r->start_date)->format('Y');
             $balance = $this->getOrCreate($r->user_id, $year);
 
-        
-                    $balance->increment('used_days', $r->days);
+            
+            $balance->increment('used_days', $r->days);
                
             
             }
-        
 
-        public function revertApproval(LeaveRequest $r): void
+
+            public function revertApproval(LeaveRequest $r): void
         {
             if (!$r->type->is_paid || $r->is_replacement) return;
 
-            $year = (int) Carbon::parse($r->start_date)->format('Y');
+            $year = Carbon::parse($r->start_date)->year;
             $balance = $this->getOrCreate($r->user_id, $year);
 
-        
-            $balance->decrement('used_days', $r->days);
+            $days = $r->days;
 
-                if ($balance->used_days < 0) 
-                        $balance->used_days = 0;
-                        $balance->save();
-}
-            
-    
+            // Restore to current year first
+            if ($balance->used_days >= $days) {
+                $balance->used_days -= $days;
+            } else {
+                $remaining = $days - $balance->used_days;
+                $balance->used_days = 0;
+                $balance->forwarded_days += $remaining;
+            }
+
+            $balance->save();
+        }
 
          public function getLeaveSummary(int $userId, int $year): array
             {
 
-                $balance = $this->getOrCreate($userId, $year);
+                 $balance = $this->getOrCreate($userId, $year);
+                    //$this->refreshBalance($balance);
 
-                
-                //dd($balance);
-                return [
-                    'total_days' => $balance->total_days,
-                    'used_days' => $balance->used_days,
-                    'remaining_days' => $balance->total_days - $balance->used_days,
-                ];
+                    return [
+                        'total_days'      => $balance->total_days,
+                        'used_days'       => $balance->used_days,
+                        'forwarded_days'  => $balance->forwarded_days,
+                        'remaining_days'  =>
+                            ($balance->total_days - $balance->used_days)
+                            + $balance->forwarded_days,
+                    ];
             } 
+
+
+            
+
+
 }
