@@ -8,19 +8,18 @@ class LeavesCalendarResource extends JsonResource
 {
    public function toArray($request)
     {
-        // Determine the type of leave
-        $isReplacement = $this->type?->id === 4; // 4 = replacement leave
-
         return [
-            'title' => $this->user?->name . ' — ' . ($isReplacement ? 'replacement' : ($this->type?->name ?? 'leave')),
-            'start' => $isReplacement ? $this->end_date : $this->start_date, // only the replacement day
-            'end'   => $isReplacement ? $this->end_date : $this->end_date,   // same as start for replacement
-            //'allDay'=> true,
-            'color' => $isReplacement ? '#fbbf24' : ($this->type?->color ?? '#a91ba9ff'), 
+            'title' => $this->user?->name . ' — ' . ($this->type?->name ?? 'leave'),
+
+            'start' => $this->start_date,
+            'end'   => $this->end_date,
+
+            // violet color for all calendar leaves
+            'color' => '#a91ba9ff',
 
             'extendedProps' => [
                 'userName'  => $this->user?->name,
-                'statusName'=> $isReplacement ? 'replacement' : 'leave',
+                'statusName'=> 'leave',
                 'leaveType' => $this->type?->name ?? 'leave',
             ],
         ];

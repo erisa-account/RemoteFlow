@@ -67,7 +67,7 @@ function pad(n) {
 document.getElementById('apply').addEventListener('click', async function () {
   document.getElementById('tablewrap').classList.remove('hidden');
   const exportBtn = document.getElementById('exportButton');
- //if (exportBtn) exportBtn.classList.remove('hidden');
+  if (exportBtn) exportBtn.classList.remove('hidden');
 
 
 

@@ -19,9 +19,22 @@ class BalanceService
 
     public function storeStartingDate(int $userId, string $startingDate): LeaveBalance
         {
+            $date = Carbon::parse($startingDate);
+            $year = $date->year;
+
+            // Calculate total days based on months from starting date to today
+            $monthsDiff = $date->diffInMonths(Carbon::today());
+            $totalDays = ceil($monthsDiff * 1.7);
+
             return LeaveBalance::updateOrCreate(
                 ['user_id' => $userId],
-                ['starting_date' => Carbon::parse($startingDate)]
+                [
+                    'starting_date' => $date,
+                    'year'          => $year,
+                    'total_days'    => $totalDays > 0 ? $totalDays : $defaultTotal,
+                    'used_days'     => 0,
+                    'forwarded_days'=> 0,
+                ]
             );
         }
     

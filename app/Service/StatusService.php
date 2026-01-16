@@ -22,9 +22,13 @@ class StatusService
     public function getApprovedLeaves()
     {
         return LeaveRequest::with(['user'])
-            ->where('status', 'approved')
-            ->latest()
-            ->get();
+        ->where('status', 'approved')
+        ->where(function ($q) {
+            $q->where('is_replacement', 0)
+              ->orWhereNull('is_replacement');
+        })
+        ->latest()
+        ->get();
     }
     
 } 

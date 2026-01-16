@@ -78,9 +78,11 @@ class RequestLeaveController extends Controller
             $request->starting_date
             );
 
-            return response()->json([
+            /*return response()->json([
                 'message' => 'Starting date saved successfully',
                 'starting_date' => $balance->starting_date->toDateString(),
-            ], 201);
+            ], 201);*/
+
+            return redirect()->back()->with('success', 'Starting date saved successfully');
         }
 } 
