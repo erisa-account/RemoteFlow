@@ -51,9 +51,13 @@ class RemotiveFilterController extends Controller
     
     public function exportStatusCalendar(GetRemotiveFilterTableRequest $request)
     {
+        \Log::info('RAW REQUEST', request()->all());
     $filters = $request->validated();
 
     // Call the service to generate Excel
+
     return $this->calendarExportService->exportStatusCalendar($filters);
+
+    
     }
 }

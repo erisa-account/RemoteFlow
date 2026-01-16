@@ -21,6 +21,13 @@ class RemotiveFilterService
     
    public function getFilteredRemotiveTable($userId, $statusId, $preset, $startDate = null, $endDate = null)
     {
+        $now = Carbon::now();
+        $debugNow = $now->toDateTimeString();
+
+        \Log::info('Excel filter debug START', [
+            'preset' => $preset,
+            'now' => $now->toDateTimeString(),
+        ]);
         $query = Remotive::query(); 
 
     // filter by user_id
@@ -33,23 +40,27 @@ class RemotiveFilterService
         $query->where('status_id', $statusId);
     }
 
-    if ($preset === 'custom') {
+     if ($preset === 'custom') {
     if ($startDate && $endDate) {
         $query->whereBetween('date', [$startDate, $endDate]);
-    } elseif ($startDate) {
+    } 
+    elseif ($startDate) {
         $query->whereDate('date', '>=', $startDate);
     } elseif ($endDate) {
         $query->whereDate('date', '<=', $endDate);
     }
     }
-    // filter by preset (date)
-    else if (!empty($preset)) {
+    
+    
+else if (!empty($preset)) {
         $now = Carbon::now();
 
         switch ($preset) {
             case 'yesterday':
                 $query->whereDate('date', $now->subDay()->toDateString());
                 break;
+
+               
 
             case '7':
                $query->whereBetween('date', [
@@ -58,9 +69,13 @@ class RemotiveFilterService
                 ]);
                 break;
 
+  
             case '30':
-                $query->where('date', '>=', $now->copy()->subDays(30));
-                break;
+    $query->whereBetween('date', [
+        $now->copy()->subDays(30)->toDateString(),
+        $now->copy()->toDateString()
+    ]);
+    break;
 
             case 'last_week':
                 $query->whereBetween('date', [
@@ -81,30 +96,50 @@ class RemotiveFilterService
 
     // return the results
     //return $query->get(); 
-    return $query->with(['user', 'status'])->get();
+    
+
+    \Log::info('Excel filter debug SQL', [
+    'sql' => $query->toSql(),
+    'bindings' => $query->getBindings()
+]);
+return $query->with(['user', 'status'])->get();
 }
 
 public function resolveDateRange($preset, $startDate = null, $endDate = null)
-{
-    $now = Carbon::now();
+    {
+        $now = Carbon::now();
 
-    if ($preset === 'custom') {
-        return [
-            Carbon::parse($startDate)->startOfDay(),
-            Carbon::parse($endDate)->endOfDay()
-        ];
+        if ($preset === 'custom') {
+            return [
+                Carbon::parse($startDate)->startOfDay(),
+                Carbon::parse($endDate)->endOfDay()
+            ];
+        }
+
+        switch ($preset) {
+            case 'yesterday':
+                return [$now->copy()->subDay()->startOfDay(), $now->copy()->subDay()->endOfDay()];
+
+            case '7':
+                return [$now->copy()->subDays(7)->startOfDay(), $now->copy()->endOfDay()];
+
+            case '30':
+                return [$now->copy()->subDays(30)->startOfDay(), $now->copy()->endOfDay()];
+
+            case 'last_week':
+                return [$now->copy()->startOfWeek()->subWeek()->startOfDay(), $now->copy()->endOfWeek()->subWeek()->endOfDay()];
+
+            case 'last_month':
+                return [$now->copy()->subMonth()->startOfMonth()->startOfDay(), $now->copy()->subMonth()->endOfMonth()->endOfDay()];
+
+            case 'last_year':
+                return [$now->copy()->subYear()->startOfYear()->startOfDay(), $now->copy()->subYear()->endOfYear()->endOfDay()];
+
+            default:
+                // current month
+                return [$now->copy()->startOfMonth()->startOfDay(), $now->copy()->endOfMonth()->endOfDay()];
+        }
     }
 
-    switch ($preset) {
-        case '7':
-            return [$now->copy()->subDays(7)->startOfDay(), $now->copy()->endOfDay()];
-        case '30':
-            return [$now->copy()->subDays(30)->startOfDay(), $now->copy()->endOfDay()];
-        case 'last_month':
-            return [$now->copy()->subMonth()->startOfMonth(), $now->copy()->subMonth()->endOfMonth()];
-        default:
-            return [$now->copy()->startOfMonth(), $now->copy()->endOfMonth()];
-    }
-}
     
 }

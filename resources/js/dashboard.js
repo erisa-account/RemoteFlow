@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // --- Fetch vacation days ---
     async function fetchVacationDays() {
         try {
-            const res = await fetch('/leave-summary', {
+            const res = await fetch('/user/leave-data', {
                 method: 'GET',
                 credentials: 'same-origin',
                 headers: {

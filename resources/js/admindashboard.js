@@ -39,6 +39,16 @@ import Swal from 'sweetalert2';
       });
     }
 
+    const startInput = document.getElementById('starting_date');
+  const endInput = document.getElementById('ending_date');
+  const clearBtn = document.getElementById('clearBtn');
+
+  clearBtn?.addEventListener('click', () => {
+    if (startInput) startInput.value = '';
+    if (endInput) endInput.value = '';
+    loadDashboardData(); // reload all requests without date filters
+  });
+
     // ---------- EMPLOYEES ----------
     function initials(name){
       return name.split(' ').map(s=>s[0]).filter(Boolean).slice(0,2).join('').toUpperCase();
@@ -141,7 +151,7 @@ import Swal from 'sweetalert2';
        });
 
       //alert(data.message);
-      loadDashboardData();
+      window.loadDashboardData();
       
     }
       catch (err) {
@@ -384,22 +394,40 @@ import Swal from 'sweetalert2';
     document.getElementById('empStatus')?.addEventListener('change', loadDashboardData);
 document.getElementById('empName')?.addEventListener('change', loadDashboardData);
 document.getElementById('empDept')?.addEventListener('change', loadDashboardData);
+document.getElementById('starting_date')?.addEventListener('change',loadDashboardData);
+document.getElementById('ending_date')?.addEventListener('change', loadDashboardData);
+
+
+startInput?.addEventListener('change', loadDashboardData);
+  endInput?.addEventListener('change', loadDashboardData);
+
+
 
     async function loadDashboardData() {
   try {
     const status = document.getElementById('empStatus')?.value || '';
     const user = document.getElementById('empName')?.value || '';
     const department = document.getElementById('empDept')?.value || '';
+    const startingDate = document.getElementById('starting_date')?.value || '';
+    const endingDate = document.getElementById('ending_date')?.value || '';
+
+    
 
 
      const params = new URLSearchParams();
     if(status) params.append('status', status);
     if(user) params.append('user', user);
     if(department) params.append('department', department);
+    if(startingDate) params.append('starting_date', startingDate);
+    if(endingDate) params.append('ending_date', endingDate);
+
+    
 
     console.log('Params sent:', params.toString());
     
     const response = await fetch(`/api/admin/leaves?${params.toString()}`);
+
+    
 
     //const response = await fetch('/api/admin/leaves');
     if (!response.ok) throw new Error('Failed to fetch dashboard data');
@@ -416,6 +444,8 @@ else if (Array.isArray(data.data)) requests = data.data;
 else console.warn('Unexpected API response', data);
 
     console.log('API request' , requests);
+
+    
 
     // extract employees + metrics
     const employeesMap = new Map();
@@ -452,6 +482,7 @@ else console.warn('Unexpected API response', data);
       daysOff,
     };
 
+    
     renderAdminAdminDashboard({
       metrics,
       employees,
@@ -464,6 +495,7 @@ else console.warn('Unexpected API response', data);
       `<div class="text-sm text-rose-600">Error loading dashboard data.</div>`;
   }
 }
+
 
 // load automatically when the page loads
 loadDashboardData();

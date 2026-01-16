@@ -20,8 +20,9 @@ class GetMeLejeService{
             );
     }
 
-    public function getFilteredLeaveRequestTable($userId, $status = null, $preset = null, $startDate = null, $endDate = null)
+    public function getFilteredLeaveRequestTable($userId, $status = null, $preset, $startDate = null, $endDate = null)
     {
+        $now = Carbon::now();
         $query = LeaveRequest::query(); 
 
     // filter by user_id
@@ -34,9 +35,9 @@ class GetMeLejeService{
             $query->where('status', $status);
         }
 
-   if ($preset === 'custom') {
-        if ($startDate && $endDate) {
-            $query->where(function($q) use ($startDate, $endDate) {
+    if ($preset === 'custom') {
+    if ($startDate && $endDate) {
+        $query->where(function($q) use ($startDate, $endDate) {
                 $q->where('start_date', '<=', $endDate)
                   ->where('end_date', '>=', $startDate);
             });
@@ -86,7 +87,6 @@ class GetMeLejeService{
                   ->where('end_date', '>=', $start);
         }
     }
-
     return $query
     ->with(['user', 'type'])
     ->orderBy('start_date', 'desc')
@@ -100,55 +100,34 @@ public function resolveDateRange($preset, $startDate = null, $endDate = null)
     $now = Carbon::now();
 
     if ($preset === 'custom') {
-        return [
-            Carbon::createFromFormat('d/m/Y', $startDate)->startOfDay(),
-        Carbon::createFromFormat('d/m/Y', $endDate)->endOfDay()
-        ];
-    }
+            return [
+                Carbon::parse($startDate)->startOfDay(),
+                Carbon::parse($endDate)->endOfDay()
+            ];
+        }
 
     switch ($preset) {
-    case 'yesterday':
-        return [
-            $now->copy()->subDay()->startOfDay(),
-            $now->copy()->subDay()->endOfDay()
-        ];
+            case 'yesterday':
+                return [$now->copy()->subDay()->startOfDay(), $now->copy()->subDay()->endOfDay()];
 
-    case '7':
-        return [
-            $now->copy()->subDays(6)->startOfDay(), // last 7 days including today
-            $now->copy()->endOfDay()
-        ];
+            case '7':
+                return [$now->copy()->subDays(7)->startOfDay(), $now->copy()->endOfDay()];
 
-    case '30':
-        return [
-            $now->copy()->subDays(29)->startOfDay(), // last 30 days
-            $now->copy()->endOfDay()
-        ];
+            case '30':
+                return [$now->copy()->subDays(30)->startOfDay(), $now->copy()->endOfDay()];
 
-    case 'last_week':
-        return [
-            $now->copy()->startOfWeek()->subWeek(),
-            $now->copy()->endOfWeek()->subWeek()
-        ];
+            case 'last_week':
+                return [$now->copy()->startOfWeek()->subWeek()->startOfDay(), $now->copy()->endOfWeek()->subWeek()->endOfDay()];
 
-    case 'last_month':
-        return [
-            $now->copy()->subMonth()->startOfMonth(),
-            $now->copy()->subMonth()->endOfMonth()
-        ];
+            case 'last_month':
+                return [$now->copy()->subMonth()->startOfMonth()->startOfDay(), $now->copy()->subMonth()->endOfMonth()->endOfDay()];
 
-    case 'last_year':
-        return [
-            $now->copy()->subYear()->startOfYear(),
-            $now->copy()->subYear()->endOfYear()
-        ];
+            case 'last_year':
+                return [$now->copy()->subYear()->startOfYear()->startOfDay(), $now->copy()->subYear()->endOfYear()->endOfDay()];
 
-    default:
-        // fallback: current month
-        return [
-            $now->copy()->startOfMonth(),
-            $now->copy()->endOfMonth()
-        ];
-}
+            default:
+                // current month
+                return [$now->copy()->startOfMonth()->startOfDay(), $now->copy()->endOfMonth()->endOfDay()];
+        }
 }
 } 

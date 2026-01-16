@@ -42,7 +42,7 @@ class LeavesController extends Controller
 
     public function getLeaves(Request $request)
     {
-        $filters = $request->only(['status', 'user']);
+        $filters = $request->only(['status', 'user', 'starting_date', 'ending_date']);
 
         $leaves = $this->leaveService->getLeaves($filters);
 

@@ -67,7 +67,7 @@ function pad(n) {
 document.getElementById('apply').addEventListener('click', async function () {
   document.getElementById('tablewrap').classList.remove('hidden');
   const exportBtn = document.getElementById('exportButton');
-if (exportBtn) exportBtn.classList.remove('hidden');
+ //if (exportBtn) exportBtn.classList.remove('hidden');
 
 
 
@@ -377,6 +377,7 @@ document.getElementById('exportCustomExcel').addEventListener('click', function(
     e.preventDefault();
 
     let url = new URL(this.href);
+
     let params = new URLSearchParams({
         user_id: document.querySelector('#users').value,
         status_id: document.querySelector('#status').value,
@@ -384,9 +385,22 @@ document.getElementById('exportCustomExcel').addEventListener('click', function(
         start_date: document.querySelector('#start_date').value,
         end_date: document.querySelector('#end_date').value,
     });
+
+    // Debug: log each parameter
+    console.log("User ID:", params.get('user_id'));
+    console.log("Status ID:", params.get('status_id'));
+    console.log("Preset:", params.get('preset'));
+    console.log("Start Date:", params.get('start_date'));
+    console.log("End Date:", params.get('end_date'));
+
     url.search = params.toString();
+
+    // Debug: log the final URL
+    console.log("Final export URL:", url.toString());
+
     window.location.href = url;
 });
+
 
 function exportTableToSQL(filename) {
     const rows = remotiveTable.rows({ search: 'applied' }).nodes();

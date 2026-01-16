@@ -7,18 +7,23 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\EmployeeStatusCalendarExport;
 use App\Service\RemotiveFilterService;
 use App\Service\GetMeLejeService;
+use App\Models\LeaveRequest;
 
 class RemotiveCalendarExportService
 {
     private RemotiveFilterService $remotiveFilterService;
+    private GetMeLejeService $getmelejeService;
 
-    public function __construct(RemotiveFilterService $remotiveFilterService)
+    public function __construct(RemotiveFilterService $remotiveFilterService, GetMeLejeService $getmelejeService)
     {
         $this->remotiveFilterService = $remotiveFilterService;
+        $this->getmelejeService = $getmelejeService;
     }
 
      public function exportStatusCalendar(array $filters)
      {
+        //throw new \Exception('Excel reached service');
+
         /*dd([
         'filters_received' => $filters,
         'preset' => $filters['preset'] ?? null,
@@ -35,22 +40,66 @@ class RemotiveCalendarExportService
         $filters['end_date'] ?? null
     );
 
+    /*$start = $start instanceof \Carbon\Carbon ? $start : \Carbon\Carbon::parse($start);
+    $end   = $end instanceof \Carbon\Carbon ? $end : \Carbon\Carbon::parse($end);*/
+
     // Determine status name from ID
     $statusName = null;
-    if (!empty($filters['status_id'])) {
-        $statusName = \App\Models\Status::find($filters['status_id'])->name ?? null;
-        
-    }
+    $statusId = intval($filters['status_id'] ?? 0);
+
+$statusName = \App\Models\Status::where('id', $statusId)->value('status');
+
+\Log::info('Determined status name', [
+    'status_id' => $statusId,
+    'status_name' => $statusName,
+]);
 
     // Get filtered records
     if (strtolower($statusName) === 'me leje') {
-        $records = app(GetMeLejeService::class)->getFilteredLeaveRequestTable(
-            $filters['user_id'] ?? null,
-            $filters['preset'] ?? null,
-            $start->toDateString(),   
-            $end->toDateString() 
+        \Log::info('Fetching leave requests for Excel');
+                
+    $records = $this->getmelejeService->getFilteredLeaveRequestTable(
+        $filters['user_id'] ?? null,
+        null,
+        $filters['preset'] ?? null,
+        $start,
+        $end
+    );
+
+    $records = $records->filter(function($leave) {
+        return $leave->status === 'approved' && $leave->leave_type_id != 4;
+    });
+    $records->each(function($leave) {
+    \Log::info('Leave for Excel', [
+        'id' => $leave->id,
+        'user_id' => $leave->user_id,
+        'start_date' => $leave->start_date,
+        'end_date' => $leave->end_date,
+        'status' => $leave->status,
+        'leave_type_id' => $leave->leave_type_id,
+    ]);
+});
+
+   $records = $records->flatMap(function ($leave) use ($start, $end) {
+        $period = CarbonPeriod::create(
+            Carbon::parse($leave->start_date)->max($start),
+            Carbon::parse($leave->end_date)->min($end)
         );
+
+        return collect($period)->map(function ($date) use ($leave) {
+            return [
+                'user_id'     => $leave->user_id,
+                'user_name'   => $leave->user->name ?? 'User '.$leave->user_id,
+                'date'        => $date->toDateString(), // ✅ REQUIRED
+                'status_name' => 'leave',
+                'updated_at'  => $leave->updated_at,
+            ];
+        });
+    });
+    
+   
     } else {
+        \Log::info('Fetching remotive table for Excel');
         $records = $this->remotiveFilterService->getFilteredRemotiveTable(
             $filters['user_id'] ?? null,
             $filters['status_id'] ?? null,
@@ -64,15 +113,49 @@ class RemotiveCalendarExportService
     $period = CarbonPeriod::create($start, $end);
     $dates = array_map(fn($d) => $d->toDateString(), iterator_to_array($period));
 
+    
+
     // Pivot data
     [$exportData] = $this->buildEmployeeDayMatrix($records, $dates);
+
+    \Log::info('Excel export data preview', [
+    'records_count' => $records->count(),
+    'dates_count'   => count($dates),
+    'export_data_sample' => array_slice($exportData, 0, 5), // show first 5 rows
+]);
+
+// Optional: also log as JSON for clarity
+\Log::info('Excel export full data', [
+    'export_data_json' => json_encode($exportData),
+]);
 
     $filename = sprintf(
         'employee-status-%s-%s.xlsx',
         $start->format('Ymd'),
         $end->format('Ymd')
     );
+    /*dd([
+    'start' => $start,
+    'end' => $end,
+    'records' => $records->count(),
+]);*/
 
+/*dd([
+    'preset' => $filters['preset'] ?? null,
+    'start' => $start,
+    'end' => $end,
+    'records_count' => $records->count(),
+    'first_record' => $records->first()?->toArray() ?? null,
+]);*/
+
+if ($records->count() === 0) {
+    $records = collect([[
+        'user_id' => null,
+        'user_name' => 'No Data',
+        'date' => null,
+        'status_name' => null,
+    ]]);
+}
     return Excel::download(new EmployeeStatusCalendarExport($exportData, $dates), $filename);
 }
 

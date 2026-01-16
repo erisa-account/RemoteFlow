@@ -15,6 +15,8 @@ class AdminLeaveResource extends JsonResource
             'status' => $this->status,
             'start' => Carbon::parse($this->start_date)->toDateString(),
             'end' => Carbon::parse($this->end_date)->toDateString(),
+            /*'start' => $this->start_date ? Carbon::parse($this->start_date)->toDateString() : null,
+            'end' => $this->end_date ? Carbon::parse($this->end_date)->toDateString() : null,*/
             'days' => ($this->days && $this->days > 0)
             ? $this->days
             : Carbon::parse($this->start_date)->diffInDays(Carbon::parse($this->end_date)) + 1,

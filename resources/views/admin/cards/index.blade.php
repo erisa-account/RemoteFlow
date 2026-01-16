@@ -118,21 +118,67 @@
               <option value="rejected">Rejected</option>
             </select>
 
+
             
-            <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
-            </span>
           </div>
           <div class="relative">
             <select id="empName" class="appearance-none rounded-xl border border-neutral-200 bg-white dark:bg-gray-700 dark:border-gray-600 px-3.5 py-2 pr-9 text-sm shadow-soft dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400">
               <option value="">Filter based on user name</option>
               <option value=""></option>
             </select>
+
             
-            <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
-            </span>
           </div>
+
+          <div class="relative hidden">
+            <select id="empTime" class="appearance-none rounded-xl border border-neutral-200 bg-white dark:bg-gray-700 dark:border-gray-600 px-3.5 py-2 pr-9 text-sm shadow-soft dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400">
+              <option value="">Filter based on time</option>
+              <option value=""></option>
+            </select>
+          </div>
+
+          <div x-data="{ open: false, startingDate: '', endingDate: '' }" @click.outside="open = false" class="relative appearance-none rounded-xl border border-neutral-200  
+          bg-white dark:bg-gray-700 dark:border-gray-600 px-3.5 py-2  text-sm shadow-soft dark:text-gray-200 focus:outline-none 
+          focus:ring-2 focus:ring-brand-400 w-full md:w-96">
+    <!-- Display current start date -->
+    <div class="flex justify-between items-center w-full">
+        <span class="flex items-center space-x-2 flex-1 ">
+            <span>Filter based on time</span>
+            <span
+            x-html="
+        startingDate && endingDate 
+        ? `<span class='font-semibold'>${startingDate}</span> to <span class='font-semibold'>${endingDate}</span>` 
+        : 'Not set'
+    "></span>
+        </span>
+        <!-- Edit button -->
+        <button @click="open = true" class="px-2 py-1 text-sm text-white bg-blue-500 rounded hover:bg-blue-600 ml-2">
+            Edit
+        </button>
+    </div>
+
+    <!-- Inline form, shown when editing -->
+    <div x-show="open" x-transition=""  class="absolute top-full left-0 mt-1 bg-white text-black rounded shadow p-3 w-full z-10" style="display: none;">
+        <form  @submit.prevent="console.log(startingDate, endingDate)" id="filtertime">
+                        
+            <label class="block text-sm font-medium mb-1" for="starting_date">From</label>
+            <input type="date" name="starting_date" id="starting_date" x-ref="starting_date" x-model="startingDate"  class="border rounded p-2 w-full mb-3">
+
+             
+            
+            <label class="block text-sm font-medium mb-1" for="ending_date">To</label>
+            <input type="date" name="ending_date" id="ending_date" x-ref="ending_date" x-model="endingDate"  class="border rounded p-2 w-full mb-3">
+                   
+            <div class="flex justify-end">
+                <button type="button" id="clearBtn"  @click="open = false"
+                class="px-3 py-1 mr-2 text-sm border rounded hover:bg-gray-100">
+                    Clear
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
         </div>
         
 
