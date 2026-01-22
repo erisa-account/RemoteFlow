@@ -151,7 +151,7 @@ import Swal from 'sweetalert2';
        });
 
       //alert(data.message);
-      window.loadDashboardData();
+     loadDashboardData();
       
     }
       catch (err) {

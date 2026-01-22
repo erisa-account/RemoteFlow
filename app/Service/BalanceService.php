@@ -8,143 +8,221 @@ use Illuminate\Support\Facades\DB;
 
 class BalanceService
 {
-    public function getOrCreate(int $userId, int $year, int $defaultTotal = 20): LeaveBalance
+    public function getOrCreate(int $userId): LeaveBalance
     {
         return LeaveBalance::firstOrCreate(
-         ['user_id' => $userId, 'year' => $year],
-         ['total_days' => $defaultTotal]
+            [
+                'user_id' => $userId,
+            ],
+            [
+                'starting_date'     => null,
+                'year'              => null,
+                'total_days'        => 0,
+                'used_days'         => 0,
+                'carried_over_days' => 0,
+            ]
         );
     } 
+    
+    
 
 
-    public function storeStartingDate(int $userId, string $startingDate): LeaveBalance
+        public function storeStartingDate(int $userId, string $starting_date): LeaveBalance
         {
-            $date = Carbon::parse($startingDate);
-            $year = $date->year;
+            $balance = $this->getOrCreate($userId);
 
-            // Calculate total days based on months from starting date to today
-            $monthsDiff = $date->diffInMonths(Carbon::today());
-            $totalDays = ceil($monthsDiff * 1.7);
+            $balance->starting_date = Carbon::parse($starting_date)->toDateString();
 
-            return LeaveBalance::updateOrCreate(
-                ['user_id' => $userId],
-                [
-                    'starting_date' => $date,
-                    'year'          => $year,
-                    'total_days'    => $totalDays > 0 ? $totalDays : $defaultTotal,
-                    'used_days'     => 0,
-                    'forwarded_days'=> 0,
-                ]
-            );
-        }
-    
-    
-        
-     public function calculateLeave(int $userId): ?array
-    {
-        $leaveBalance = LeaveBalance::where('user_id', $userId)->first();
-
-        if (!$leaveBalance) {
-            return null;
+            /*if ($balance->wasRecentlyCreated) {
+                $balance->used_days = 0;
+                $balance->carried_over_days = 0;
+                $balance->total_days = 0; // will be calculated later
+            }*/
+            $balance->save();
+            return $balance;
         }
 
-        $today = Carbon::today();
-        $startingDate = Carbon::parse($leaveBalance->starting_date);
-        $usedDays = $leaveBalance->used_days ?? 0;
 
-        // 1. Calculate total days based on months
-        $monthsDiff = $startingDate->diffInMonths($today);
-        $totalDays = ceil($monthsDiff * 1.7);
 
-        // 2. Calculate forwarded days
-        $forwardedDays = 0;
-        if ($today->format('d/m') === '31/12') {
-            $forwardedDays = max($totalDays - $usedDays, 0);
-        }
+        public function updateCarriedOverDays(int $userId): LeaveBalance
+        {
+            $balance = $this->getOrCreate($userId);
+             $today = Carbon::today();
 
-        if ($today->format('d/m') === '31/03') {
-            $forwardedDays = 0;
-        }
+            if (!$balance->starting_date) {
+                return $balance;
+            }
 
-        // 3. Determine how many leave days can be used
-        // Priority: forwarded days first, then current total days
-        $leaves = [
-            'from_forwarded' => 0,
-            'from_total'     => 0,
-        ];
+            $start = Carbon::parse($balance->starting_date);
 
-        if ($forwardedDays > 0) {
-            $leaves['from_forwarded'] = $forwardedDays;
-            $leaves['from_total'] = max($totalDays - $usedDays - $forwardedDays, 0);
-        } else {
-            $leaves['from_total'] = max($totalDays - $usedDays, 0);
-        }
+            // If starting date is in the future → no leave
+            if ($start->greaterThan($today)) {
+                $balance->total_days = 0;
+                $balance->save();
+                return $balance;
+            }
 
-        return [
-            'starting_date'   => $startingDate->toDateString(),
-            'total_days'      => $totalDays,
-            'used_days'       => $usedDays,
-            'forwarded_days'  => $forwardedDays,
-            'available_leave' => $leaves,
-        ];
+            $yearsWorked = $start->diffInYears($today);
+
+            // Calculate base total days
+            if ($yearsWorked >= 1) {
+                $totalDays = 22; // old employee
+            } else {
+                $monthsWorked = $start->diffInMonths($today);
+                $totalDays = ceil($monthsWorked * 1.83); // new employee
+            }
+            if ($today->month === 1 && $today->day === 1) {
+        $totalDays += 22;
     }
 
-                public function applyApproval(LeaveRequest $r): void
-        {
-            // Only count if paid type and NOT using comp time
-            if (!$r->type->is_paid || $r->is_replacement) return;
-          
-
-            //$year = Carbon::parse($r->start_date)->year;
-            $year = (int) Carbon::parse($r->start_date)->format('Y');
-            $balance = $this->getOrCreate($r->user_id, $year);
-
-            
-            $balance->increment('used_days', $r->days);
-               
-            
+            // Calculate carried over dynamically (never store in DB)
+            $carriedOver = 0;
+            if ($today->month === 1 && $today->day === 1) {
+                $carriedOver = max($balance->total_days - $balance->used_days, 0);
             }
 
-
-            public function revertApproval(LeaveRequest $r): void
-        {
-            if (!$r->type->is_paid || $r->is_replacement) return;
-
-            $year = Carbon::parse($r->start_date)->year;
-            $balance = $this->getOrCreate($r->user_id, $year);
-
-            $days = $r->days;
-
-            // Restore to current year first
-            if ($balance->used_days >= $days) {
-                $balance->used_days -= $days;
-            } else {
-                $remaining = $days - $balance->used_days;
-                $balance->used_days = 0;
-                $balance->forwarded_days += $remaining;
+            // Expire carried over after 31/03
+            if ($today->greaterThan(Carbon::create($today->year, 3, 31))) {
+                $carriedOver = 0;
             }
 
+            // Total days for current year = base days + carried over
+            $balance->total_days = $totalDays; // store only the entitlement for this year
             $balance->save();
+
+            // **Return balance with carried over dynamically added**
+            // Use a dynamic property to return for frontend or summary
+            $balance->carried_over_days = $carriedOver;
+            $balance->remaining_days = max($totalDays + $carriedOver - $balance->used_days, 0);
+
+            return $balance;
         }
 
-         public function getLeaveSummary(int $userId, int $year): array
+
+
+        public function hasEnoughLeave(LeaveBalance $balance, int $requestedDays): bool
+        {
+            $available = max($balance->total_days - $balance->used_days, 0);
+            return $available >= $requestedDays;
+        }
+
+        public function useLeave(LeaveBalance $balance, int $days)
             {
+                // Use carried over days first
+                if ($balance->carried_over_days >= $days) {
+                    $balance->carried_over_days -= $days;
+                } else {
+                    $remaining = $days - $balance->carried_over_days;
+                    $balance->carried_over_days = 0;
+                    $balance->used_days += $remaining;
+                }
 
-                 $balance = $this->getOrCreate($userId, $year);
-                    //$this->refreshBalance($balance);
+                $balance->save();
+            }
 
-                    return [
-                        'total_days'      => $balance->total_days,
-                        'used_days'       => $balance->used_days,
-                        'forwarded_days'  => $balance->forwarded_days,
-                        'remaining_days'  =>
-                            ($balance->total_days - $balance->used_days)
-                            + $balance->forwarded_days,
-                    ];
-            } 
+    
+        public function revertLeave(LeaveBalance $balance, int $days)
+            {
+                // Return leave to carried over first if possible
+                $usedFromTotal = max($days - ($balance->carried_over_days ?? 0), 0);
+
+                $balance->used_days = max($balance->used_days - $usedFromTotal, 0);
+                $balance->carried_over_days += ($days - $usedFromTotal);
+
+                $balance->save();
+            }
 
 
+
+        public function applyApproval(LeaveRequest $r): void
+        {
             
+            //$days = $request->days;
+
+            if (!$r->type->is_paid || $r->is_replacement) return;
+
+            $balance = $this->getOrCreate($r->user_id);
+
+            //$this->updateCarriedOverDays($r->user_id);
+
+            // Check if enough leave
+            if (!$this->hasEnoughLeave($balance, $r->days)) {
+                throw new \Exception("You don't have enough leave days for this request.");
+            }
+
+            $this->useLeave($balance, $r->days);      
+            
+        }
 
 
+        public function revertApproval(LeaveRequest $r): void
+        {
+            if (!$r->type->is_paid || $r->is_replacement) return;
+
+            $balance = $this->getOrCreate($r->user_id);
+
+            $this->revertLeave($balance, $r->days);
+        }
+        
+        
+
+        public function getLeaveSummary(int $userId): array
+            {
+                $this->updateCarriedOverDays($userId);
+                $balance = $this->getOrCreate($userId);
+                   
+
+                /*$carriedOver = $balance->carried_over_days ?? 0;*/
+
+                // Remaining days = total_days - used_days
+                $remaining = max($balance->total_days - $balance->used_days, 0);
+
+                return [
+                    'total_days'        => $balance->total_days,
+                    'used_days'         => $balance->used_days,
+                    'remaining_days'    => $remaining,
+                    'carried_over_days' => $balance->carried_over_days,
+                ];
+            }          
+
+
+        /*public function debugCarriedOver(
+            int $userId,
+            int $totalDays = 20,         // simulate total leave
+            int $usedDays = 0,           // simulate used leave
+            int $carriedOverDays = 0,    // simulate existing carried over
+            string $date = null          // optional date for calculation, default today
+            )
+        {
+            $balance = $this->getOrCreate($userId);
+
+            // Inject test values
+            $balance->total_days = $totalDays;
+            $balance->used_days = $usedDays;
+            $balance->carried_over_days = $carriedOverDays;
+
+            $today = $date ? Carbon::parse($date) : Carbon::today();
+
+            // Step 1: Calculate remaining days
+            $remainingDays = max($balance->total_days - $balance->used_days, 0);
+
+            // Step 2: Simulate carried over for Jan 1
+            $carriedOverNextYear = 0;
+            if ($today->month === 1 && $today->day === 1) {
+                $carriedOverNextYear = $remainingDays;
+            }
+
+            // Step 3: Include expiry check (31/03)
+            $expireCarriedOver = ($today->month === 3 && $today->day === 31);
+
+            return [
+                'today'                     => $today->toDateString(),
+                'total_days'                => $balance->total_days,
+                'used_days'                 => $balance->used_days,
+                'remaining_days'            => $remainingDays,
+                'carried_over_days'         => $balance->carried_over_days,
+                'carried_over_next_year'    => $carriedOverNextYear,
+                'carried_over_will_expire'  => $expireCarriedOver,
+            ];
+        }*/
 }

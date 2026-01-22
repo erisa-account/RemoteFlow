@@ -133,7 +133,7 @@ Route::middleware('auth')->group(function () {
 
 
 
-
+Route::get('/debug-leave', [RequestLeaveController::class, 'debugLeave'])->middleware('auth');
  
      
     

@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
          state.totalDays = data.total_days;
          state.usedDays = data.used_days;
          state.remainingDays = data.remaining_days;
-         state.forwardedDays = data.forwarded_days;
+         state.forwardedDays = data.carried_over_days;
 
          renderKpis();
          

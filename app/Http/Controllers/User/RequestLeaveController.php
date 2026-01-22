@@ -53,7 +53,7 @@ class RequestLeaveController extends Controller
         {
             $userId = Auth::id();
 
-            $data = $this->balanceService->calculateLeave($userId);
+            $data = $this->balanceService->getLeaveSummary($userId);
 
             if (!$data) {
                 return response()->json([
@@ -85,4 +85,21 @@ class RequestLeaveController extends Controller
 
             return redirect()->back()->with('success', 'Starting date saved successfully');
         }
+
+        /*public function debugLeave()
+        {
+            $userId = Auth::id();
+
+            $data = $this->balanceService->debugCarriedOver(
+                $userId,
+                totalDays: 12,
+                usedDays: 8,
+                carriedOverDays: 2,
+                date: '2026-01-01' // simulate Jan 1 to see carried over effect
+            );
+
+            //return response()->json($data);
+            // Or dd($data) for Laravel debug
+            dd($data);
+        }*/
 } 
