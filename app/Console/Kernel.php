@@ -12,8 +12,18 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('leave:year-rollover')
+            ->yearlyOn(1, 1, '00:01');
+
+        // Expire carried leave (example: April 1)
+        $schedule->command('leave:expire-carry')
+            ->yearlyOn(4, 1, '00:01');
     }
+    
+    protected $commands = [
+    \App\Console\Commands\ProcessYearRollover::class,
+    \App\Console\Commands\ExpireCarriedLeave::class,
+     ];
 
     /**
      * Register the commands for the application.

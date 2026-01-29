@@ -59,7 +59,7 @@
             </div>
 
 
-<div x-data="{ open: false, startingDate: '{{ auth()->user()->leaveBalance?->starting_date?->format('Y-m-d') }}' }" 
+<div x-data="{ open: false, startingDate: '{{ auth()->user()->starting_date?->format('Y-m-d') }}' }" 
      class="relative inline-flex items-center gap-2 rounded-xl bg-brand-400 px-3.5 py-2 text-white text-sm font-medium dark:text-gray-200 shadow-soft hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-400 w-80">
 
     <!-- Display current start date -->
@@ -84,8 +84,7 @@
             @csrf
             <label class="block text-sm font-medium mb-1" for="starting_date">Start Date</label>
             <input type="date" name="starting_date" x-model="startingDate" 
-            value="{{ auth()->user()->leaveBalance?->starting_date?->format('Y-m-d') }}"
-                   class="border rounded p-2 w-full mb-3">
+            >
                    
             <div class="flex justify-end">
                 <button type="button" @click="open = false" 

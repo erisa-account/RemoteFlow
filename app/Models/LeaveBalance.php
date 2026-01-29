@@ -17,12 +17,7 @@ class LeaveBalance extends Model
         'year',
         'total_days',
         'used_days',  
-        'starting_date',
-                 
-    ];
-
-    protected $casts = [
-        'starting_date' => 'date',
+        'carried_over_days',
     ];
 
    // Relationships
