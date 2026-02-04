@@ -20,6 +20,8 @@ document.addEventListener("DOMContentLoaded", function () {
     .catch(error => {
       console.error('Error retrieving users:', error);
     });
+       
+      document.getElementById('exportButton')?.classList.add('hidden');
 });
 
 

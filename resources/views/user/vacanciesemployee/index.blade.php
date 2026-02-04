@@ -300,7 +300,7 @@
 
     <!-- dialog -->
     <div class="relative h-full w-full flex items-start sm:items-center justify-center p-4">
-      <div role="dialog" aria-modal="true" aria-labelledby="modalTitle"
+      <div role="dialog" aria-modal="true" aria-labelledby="modalTitle" id="leaveModal"
         class="w-full max-w-2xl rounded-2xl bg-white dark:bg-gray-800 border border-neutral-200 dark:border-neutral-800 shadow-modal">
         <!-- header -->
         <div class="flex items-start justify-between p-5 border-b border-neutral-200 dark:border-neutral-800">

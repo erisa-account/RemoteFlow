@@ -44,10 +44,15 @@ document.addEventListener('DOMContentLoaded', () => {
          state.usedDays = data.data.used_days;
          state.remainingDays = data.data.remaining_days;*/
 
-         state.totalDays = data.total_days;
-         state.usedDays = data.used_days;
-         state.remainingDays = data.remaining_days;
-         state.forwardedDays = data.carried_over_days;
+         state.year = data.year;
+         state.startingDate = data.startingDate;
+         state.totalDays = calculateTotalDays(data.startingDate, data.year, data.annualDays, data.daysPerMonth); // calculate dynamically
+         state.usedDays = data.usedDays;
+         state.carriedOverDays = data.carriedOverDays;
+         state.annualDays = data.annualDays;
+         state.daysPerMonth = data.daysPerMonth;
+         state.forwardedDays = data.carriedOverDays;
+         
 
          renderKpis();
          
@@ -66,9 +71,48 @@ document.addEventListener('DOMContentLoaded', () => {
     const daysInMonth = (y,m) => new Date(y, m+1, 0).getDate();
     const parseISO = s => { const [Y,M,D] = s.split('-').map(Number); return new Date(Y, M-1, D); };
 
+    function calculateTotalDays(startingDate, year, annualDays = 22, daysPerMonth = 1.83) {
+    if (!startingDate) return 0; 
+
+    console.log(startingDate);
+    const start = new Date(startingDate);
+    const now = new Date();
+
+    // User started in a previous year → full annual leave
+    if (start.getFullYear() < year) {
+        return annualDays;
+    }
+
+    // User started in the current year → prorated leave
+    if (start.getFullYear() === year) {
+        // Months worked: from starting month to current month
+        const startMonth = start.getMonth();   // 0-11
+        const currentMonth = now.getMonth();   // 0-11
+
+        // Fraction of first month
+        const startDay = start.getDate();
+        const daysInStartMonth = new Date(year, startMonth + 1, 0).getDate();
+        const firstMonthRatio = (daysInStartMonth - startDay + 1) / daysInStartMonth;
+
+        // Full remaining months
+        const remainingMonths = currentMonth - startMonth;
+
+        // Total prorated months
+        const totalMonths = Math.max(firstMonthRatio + remainingMonths, 0);
+
+        // Multiply by daysPerMonth
+        return Math.ceil(totalMonths * daysPerMonth);
+    }
+
+    // Default fallback
+    return 0;
+}
+
     // -------- UI Updates --------
     function renderKpis(){
-      const remaining = Math.max(0, state.totalDays - state.usedDays);
+      state.totalDays = calculateTotalDays(state.startingDate, state.year, state.annualDays, state.daysPerMonth);
+      const remaining = Math.max(0, state.totalDays + state.carriedOverDays - state.usedDays);
+      //const remaining = Math.max(0, state.totalDays - state.usedDays);
       document.getElementById('totalDays').textContent = state.totalDays;
       document.getElementById('usedDays').textContent = state.usedDays;
       document.getElementById('remainingDays').textContent = remaining;
@@ -78,6 +122,47 @@ document.addEventListener('DOMContentLoaded', () => {
       const pct = Math.min(100, Math.round((state.usedDays/state.totalDays)*100)) || 0;
       document.getElementById('usagePct').textContent = pct + '%';
       document.getElementById('usageBar').style.width = pct + '%';
+
+      const requestButton = document.getElementById('requestLeaveBtn');
+const modalOverlay = document.getElementById('modalOverlay'); // the entire modal + backdrop
+
+if (!requestButton) return; // exit if button not found
+
+requestButton.addEventListener('click', function(e) {
+    if (remaining === 0) {
+        e.preventDefault(); // stop any default action
+
+        Swal.fire({
+            icon: 'warning',
+            title: 'No Leave Available',
+            text: 'You have used all your total days of leave.',
+            confirmButtonText: 'OK'
+        }).then(() => {
+            // Hide the entire modal overlay
+            if (modalOverlay) {
+                modalOverlay.style.display = 'none';
+            }
+        });
+
+    } else {
+        // proceed normally (open modal or submit form)
+        // example if using modal classes:
+        // modalOverlay.classList.remove('hidden');
+    }
+});
+
+// Optional: handle X / Cancel buttons
+const closeModalBtn = document.getElementById('closeModal');
+const cancelModalBtn = document.getElementById('cancelModal');
+
+[closeModalBtn, cancelModalBtn].forEach(btn => {
+    if (btn) {
+        btn.addEventListener('click', () => {
+            if (modalOverlay) modalOverlay.style.display = 'none';
+        });
+    }
+});
+
     }
 
     

@@ -8,6 +8,7 @@ use App\Exports\EmployeeStatusCalendarExport;
 use App\Service\RemotiveFilterService;
 use App\Service\GetMeLejeService;
 use App\Models\LeaveRequest;
+use App\Exports\MultiMonthEmployeeStatusExport;
 
 class RemotiveCalendarExportService
 {
@@ -39,9 +40,23 @@ class RemotiveCalendarExportService
         $filters['start_date'] ?? null,
         $filters['end_date'] ?? null
     );
+    \Log::info('EXCEL FILTER DATES', [
+    'raw_start' => $start,
+    'raw_end'   => $end,
+    'start_type'=> gettype($start),
+    'end_type'  => gettype($end),
+]);
 
     /*$start = $start instanceof \Carbon\Carbon ? $start : \Carbon\Carbon::parse($start);
     $end   = $end instanceof \Carbon\Carbon ? $end : \Carbon\Carbon::parse($end);*/
+
+    $start = Carbon::parse($start);
+$end   = Carbon::parse($end);
+
+\Log::info('EXCEL FILTER DATES AFTER PARSE', [
+    'start' => $start->toDateString(),
+    'end'   => $end->toDateString(),
+]);
 
     // Determine status name from ID
     $statusName = null;
@@ -148,6 +163,77 @@ $statusName = \App\Models\Status::where('id', $statusId)->value('status');
     'first_record' => $records->first()?->toArray() ?? null,
 ]);*/
 
+\Log::info('EXCEL RAW RECORD DATES SAMPLE');
+
+$records->take(20)->each(function ($r) {
+    \Log::info('RECORD DATE', [
+        'user' => $r['user_id'] ?? $r->user_id ?? null,
+        'date' => $r['date'] ?? $r->date ?? null,
+    ]);
+});
+
+$recordsByMonth = $records->groupBy(function($leave) {
+    return Carbon::parse($leave['date'] ?? $leave->date)->format('Y-m'); // '2026-01'
+});
+
+\Log::info('EXCEL GROUPED MONTHS', [
+    'months' => $recordsByMonth->keys()->toArray()
+]); 
+
+
+$dataByMonth = [];
+foreach ($recordsByMonth as $month => $monthRecords) {
+    $filterStart = $start->copy();
+$filterEnd   = $end->copy();
+
+foreach ($recordsByMonth as $month => $monthRecords) {
+
+    $monthCarbon = Carbon::createFromFormat('Y-m', $month);
+
+    // Default: full month
+    $monthStart = $monthCarbon->copy()->startOfMonth();
+    $monthEnd   = $monthCarbon->copy()->endOfMonth();
+
+    // If first month → start from filter start
+    if ($monthCarbon->isSameMonth($filterStart)) {
+        $monthStart = $filterStart->copy();
+    }
+
+    // If last month → end at filter end
+    if ($monthCarbon->isSameMonth($filterEnd)) {
+        $monthEnd = $filterEnd->copy();
+    }
+
+    [$exportData, $dates] = $this->buildEmployeeDayMatrix(
+        $monthRecords,
+        array_map(
+            fn($d) => $d->toDateString(),
+            iterator_to_array(CarbonPeriod::create($monthStart, $monthEnd))
+        )
+    );
+
+    \Log::info('MONTH RANGE DEBUG', [
+    'month' => $month,
+    'filter_start' => $start->toDateString(),
+    'filter_end'   => $end->toDateString(),
+    'month_start'  => $monthStart->toDateString(),
+    'month_end'    => $monthEnd->toDateString(),
+]);
+
+    $dataByMonth[$month] = [$exportData, $dates];
+}
+
+    [$exportData, $dates] = $this->buildEmployeeDayMatrix(
+        $monthRecords, 
+        array_map(fn($d) => $d->toDateString(), iterator_to_array(CarbonPeriod::create($monthStart, $monthEnd)))
+    );
+
+    $dataByMonth[$month] = [$exportData, $dates];
+}
+
+$filename = sprintf('employee-status-%s-%s.xlsx', $start->format('Ymd'), $end->format('Ymd'));
+
+
 if ($records->count() === 0) {
     $records = collect([[
         'user_id' => null,
@@ -156,7 +242,8 @@ if ($records->count() === 0) {
         'status_name' => null,
     ]]);
 }
-    return Excel::download(new EmployeeStatusCalendarExport($exportData, $dates), $filename);
+    //return Excel::download(new EmployeeStatusCalendarExport($exportData, $dates), $filename);
+    return Excel::download(new MultiMonthEmployeeStatusExport($dataByMonth), $filename);
 }
 
      public function buildEmployeeDayMatrix(iterable $records, array $dates): array
@@ -220,7 +307,7 @@ if ($records->count() === 0) {
          $exportData[] = $line;
  }
 
-         return [$exportData];
+         return [$exportData, $dates];
  }
 } 
 

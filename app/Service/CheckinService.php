@@ -15,7 +15,7 @@ class CheckinService
 
         // If the user hasn't selected a status, default to "On Site"
         if (empty($data['status_id'])) {
-            $data['status_id'] = 1; // <-- Replace 1 with your actual "On Site" status ID
+            $data['status_id'] = 1; 
         }
 
         // Check if a record for this user and date already exists

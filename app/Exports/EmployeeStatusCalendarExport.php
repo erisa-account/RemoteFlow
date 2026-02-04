@@ -9,6 +9,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
+use App\Exports\MultiMonthEmployeeStatusExport;
 
 class EmployeeStatusCalendarExport implements WithEvents
 {
@@ -23,7 +24,7 @@ class EmployeeStatusCalendarExport implements WithEvents
      * ]
      * $dates: ['YYYY-MM-DD', ...] continuous range for the month
      */
-     public function __construct(private array $raw, private array $dates) {}
+     public function __construct(private array $raw, private array $dates, private string $title = '') {}
 
     // Tweak if you want more/less event rows per day
      private int $maxEventsPerDay = 5;
@@ -49,11 +50,21 @@ class EmployeeStatusCalendarExport implements WithEvents
             }
 
        // ===== Derive month/year from the first date and build date->events =====
-        $firstDate = Carbon::parse($this->dates[0]);
-        $year  = (int)$firstDate->year;
-        $month = (int)$firstDate->month;
-        $daysInMonth= Carbon::create($year, $month, 1)->daysInMonth;
-        $firstDow  = (int)Carbon::create($year, $month, 1)->dayOfWeek; // 0=Sun..6=Sat
+        $startDate = Carbon::parse($this->dates[0]);
+$endDate   = Carbon::parse(end($this->dates));
+
+$year  = (int) $startDate->year;
+$month = (int) $startDate->month;
+
+// Only render filtered days
+$days = collect($this->dates)->map(fn($d) => Carbon::parse($d));
+
+// First day position
+$firstDow = (int) $startDate->dayOfWeek;
+
+// Day numbers to render
+$startDay = $startDate->day;
+$endDay   = $endDate->day;
 
     // eventsByDate['YYYY-MM-DD'] = [ ['name'=>'Enriketa','status'=>'onsite','updated_at'=>null], ... ]
         $eventsByDate = [];
@@ -103,7 +114,7 @@ class EmployeeStatusCalendarExport implements WithEvents
 
  // Draw the calendar (5–6 weeks)
         $currentRow = $startRow;
-        $day = 1;
+        $day = $startDay;
         for ($week = 0; $week < 6; $week++) {
         // give each internal row a nice height
         for ($r = 0; $r < $blockRows; $r++) {
@@ -124,9 +135,15 @@ class EmployeeStatusCalendarExport implements WithEvents
         ->getBorders()->getOutline()->setBorderStyle(Border::BORDER_THIN)->getColor()->setARGB('FFB0B0B0');
 
         $isFirstWeek = ($week === 0);
-        $shouldPlace = ($isFirstWeek ? ($col-1) >= $firstDow : true) && ($day <= $daysInMonth);
+        $shouldPlace = ($isFirstWeek ? ($col-1) >= $firstDow : true) && ($day <= $endDay);
 
         if ($shouldPlace) {
+            $dateKey = Carbon::create($year, $month, $day)->toDateString();
+
+            if (!in_array($dateKey, $this->dates)) {
+                $day++;
+                continue;
+            }
         // day number (top-right)
         $sheet->setCellValueByColumnAndRow($col, $top, $day);
         $sheet->getStyleByColumnAndRow($col, $top)->getAlignment()
@@ -157,7 +174,7 @@ class EmployeeStatusCalendarExport implements WithEvents
     }
 
         $currentRow += $blockRows;
-        if ($day > $daysInMonth) break;
+        if ($day > $endDay) break;
         }
         }
 
