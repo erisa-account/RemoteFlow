@@ -26,6 +26,20 @@ class CheckinService
         return $existing ?: Remotive::create($data);
 
     }
+    public function storeDataForCron(array $data): Remotive
+{
+    // Default status if missing
+    if (empty($data['status_id'])) {
+        $data['status_id'] = 1; 
+    }
+
+    // Check if a record for this user and date already exists
+    $existing = Remotive::where('user_id', $data['user_id'])
+                        ->where('date', $data['date'])
+                        ->first();
+
+    return $existing ?: Remotive::create($data);
+}
 
     public function updateStatus($id, $newStatusId): Remotive
     {

@@ -143,7 +143,7 @@ window.addEventListener('load', () => {
                 icon: 'info',
                 title: '',
                 text: `You can select a status for any day you choose.Once selected, the status will be applied to the chosen day.
-                You cannot select a past date for your status.`,
+                You cannot select a past date for your status.If you don't check in today, your status will be saved on the site.`,
                 showCloseButton: true,
                 
             })

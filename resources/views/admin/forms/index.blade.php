@@ -63,7 +63,7 @@
 
 
   <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
-  <select id="status" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-3 text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+  <select id="status"  class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-3 text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
       <option selected="" value="">Select the status</option>
       <option value=""></option>
     </select>
@@ -108,9 +108,9 @@
 
   <!-- Dropdown Menu --> 
   <div id="exportDropdownMenu"
-    class="hidden  right-0 mt-2 w-40 origin-top-right rounded-lg border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800">
+    class="hidden absolute mt-2 w-40 origin-top-right rounded-lg z-50 border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800">
     <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
-      <li>
+      <li class="hidden">
         <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" data-export="csv">Export CSV</a>
       </li>
       <li>
@@ -119,10 +119,10 @@
       <li>
         <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" data-export="excel">Export Excel</a>
       </li>
-      <li>
+      <li class="hidden">
         <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" data-export="txt">Export TXT</a>
       </li>
-      <li>
+      <li class="hidden">
         <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" data-export="json">Export JSON</a>
       </li>
       <li>

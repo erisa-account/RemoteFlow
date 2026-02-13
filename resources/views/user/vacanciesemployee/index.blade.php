@@ -60,7 +60,11 @@
 
 
 <div x-data="{ open: false, startingDate: '{{ auth()->user()->starting_date?->format('Y-m-d') }}' }" 
-     class="relative inline-flex items-center gap-2 rounded-xl bg-brand-400 px-3.5 py-2 text-white text-sm font-medium dark:text-gray-200 shadow-soft hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-400 w-80">
+    class="relative inline-flex items-center 
+    gap-2 rounded-xl px-3.5 py-2 text-white text-sm font-medium 
+    dark:text-gray-200 shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-400 w-80"
+    style="background-color: rgb(5 145 220);"
+    >
 
     <!-- Display current start date -->
     <div class="flex justify-between items-center w-full">
@@ -69,7 +73,8 @@
             <span x-text="startingDate ? startingDate : 'Not set'"></span>
         </span>
         <!-- Edit button -->
-        <button @click="open = true" class="px-2 py-1 text-sm text-white bg-blue-500 rounded hover:bg-blue-600">
+        <button x-show="!startingDate" @click="open = true" id="startingDateButton" class="px-2 py-1 text-sm text-white rounded hover:bg-blue-600"
+        style="background-color: rgb(103 177 85);">
             Edit
         </button>
     </div>

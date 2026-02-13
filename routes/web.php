@@ -97,7 +97,7 @@ Route::get('/remotivecalendar', function () {
    Route::get('/leave-data', [RequestLeaveController::class, 'getLeaveData']);
  
 });
-
+ 
 
 Route::post('/leave-request', [RequestLeaveController::class, 'storerequest'])->middleware('auth');
 

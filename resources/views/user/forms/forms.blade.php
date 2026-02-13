@@ -46,7 +46,7 @@
     <path d="M12 14a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm0 2c-4.43 0-8 1.79-8 4v1h16v-1c0-2.21-3.57-4-8-4Z" />
   </svg>
 
-            <select id="status" name="status_id" class=" ps-10 py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-400 dark:text-neutral-400 dark:placeholder-neutral-500 dark:bg-[#e5e6ef30] dark:focus:ring-neutral-600">
+            <select id="status" name="status_id"  data-hide-me-leje="true" class=" ps-10 py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-400 dark:text-neutral-400 dark:placeholder-neutral-500 dark:bg-[#e5e6ef30] dark:focus:ring-neutral-600">
             <option selected="" value="">Select the status</option>
             <option value=""></option>
  

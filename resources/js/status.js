@@ -10,7 +10,17 @@ document.addEventListener("DOMContentLoaded", function () {
             
             select.innerHTML = '<option value="">Select the status</option>';
 
-            data.forEach(status => {
+            const hideMeLeje = select.dataset.hideMeLeje === "true";
+
+
+            data
+            .filter(status => {
+              if (hideMeLeje) {
+                  return status.id !== 3; // hide "me leje"
+              }
+              return true; // show all
+          })
+            .forEach(status => {
                 const option = document.createElement('option');
                 option.value = status.id; 
                 option.textContent = status.status; // emri i statusit

@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
 
     fetch('/user/leave-data', {
-      
+     
       method: 'GET',
       credentials: 'same-origin',
       headers: {
@@ -39,31 +39,32 @@ document.addEventListener('DOMContentLoaded', () => {
         //document.getElementById('usedDays').textContent = data.used_days;
         //document.getElementById('remainingDays').textContent = data.remaining_days;
         console.log("api result", data);
-        
+       
          /*state.totalDays = data.data.total_days;
          state.usedDays = data.data.used_days;
          state.remainingDays = data.data.remaining_days;*/
 
          state.year = data.year;
-         state.startingDate = data.startingDate;
-         state.totalDays = calculateTotalDays(data.startingDate, data.year, data.annualDays, data.daysPerMonth); // calculate dynamically
-         state.usedDays = data.usedDays;
-         state.carriedOverDays = data.carriedOverDays;
+         state.startingDate = data.starting_date;
+         //state.totalDays = calculateTotalDays(data.startingDate, data.year, data.annualDays, data.daysPerMonth); // calculate dynamically
+         state.totalDays = data.total_days;
+         state.usedDays = data.used_days;
+         state.carriedOverDays = data.carried_over_days;
          state.annualDays = data.annualDays;
          state.daysPerMonth = data.daysPerMonth;
-         state.forwardedDays = data.carriedOverDays;
+         state.forwardedDays = data.carried_over_days;
          
 
          renderKpis();
          
          
       }
-      
+     
       )
-    
+   
     .catch(error => console.error('Error', error ));
 
-    
+   
     // -------- Helpers --------
     const pad2 = n => String(n).padStart(2,'0');
     const ymd = d => `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
@@ -71,8 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const daysInMonth = (y,m) => new Date(y, m+1, 0).getDate();
     const parseISO = s => { const [Y,M,D] = s.split('-').map(Number); return new Date(Y, M-1, D); };
 
-    function calculateTotalDays(startingDate, year, annualDays = 22, daysPerMonth = 1.83) {
-    if (!startingDate) return 0; 
+    /*function calculateTotalDays(startingDate, year, annualDays = 22, daysPerMonth = 1.83) {
+    if (!startingDate) return 0;
 
     console.log(startingDate);
     const start = new Date(startingDate);
@@ -106,19 +107,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Default fallback
     return 0;
-}
+}*/
 
     // -------- UI Updates --------
     function renderKpis(){
-      state.totalDays = calculateTotalDays(state.startingDate, state.year, state.annualDays, state.daysPerMonth);
+      //state.totalDays = calculateTotalDays(state.startingDate, state.year, state.annualDays, state.daysPerMonth);
       const remaining = Math.max(0, state.totalDays + state.carriedOverDays - state.usedDays);
       //const remaining = Math.max(0, state.totalDays - state.usedDays);
       document.getElementById('totalDays').textContent = state.totalDays;
       document.getElementById('usedDays').textContent = state.usedDays;
       document.getElementById('remainingDays').textContent = remaining;
       document.getElementById('forwardedDays').textContent = state.forwardedDays;
-      document.getElementById('usedDaysSmall').textContent = state.usedDays;
-      document.getElementById('remainingDaysSmall').textContent = remaining;
+      //document.getElementById('usedDaysSmall').textContent = state.usedDays;
+      //document.getElementById('remainingDaysSmall').textContent = remaining;
       const pct = Math.min(100, Math.round((state.usedDays/state.totalDays)*100)) || 0;
       document.getElementById('usagePct').textContent = pct + '%';
       document.getElementById('usageBar').style.width = pct + '%';
@@ -162,7 +163,6 @@ const cancelModalBtn = document.getElementById('cancelModal');
         });
     }
 });
-
     }
 
     

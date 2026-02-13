@@ -52,8 +52,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const data = await res.json();
 
-            const totalDays = data.data?.total_days || 0;
-            const usedDays = data.data?.used_days || 0;
+            const totalDays = data?.total_days || 0;
+            const usedDays = data?.used_days || 0;
             const remainingDays = Math.max(totalDays - usedDays, 0);
 
             const vacationEl = document.getElementById('vacationDaysLeft');

@@ -18,12 +18,15 @@ class Kernel extends ConsoleKernel
         // Expire carried leave (example: April 1)
         $schedule->command('leave:expire-carry')
             ->yearlyOn(4, 1, '00:01');
+
+        $schedule->command('checkins:missing')->dailyAt('09:00');
     }
     
-    protected $commands = [
+    /*protected $commands = [
     \App\Console\Commands\ProcessYearRollover::class,
     \App\Console\Commands\ExpireCarriedLeave::class,
-     ];
+    \App\Console\Commands\CheckMissingCheckins::class,
+     ];*/
 
     /**
      * Register the commands for the application
