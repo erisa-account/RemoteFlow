@@ -24,10 +24,10 @@ class LeavesController extends Controller
     public function approve(ApproveLeaveRequestRequest $request, $id)
     {
         $leaveRequest = LeaveRequest::findOrFail($id);
-        
-        $result = $this->approvalService->approve($leaveRequest, $request->user()->id);
 
-        return response()->json(['message' => 'Leave approved.', 'data' => $result]);
+    $result = $this->approvalService->approve($leaveRequest, $request->user()->id);
+
+    return response()->json(['message' => 'Leave approved.', 'data' => $result]);
     }
 
     public function reject(RejectLeaveRequestRequest $request,  $id)

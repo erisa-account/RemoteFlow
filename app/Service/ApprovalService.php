@@ -6,6 +6,7 @@ use App\Models\LeaveType;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\LeaveRequestStatusMail;
+use App\Jobs\SendLeaveStatusEmailJob;
 
 class ApprovalService
 {
@@ -37,8 +38,7 @@ class ApprovalService
 
         $this->balance->applyApproval($req);
 
-        $this->sendLeaveStatusEmail($req, 'approved');
-
+        SendLeaveStatusEmailJob::dispatch($req, 'approved')->afterCommit();
         return $req->refresh();
         });
     }
@@ -60,7 +60,7 @@ class ApprovalService
             'rejection_reason' => $reason,
             ])->save();
 
-            $this->sendLeaveStatusEmail($req, 'rejected');
+            SendLeaveStatusEmailJob::dispatch($req, 'rejected')->afterCommit();
 
             return $req->refresh();
             });
@@ -81,25 +81,5 @@ class ApprovalService
 
 
 
-         protected function sendLeaveStatusEmail(LeaveRequest $req, string $status): void
-        {
-        try {
-            Mail::to($req->user->email)->send(
-                new LeaveRequestStatusMail(
-                    $status,
-                    $req->user->name,
-                    $req->start_date->format('Y-m-d'),
-                    $req->end_date->format('Y-m-d'),
-                    $req->approver?->name ?? 'Admin',
-                    $req->type->display_name,
-                )
-            );
-        } catch (\Exception $e) {
-            \Log::error("Failed to send {$status} email", [
-                'leave_id' => $req->id,
-                'error' => $e->getMessage(),
-            ]);
-        }
-        }
 
 }

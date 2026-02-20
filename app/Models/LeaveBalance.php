@@ -18,7 +18,14 @@ class LeaveBalance extends Model
         'total_days',
         'used_days',  
         'carried_over_days',
+        'carried_initialized',
     ];
+
+    protected $casts = [
+    'carried_initialized' => 'boolean',
+    'carried_over_expired' => 'boolean',
+];
+
 
    // Relationships
     public function user()

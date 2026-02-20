@@ -18,8 +18,8 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-   
 
+    
    public function boot()
 {
     Blade::component('layouts.user', 'user-layout');
