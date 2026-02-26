@@ -247,7 +247,7 @@
           <div class="p-5 space-y-4">
             <div>
               <div class="flex items-center justify-between text-xs text-neutral-500 dark:text-neutral-400 mb-1">
-                <span>2025 Usage</span><span id="usagePct">0%</span>
+                <span>2026 Usage</span><span id="usagePct">0%</span>
               </div>
               <div class="h-2 w-full bg-neutral-100 dark:bg-white rounded-full overflow-hidden">
                 <div id="usageBar" class="h-full bg-brand-500 rounded-full" style="width:0%"></div>

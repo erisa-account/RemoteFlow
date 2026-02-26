@@ -112,7 +112,7 @@ class BalanceService
         if ($start->year > $year) return 0;
 
         $endMonth = ($year === $now->year) ? $now->month : 12;
-        $monthsWorked = max($endMonth - $start->month, 0);
+        $monthsWorked = max($endMonth - $start->month +1, 0);
 
         return (int) floor($monthsWorked * self::DAYS_PER_MONTH);
     }

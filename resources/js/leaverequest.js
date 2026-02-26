@@ -112,14 +112,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // -------- UI Updates --------
     function renderKpis(){
       //state.totalDays = calculateTotalDays(state.startingDate, state.year, state.annualDays, state.daysPerMonth);
-      const remaining = Math.max(0, state.totalDays + state.carriedOverDays - state.usedDays);
+      //const remaining = Math.max(0, state.totalDays + state.carriedOverDays - state.usedDays);
+      const remaining = Math.max(0, state.totalDays  - state.usedDays);
       //const remaining = Math.max(0, state.totalDays - state.usedDays);
       document.getElementById('totalDays').textContent = state.totalDays;
       document.getElementById('usedDays').textContent = state.usedDays;
       document.getElementById('remainingDays').textContent = remaining;
       document.getElementById('forwardedDays').textContent = state.forwardedDays;
-      //document.getElementById('usedDaysSmall').textContent = state.usedDays;
-      //document.getElementById('remainingDaysSmall').textContent = remaining;
+
+      document.getElementById('usedDaysSmall').textContent = state.usedDays;
+      document.getElementById('remainingDaysSmall').textContent = remaining;
       const pct = Math.min(100, Math.round((state.usedDays/state.totalDays)*100)) || 0;
       document.getElementById('usagePct').textContent = pct + '%';
       document.getElementById('usageBar').style.width = pct + '%';

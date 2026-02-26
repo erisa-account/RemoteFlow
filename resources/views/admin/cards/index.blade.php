@@ -170,7 +170,12 @@
             <input type="date" name="ending_date" id="ending_date" x-ref="ending_date" x-model="endingDate"  class="border rounded p-2 w-full mb-3">
                    
             <div class="flex justify-end">
-                <button type="button" id="clearBtn"  @click="open = false"
+                <button type="button" id="clearBtn"  @click="
+        startingDate = '';
+        endingDate = '';
+        open = false;
+        loadDashboardData();
+    "
                 class="px-3 py-1 mr-2 text-sm border rounded hover:bg-gray-100">
                     Clear
                 </button>
