@@ -313,4 +313,27 @@ if ($endYear > $startYear) {
             'remaining_days' => $remaining,
         ];
     }
+
+    public function getAllUsersLeaveSummary(): array
+    {
+        $users = User::all(); // get all users
+    $result = [];
+
+    foreach ($users as $user) {
+        // skip admin users
+        if ($user->is_admin) {
+            continue;
+        }
+
+        $summary = $this->getLeaveSummary($user->id); // keep existing function untouched
+
+        // add the user's name (or id) to the summary
+        $summary['user_id'] = $user->id;
+        $summary['name'] = $user->name;
+
+        $result[] = $summary;
+    }
+
+    return $result;
+    }
 }

@@ -20,7 +20,7 @@ use App\Http\Controllers\User\HolidaysController;
 use App\Http\Controllers\User\StatusController;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\EmailController;
-
+use App\Http\Middleware\ViewFormMiddleware;
 
 
 
@@ -119,7 +119,16 @@ Route::get('/pending-leaves', [StatusController::class, 'countPending'])->middle
 
 
 
+Route::middleware(['auth', 'viewForm'])->group(function () {
 
+    Route::get('/form', function () {
+        return view('admin.forms.index');
+    })->name('form');
+
+});
+
+Route::get('/export-status-calendar', [RemotiveFilterController::class, 'exportStatusCalendar'])
+        ->name('admin.remotive.exportStatusCalendar');
 
 
 Route::middleware('auth')->group(function () {
@@ -149,9 +158,10 @@ Route::get('/debug-leave', [RequestLeaveController::class, 'debugLeave'])->middl
        
         Route::resource('/products', AdminProductController::class);
         
-        Route::get('/form', function () {
+        /*Route::get('/form', function () {
             return view('admin.forms.index');
-        })->name('form');
+        })->name('form');*/
+
         
         Route::get('/vacanciesadmin', function () {
             return view('admin.cards.index');
@@ -159,13 +169,13 @@ Route::get('/debug-leave', [RequestLeaveController::class, 'debugLeave'])->middl
         
         Route::put('/admin/test/{id}', [TestController::class, 'update'])->name('admin.test.update');
         
-        Route::get('/export-status-calendar', [RemotiveFilterController::class, 'exportStatusCalendar'])
-        ->name('admin.remotive.exportStatusCalendar');
         
         Route::post('/leaves/{id}/approve', [LeavesController::class, 'approve']);
         
-         Route::post('/leaves/{id}/reject', [LeavesController::class, 'reject']);
+        Route::post('/leaves/{id}/reject', [LeavesController::class, 'reject']);
          
+        Route::get('/leave-summaryusers', [RequestLeaveController::class, 'getUsersLeave']);
+
     });
 
 

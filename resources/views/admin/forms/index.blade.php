@@ -2,8 +2,12 @@
 
 
 
+@extends(
+    auth()->user()->is_admin 
+        ? 'layouts.admin'   {{-- admin sees admin layout --}}
+        : 'layouts.user'    {{-- all normal users, including igli, see user layout --}}
+)
 
-@extends('layouts.admin')
 @section('content')
 
 <head>
@@ -129,7 +133,7 @@
         <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" data-export="sql">Export SQL</a>
       </li>
       <li>
-        <a  href="{{ route('admin.admin.remotive.exportStatusCalendar') }}"  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 " id="exportCustomExcel">Export Excel customised</a>
+        <a  href="{{ route('admin.remotive.exportStatusCalendar') }}"  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 " id="exportCustomExcel">Export Excel customised</a>
       </li>
     </ul>
   </div>

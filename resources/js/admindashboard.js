@@ -2,6 +2,8 @@ import Swal from 'sweetalert2';
 
 
    document.addEventListener('DOMContentLoaded', () => {
+
+    let employeesData = [];
    // ---------- UTIL ----------
     const currency = n => new Intl.NumberFormat().format(n);
     const pct = (a,b) => b ? Math.round((a/b)*100) : 0;
@@ -48,6 +50,33 @@ import Swal from 'sweetalert2';
     if (endInput) endInput.value = '';
     loadDashboardData(); // reload all requests without date filters
   });
+
+  fetch('/admin/leave-summaryusers', {
+  method: 'GET',
+  credentials: 'same-origin',
+  headers: {
+    'Accept': 'application/json',
+    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+  }
+})
+  // Loop through each user
+  .then(response => response.json())
+.then(data => {
+  // Map API snake_case to camelCase
+  employeesData = data.map(user => ({
+    id: user.id,
+    name: user.name,
+    role: user.role || '',
+    email: user.email || '',
+    department: user.department || '',
+    totalDays: Number(user.total_days) || 0,
+    usedDays: Number(user.used_days) || 0
+  }));
+
+  // Render the employee cards
+  renderEmployees(employeesData);
+})
+.catch(error => console.error("Fetch error:", error));
 
     // ---------- EMPLOYEES ----------
     function initials(name){
@@ -112,6 +141,7 @@ import Swal from 'sweetalert2';
 
           <button class="mt-4 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm hover:bg-neutral-50 hidden">View Details</button>
         </div>`;
+        console.log(e);
       return el;
     }
 
@@ -448,7 +478,7 @@ else console.warn('Unexpected API response', data);
     
 
     // extract employees + metrics
-    const employeesMap = new Map();
+    /*const employeesMap = new Map();
     let approved = 0, pending = 0, daysOff = 0;
 
     requests.forEach(req => {
@@ -474,7 +504,18 @@ else console.warn('Unexpected API response', data);
       }
     });
 
-    const employees = Array.from(employeesMap.values());
+    const employees = Array.from(employeesMap.values());*/
+
+    
+    const employees = [...employeesData]; // keep employees from your API
+
+// calculate request metrics separately
+let approved = 0, pending = 0, daysOff = 0;
+requests.forEach(req => {
+  if (req.status === 'approved') approved++;
+  if (req.status === 'pending') pending++;
+  daysOff += req.days || 0;
+});
     const metrics = {
       totalEmployees: employees.length,
       approved,

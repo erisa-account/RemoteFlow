@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Windmill Dashboard</title>
+    <title>C7 Office</title>
    
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/adminpage.js'])
    
@@ -61,7 +61,7 @@
           </ul>
           <ul>
             <li class="relative px-6 py-3">
-               @if (request()->routeIs('admin.form'))
+               @if (request()->routeIs('form'))
                   <span
                     class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
                     aria-hidden="true"
@@ -69,10 +69,10 @@
                 @endif
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200
-                {{ request()->routeIs('admin.form')
+                {{ request()->routeIs('form')
         ? 'text-gray-800 dark:text-gray-100'
         : 'hover:text-gray-800 dark:hover:text-gray-200' }}"
-                href="{{ route('admin.form') }}"
+                href="{{ route('form') }}"
               >
                 <svg
                   class="w-5 h-5"
@@ -189,7 +189,7 @@
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="{{ route('admin.form') }}"
+                href="{{ route('form') }}"
 
               >
                 <svg
