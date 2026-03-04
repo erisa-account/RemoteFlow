@@ -14,12 +14,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // --- Quote of the Day ---
     const quotes = [
-        { text: "Take vacations. You can make more money, not more time.", author: "Unknown" },
-        { text: "Rest is not a waste of time; it’s how you become sharper for what’s next.", author: "Unknown" },
-        { text: "Balance is not something you find, it’s something you create.", author: "Jana Kingsford" },
-        { text: "You don’t have to burn out to prove you’re working hard.", author: "Unknown" },
-        { text: "Work hard, rest harder. Your future self will thank you.", author: "Unknown" },
-        { text: "Remote work is freedom. Use it to build the life you want, not to work all the time.", author: "Unknown" },
+        { text: "Take vacations. You can make more money, not more time.", author: "Jane Doe" },
+        { text: "Rest is not a waste of time; it's how you become sharper for what's next.", author: "Jane Doe" },
+        { text: "Balance is not something you find, it's something you create.", author: "Jana Kingsford" },
+        { text: "You don't have to burn out to prove you're working hard.", author: "Jane Doe" },
+        { text: "Work hard, rest harder. Your future self will thank you.", author: "Jane Doe" },
+        { text: "Remote work is freedom. Use it to build the life you want, not to work all the time.", author: "Jane Doe" },
         { text: "Sometimes the most productive thing you can do is relax.", author: "Mark Black" },
     ];
 
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const quoteAuthorEl = document.getElementById("quote-author");
 
     if (quoteTextEl && quoteAuthorEl) {
-        const today = new Date();
+        const today = new Date();  
         const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000);
         const index = dayOfYear % quotes.length;
         const chosen = quotes[index];
